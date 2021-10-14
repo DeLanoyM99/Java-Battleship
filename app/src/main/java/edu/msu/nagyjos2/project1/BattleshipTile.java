@@ -12,7 +12,12 @@ public class BattleshipTile {
     private Bitmap boat;
 
     /**
-     * The image for the hit marker to draw when the player selects this tile to hit
+     * The image for the circle marker to draw when the player selects this tile to hit
+     */
+    private Bitmap circleMarker;
+
+    /**
+     * The image for the hit marker to draw when the player selects this tile to hit and has a boat
      */
     private Bitmap hitMarker;
 
@@ -44,18 +49,19 @@ public class BattleshipTile {
      */
     public void draw(Canvas canvas, int BoardStartX, int BoardStartY, int tileLength, int tileNum) {
 
-        if (isHit) { // draw boat or hit marker on tile if the tile has been hit
+        if (isHit) { // draw only if the tile has been hit
 
             // set up drawing position here
 
             if (hasBoat) {
 
-                // draw boat here
+                // draw boat and hit marker here
 
             }
             else {
 
-                // draw hit marker here
+                // draw circle marker here
+
             }
         }
 
