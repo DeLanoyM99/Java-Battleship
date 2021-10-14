@@ -1,10 +1,8 @@
 <resources>
     <string name="app_name">Project1</string>
-
     <string name="end_loser">Better luck next time Player Two</string>
-
     <string name="end_winner">Player One Wins!</string>
-
     <string name="end_button">Play Again</string>
+    <string name="StartButton">Play</string>
 
 </resources>
