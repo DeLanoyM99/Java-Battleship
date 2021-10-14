@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import java.util.ArrayList;
+
 public class BattleshipBoard {
 
     /**
@@ -41,6 +43,16 @@ public class BattleshipBoard {
 
     private GameView gameView; // might need this later for saving
 
+    /**
+     * Collection of tile objects representing a tile on the grid
+     */
+    public ArrayList<BattleshipTile> tiles = new ArrayList<BattleshipTile>(16);
+
+    /**
+     * The length of each of the tiles sides
+     */
+    private int tileLength;
+
     public BattleshipBoard(Context context, GameView view) {
         gameView = view;
 
@@ -68,12 +80,39 @@ public class BattleshipBoard {
         marginX = (wid - boardLength) / 2;
         marginY = (hit - boardLength) / 2;
 
+        //
         // Draw the outline of the board
+        //
         canvas.drawRect(marginX, // left boundary of rectangle
                 marginY, // top boundary of rectangle
                 marginX + boardLength, // right boundary of rectangle
                 marginY + boardLength, // bottom boundary of rectangle
                 fillPaint); // paint color
+
+        //
+        // draw the grid
+        //
+        tileLength = boardLength / 4;
+
+        canvas.save();
+        canvas.translate(marginX, marginY);
+
+        // draw horizontal lines
+        canvas.drawLine(0, tileLength, boardLength, tileLength, gridPaint);
+        canvas.drawLine(0, tileLength * 2, boardLength, tileLength * 2, gridPaint);
+        canvas.drawLine(0, tileLength * 3, boardLength, tileLength * 3, gridPaint);
+
+        // draw vertical lines
+        canvas.drawLine(tileLength, 0, tileLength, boardLength, gridPaint);
+        canvas.drawLine(tileLength * 2, 0, tileLength * 2, boardLength, gridPaint);
+        canvas.drawLine(tileLength * 3, 0, tileLength * 3, boardLength, gridPaint);
+
+        canvas.restore();
+
+        int tile_num = 0;
+        for (BattleshipTile tile : tiles) {
+            tile.draw(canvas, marginX, marginY, tileLength, tile_num);
+        }
 
     }
 
