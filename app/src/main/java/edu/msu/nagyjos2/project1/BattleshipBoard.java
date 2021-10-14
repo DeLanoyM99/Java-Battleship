@@ -39,7 +39,7 @@ public class BattleshipBoard {
      */
     private Paint gridPaint;
 
-    private GameView gameView; // might need this later
+    private GameView gameView; // might need this later for saving
 
     public BattleshipBoard(Context context, GameView view) {
         gameView = view;
