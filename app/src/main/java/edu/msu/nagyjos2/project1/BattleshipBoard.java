@@ -53,6 +53,8 @@ public class BattleshipBoard {
      */
     private int tileLength;
 
+    private GameView GameView;
+
     public BattleshipBoard(Context context, GameView view) {
         gameView = view;
 
