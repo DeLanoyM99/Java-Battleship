@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project1">
         <activity
+            android:name=".ShipPlacement"
+            android:exported="true" />
+        <activity
             android:name=".GameActivity"
             android:exported="true" />
         <activity
