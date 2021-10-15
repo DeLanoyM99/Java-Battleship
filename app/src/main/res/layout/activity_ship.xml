@@ -6,18 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="20dp"
     tools:context=".MainActivity">
 
-    <ImageView
+    <view
         android:id="@+id/GameBoard"
+        class="edu.msu.nagyjos2.project1.GameView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="10dp"
-        android:layout_weight="4"
-        android:contentDescription="@string/picture_of_game_board"
-        android:padding="20dp"
-        app:srcCompat="@drawable/empty_game_board"
-        tools:ignore="ImageContrastCheck" />
+        android:layout_weight="4" />
 
     <TextView
         android:id="@+id/Place_Instructions"
