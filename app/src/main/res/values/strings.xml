@@ -4,5 +4,8 @@
     <string name="end_winner">Player One Wins!</string>
     <string name="end_button">Play Again</string>
     <string name="StartButton">Play</string>
-
+    <string name="player_board">Player One\'s Board</string>
+    <string name="place_instructions">Click to Add or Remove Ship</string>
+    <string name="DoneButton">Done</string>
+    <string name="picture_of_game_board">Picture of game board</string>
 </resources>
