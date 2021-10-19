@@ -2,6 +2,7 @@ package edu.msu.nagyjos2.project1;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 public class BattleshipTile {
@@ -31,23 +32,27 @@ public class BattleshipTile {
      */
     private boolean hasBoat = false;
 
-    public BattleshipTile(Context context) {
+    private int tileNum;
 
+    public BattleshipTile(Context context, int tileNumber) {
+
+        tileNum = tileNumber;
+        boat = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
     }
 
     /**
-     * Draw the puzzle piece
+     * Draw the tile
      * @param canvas Canvas we are drawing on
      * @param BoardStartX where the top left corner x of the board is relative to the screen
      * @param BoardStartY where the top left corner y of the board is relative to the screen
      * @param tileLength Length of the puzzles sides
-     * @param tileNum tile number indicating where on the board we draw it:
-     *                0  1  2  3
-     *                4  5  6  7
-     *                8  9  10 11
-     *                12 13 14 15
+     * tile locations:
+     *                    0  1  2  3
+     *                    4  5  6  7
+     *                    8  9  10 11k
+     *                    12 13 14 15
      */
-    public void draw(Canvas canvas, int BoardStartX, int BoardStartY, int tileLength, int tileNum) {
+    public void drawGameMode(Canvas canvas, int BoardStartX, int BoardStartY, int tileLength) {
 
         if (isHit) { // draw only if the tile has been hit
 
@@ -65,6 +70,37 @@ public class BattleshipTile {
             }
         }
 
+    }
+
+    public void drawPlaceMode(Canvas canvas, int BoardStartX, int BoardStartY, int tileLength) {
+
+        if (hasBoat) {
+
+            int startX = BoardStartX + tileLength * (tileNum % 4) + tileLength / 2;
+            int startY = BoardStartY + tileLength * (tileNum / 4) + tileLength / 2;
+            float scaleFactor = (float)((0.7 * tileLength) / boat.getWidth());
+
+            canvas.save();
+
+            // Convert x,y to pixels and add the margin, then draw
+            canvas.translate(startX, startY);
+
+            // Scale it to the right size
+            canvas.scale(scaleFactor, scaleFactor);
+
+            // center of the boat at 0, 0
+            canvas.translate(-boat.getWidth() / 2f, -boat.getHeight() / 2f);
+
+            // Draw the bitmap
+            canvas.drawBitmap(boat, 0, 0, null);
+
+            canvas.restore();
+        }
+
+    }
+
+    public void placeShip() {
+        hasBoat = !hasBoat;
     }
 
     public boolean isBoatHit() {

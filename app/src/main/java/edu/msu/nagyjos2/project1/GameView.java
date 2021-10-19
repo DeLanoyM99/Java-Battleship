@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -16,6 +17,8 @@ import android.view.View;
 public class GameView extends View {
 
     private BattleshipBoard board;
+    private boolean gameStarted;  // will probably need this later
+    private int currPlayer; // to know whose turn it is and what board to show -> implement later
 
     public GameView(Context context) {
         super(context);
@@ -34,11 +37,26 @@ public class GameView extends View {
 
     private void init(AttributeSet attrs, int defStyle) {
         board = new BattleshipBoard(getContext(), this);
+        gameStarted = false;
+        currPlayer = 1;
+    }
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean started) {
+        gameStarted = started;
     }
 
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         board.draw(canvas);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return board.onTouchEvent(this, event);
     }
 }

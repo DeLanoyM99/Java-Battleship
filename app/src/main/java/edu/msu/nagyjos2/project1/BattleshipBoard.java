@@ -3,6 +3,9 @@ package edu.msu.nagyjos2.project1;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -49,11 +52,9 @@ public class BattleshipBoard {
     public ArrayList<BattleshipTile> tiles = new ArrayList<BattleshipTile>(16);
 
     /**
-     * The length of each of the tiles sides
+     * The games current playing status: True when the game starts, False when in battleship setup mode
      */
-    private int tileLength;
-
-    private GameView GameView;
+    public boolean gameStarted = false;
 
     public BattleshipBoard(Context context, GameView view) {
         gameView = view;
@@ -66,6 +67,10 @@ public class BattleshipBoard {
         gridPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         gridPaint.setColor(0xff008ad9);
         gridPaint.setStrokeWidth(3);
+
+        for (int i = 0; i < 16; i++) {
+            tiles.add(new BattleshipTile(context, i));
+        }
 
     }
 
@@ -94,7 +99,7 @@ public class BattleshipBoard {
         //
         // draw the grid
         //
-        tileLength = boardLength / 4;
+        int tileLength = boardLength / 4;
 
         canvas.save();
         canvas.translate(marginX, marginY);
@@ -111,11 +116,71 @@ public class BattleshipBoard {
 
         canvas.restore();
 
-        int tile_num = 0;
         for (BattleshipTile tile : tiles) {
-            tile.draw(canvas, marginX, marginY, tileLength, tile_num);
+            if (!gameStarted) {
+                tile.drawPlaceMode(canvas, marginX, marginY, tileLength);
+            }
+            else {
+                tile.drawGameMode(canvas, marginX, marginY, tileLength);
+            }
         }
 
+    }
+
+    /**
+     * Handle a release of a touch message.
+     * @param relX x location for the touch release, relative to the board - 0 to 1
+     * @param relY y location for the touch release, relative to the board - 0 to 1
+     * @return true if the touch is handled
+     */
+    private boolean onReleased(float relX, float relY) {
+
+        int row = (int)Math.floor(relX * 4);
+        int col = (int)Math.floor(relY * 4);
+
+        int boardPos = row + col * 4;
+
+        // handle touch when game in setup mode
+        if (!gameStarted) {
+            tiles.get(boardPos).placeShip();
+        }
+
+        // tile selected for attack
+        else {
+
+        }
+
+        gameView.invalidate();
+
+
+        return true;
+    }
+
+    /**
+     * Handle a touch event from the view.
+     * @param view The view that is the source of the touch
+     * @param event The motion event describing the touch
+     * @return true if the touch is handled.
+     */
+    public boolean onTouchEvent(View view, MotionEvent event) {
+
+        float relX = (event.getX() - marginX) / boardLength;
+        float relY = (event.getY() - marginY) / boardLength;
+
+        // check if touch is within board boundaries, if so, perform touch operations
+        if ( (0 <= relX && relX <= 1) && (0 <= relY && relY <= 1) ) {
+            switch (event.getActionMasked()) {
+
+                case MotionEvent.ACTION_DOWN:
+                    return true;
+
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    return onReleased(relX, relY);
+            }
+        }
+
+        return false;
     }
 
 }
