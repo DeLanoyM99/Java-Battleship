@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="#C6777E77"
+            android:onClick="onNewGame"
             android:paddingStart="40dp"
             android:paddingTop="20dp"
             android:paddingEnd="40dp"
