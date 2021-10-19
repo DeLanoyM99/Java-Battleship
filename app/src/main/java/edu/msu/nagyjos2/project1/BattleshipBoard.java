@@ -74,6 +74,14 @@ public class BattleshipBoard {
 
     }
 
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean started) {
+        gameStarted = started;
+    }
+
     public void draw(Canvas canvas) {
         int wid = canvas.getWidth();
         int hit = canvas.getHeight();

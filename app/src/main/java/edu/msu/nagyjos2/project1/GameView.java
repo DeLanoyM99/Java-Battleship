@@ -16,9 +16,10 @@ import android.view.View;
  */
 public class GameView extends View {
 
-    private BattleshipBoard board;
-    private boolean gameStarted;  // will probably need this later
-    private int currPlayer; // to know whose turn it is and what board to show -> implement later
+    private BattleshipBoard player_1_Board;
+    private BattleshipBoard player_2_Board; // need later on when we have 2 players
+    private boolean gameStarted = false;  // will probably need this later
+    private int currPlayer = 1; // to know whose turn it is and what board to show -> implement later
 
     public GameView(Context context) {
         super(context);
@@ -36,9 +37,7 @@ public class GameView extends View {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-        board = new BattleshipBoard(getContext(), this);
-        gameStarted = false;
-        currPlayer = 1;
+        player_1_Board = new BattleshipBoard(getContext(), this);
     }
 
     public boolean isGameStarted() {
@@ -47,16 +46,23 @@ public class GameView extends View {
 
     public void setGameStarted(boolean started) {
         gameStarted = started;
+        player_1_Board.setGameStarted(started);
+        player_2_Board.setGameStarted(started);
     }
 
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        board.draw(canvas);
+        if ((!gameStarted && currPlayer == 1) || (gameStarted && currPlayer == 2)) {  // player 1 board draw
+            player_1_Board.draw(canvas);
+        }
+        else {  // player 2 board draw
+            player_2_Board.draw(canvas);
+        }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return board.onTouchEvent(this, event);
+        return player_1_Board.onTouchEvent(this, event);
     }
 }

@@ -12,7 +12,7 @@ public class ShipPlacement extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ship_placement);
-        //gameView.setGameStarted(false);
+        //gameView.setCurrentPlayer(1); --> do later
 
     }
 }
