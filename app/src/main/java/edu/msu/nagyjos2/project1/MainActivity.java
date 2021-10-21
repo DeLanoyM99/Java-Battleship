@@ -18,4 +18,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ShipPlacement.class);
         startActivity(intent);
     }
+
+    public void onSurrenderButtom(View view) {
+        Intent intent = new Intent(this, EndActivity.class);
+        startActivity(intent);
+    }
 }
