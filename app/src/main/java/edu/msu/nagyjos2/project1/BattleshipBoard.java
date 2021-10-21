@@ -52,6 +52,15 @@ public class BattleshipBoard {
     public ArrayList<BattleshipTile> tiles = new ArrayList<BattleshipTile>(16);
 
     /**
+     * The number of boats currently on the board
+     */
+    private int numBoats;
+
+    public int getNumBoats() {
+        return numBoats;
+    }
+
+    /**
      * The games current playing status: True when the game starts, False when in battleship setup mode
      */
     public boolean gameStarted = false;
@@ -149,8 +158,13 @@ public class BattleshipBoard {
         int boardPos = row + col * 4;
 
         // handle touch when game in setup mode
-        if (!gameStarted) {
-            tiles.get(boardPos).placeShip();
+        if (!gameStarted && numBoats < 4 || tiles.get(boardPos).isHasBoat()) {
+            if(tiles.get(boardPos).placeShip()){
+                numBoats += 1;
+            }
+            else {
+                numBoats -= 1;
+            }
         }
 
         // tile selected for attack
@@ -190,5 +204,6 @@ public class BattleshipBoard {
 
         return false;
     }
+
 
 }

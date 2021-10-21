@@ -32,6 +32,22 @@ public class BattleshipTile {
      */
     private boolean hasBoat = false;
 
+    public boolean isHit() {
+        return isHit;
+    }
+
+    public void setHit(boolean hit) {
+        isHit = hit;
+    }
+
+    public boolean isHasBoat() {
+        return hasBoat;
+    }
+
+    public void setHasBoat(boolean hasBoat) {
+        this.hasBoat = hasBoat;
+    }
+
     private int tileNum;
 
     public BattleshipTile(Context context, int tileNumber) {
@@ -99,8 +115,14 @@ public class BattleshipTile {
 
     }
 
-    public void placeShip() {
+    /**
+     * adds or removes a ship
+     * returns true if ship is placed
+     * @return true if placed ship, false if removed ship
+     */
+    public boolean placeShip() {
         hasBoat = !hasBoat;
+        return hasBoat;
     }
 
     public boolean isBoatHit() {

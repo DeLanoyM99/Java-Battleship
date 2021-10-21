@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".MainActivity">
+    tools:context=".ShipPlacement">
+    <!--    tools:context=".MainActivity"-->
 
     <view
         android:id="@+id/GameBoard"
@@ -35,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:onClick="onDonePlacement"
             android:paddingLeft="40dp"
             android:paddingTop="20dp"
             android:paddingRight="40dp"
