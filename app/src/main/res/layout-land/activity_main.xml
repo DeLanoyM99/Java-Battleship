@@ -30,9 +30,9 @@
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_marginTop="50dp"
             android:ems="10"
+            android:hint="@string/player_2"
             android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="@string/player_2" />
+            android:minHeight="48dp" />
 
         <EditText
             android:id="@+id/Player1NameText"
@@ -42,9 +42,9 @@
             android:layout_marginTop="50dp"
             android:layout_marginBottom="50dp"
             android:ems="10"
+            android:hint="@string/player_1"
             android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:text="@string/player_1" />
+            android:minHeight="48dp" />
 
     </FrameLayout>
 
