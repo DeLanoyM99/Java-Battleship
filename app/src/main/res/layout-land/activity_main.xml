@@ -8,50 +8,42 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <FrameLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_gravity="bottom"
-        android:layout_weight="3">
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="2"
+        android:contentDescription="@string/picture_desc"
+        android:padding="20dp"
+        app:srcCompat="@drawable/battleship_text" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/picture_desc"
-            android:padding="20dp"
-            app:srcCompat="@drawable/battleship_text" />
+    <EditText
+        android:id="@+id/Player1NameText"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/player_1"
+        android:inputType="textPersonName"
+        android:minHeight="48dp" />
 
-        <EditText
-            android:id="@+id/Player2NameText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_marginTop="50dp"
-            android:ems="10"
-            android:hint="@string/player_2"
-            android:inputType="textPersonName"
-            android:minHeight="48dp" />
-
-        <EditText
-            android:id="@+id/Player1NameText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="50dp"
-            android:ems="10"
-            android:hint="@string/player_1"
-            android:inputType="textPersonName"
-            android:minHeight="48dp" />
-
-    </FrameLayout>
+    <EditText
+        android:id="@+id/Player2NameText"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_weight="1"
+        android:ems="10"
+        android:hint="@string/player_2"
+        android:inputType="textPersonName"
+        android:minHeight="48dp" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="2">
 
         <Button
             android:id="@+id/buttonStart"
@@ -59,7 +51,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:onClick="onStartGame"
+            android:paddingLeft="25dp"
+            android:paddingTop="10dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="10dp"
             android:text="@string/StartButton" />
+
     </FrameLayout>
 
 </LinearLayout>
