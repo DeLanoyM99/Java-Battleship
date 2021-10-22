@@ -33,12 +33,5 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    public void onSurrenderButtom(View view) {
-        Intent intent = new Intent(this, EndActivity.class);
-        startActivity(intent);
-    }
-    public void onHelpDialogue(View view) {
-        Intent intent = new Intent(this, HelpActivity.class);
-        startActivity(intent);
-    }
+
 }
