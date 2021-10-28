@@ -5,28 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:baselineAligned="true"
     tools:context=".ShipPlacement">
 
 
-    <FrameLayout
+    <view
+        android:id="@+id/gameBoard"
+        class="edu.msu.nagyjos2.project1.GameView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="4">
-
-        <TextView
-            android:id="@+id/PlayerTurnText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
-
-        <view
-            android:id="@+id/gameBoard"
-            class="edu.msu.nagyjos2.project1.GameView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_weight="4" />
-    </FrameLayout>
+        android:layout_weight="4" />
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -35,10 +23,20 @@
         android:baselineAligned="false">
 
         <TextView
+            android:id="@+id/PlayerTurnText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:gravity="bottom|center_horizontal"
+            android:textSize="34sp" />
+
+        <TextView
             android:id="@+id/Place_Instructions"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/buffer"
+            android:layout_below="@id/PlayerTurnText"
             android:gravity="center"
             android:text="@string/place_instructions"
             android:textSize="20sp" />
@@ -61,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:onClick="onDonePlacement"
                 android:paddingLeft="40dp"
                 android:paddingTop="20dp"
                 android:paddingRight="40dp"

@@ -38,10 +38,10 @@ public class GameActivity extends AppCompatActivity {
         // display the current players name to screen
         PlayersTurn = (TextView) findViewById(R.id.PlayersTurn);
         if (rand_player+1 == 1) {
-            PlayersTurn.setText(player1_name + "'s" + " turn");
+            PlayersTurn.setText(player1_name + "'s" + " Turn");
         }
         else {
-            PlayersTurn.setText(player2_name + "'s" + " turn");
+            PlayersTurn.setText(player2_name + "'s" + " Turn");
         }
 
         // set the current player (to display opponents board)

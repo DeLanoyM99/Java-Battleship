@@ -27,7 +27,7 @@ public class ShipPlacement extends AppCompatActivity {
         player1_name = getIntent().getExtras().getString("Player1Name");
         player2_name = getIntent().getExtras().getString("Player2Name");
         PlayersTurn = (TextView) findViewById(R.id.PlayerTurnText);
-        PlayersTurn.setText(player1_name + "'s" + " turn");
+        PlayersTurn.setText(player1_name + "'s" + " Turn");
     }
 
     private GameView getGameView() { return this.findViewById(R.id.GameViewShip); }
@@ -79,7 +79,7 @@ public class ShipPlacement extends AppCompatActivity {
 
         else if (curr_player == 1) {
             getGameView().setCurrPlayer(2);
-            PlayersTurn.setText(player2_name + "'s" + " turn");
+            PlayersTurn.setText(player2_name + "'s" + " Turn");
         }
         // if player 2 done, we go to game activity
         else {
