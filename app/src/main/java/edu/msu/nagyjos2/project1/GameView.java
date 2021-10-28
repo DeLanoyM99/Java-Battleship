@@ -24,6 +24,7 @@ public class GameView extends View {
     private boolean gameStarted = false;  // will probably need this later
     private int currPlayer = 1; // to know whose turn it is and what board to show -> implement later
 
+
     public GameView(Context context) {
         super(context);
         init(null, 0);
