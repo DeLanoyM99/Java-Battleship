@@ -2,6 +2,7 @@ package edu.msu.nagyjos2.project1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,18 +17,17 @@ public class ShipPlacement extends AppCompatActivity {
     private String player2_name;
     private TextView PlayersTurn;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_ship_placement);
 
-        //gameView.setCurrentPlayer(1);
-
         player1_name = getIntent().getExtras().getString("Player1Name");
         player2_name = getIntent().getExtras().getString("Player2Name");
         PlayersTurn = (TextView) findViewById(R.id.PlayerTurnText);
-        PlayersTurn.setText(player1_name + "\'s" + " turn");
+        PlayersTurn.setText(player1_name + "'s" + " turn");
     }
 
     private GameView getGameView() { return this.findViewById(R.id.GameViewShip); }
@@ -59,6 +59,7 @@ public class ShipPlacement extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @SuppressLint("SetTextI18n")
     public void onDonePlacement (View view) {
 
         // check if player has all 4 boats placed
@@ -78,7 +79,7 @@ public class ShipPlacement extends AppCompatActivity {
 
         else if (curr_player == 1) {
             getGameView().setCurrPlayer(2);
-            PlayersTurn.setText(player2_name + "\'s" + " turn");
+            PlayersTurn.setText(player2_name + "'s" + " turn");
         }
         // if player 2 done, we go to game activity
         else {
