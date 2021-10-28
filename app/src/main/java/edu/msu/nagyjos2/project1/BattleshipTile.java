@@ -128,4 +128,6 @@ public class BattleshipTile {
     public boolean isBoatHit() {
         return isHit && hasBoat;
     }
+
+    public boolean hasBoat() { return hasBoat; }
 }

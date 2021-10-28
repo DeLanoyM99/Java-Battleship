@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class ShipPlacement extends AppCompatActivity {
 
     private String player1_name;
@@ -29,6 +31,33 @@ public class ShipPlacement extends AppCompatActivity {
     }
 
     private GameView getGameView() { return this.findViewById(R.id.GameViewShip); }
+
+    private void startGame() {
+        Intent intent = new Intent(this, GameActivity.class);
+
+        // add in information about each board to send to game activity.
+        // game activity needs to know boat positions (4) for each board
+
+        // the boat positions, first 4 elements are player 1's boats, next 4 are player 2's
+        ArrayList<Integer> boat_positions = getGameView().getBoatPositions();
+        StringBuilder player1_boats = new StringBuilder();
+        StringBuilder player2_boats = new StringBuilder();
+
+        for (int i = 0; i < 4; i++) {
+            player1_boats.append(boat_positions.get(i).toString() + " ");
+        }
+
+        for (int i = 4; i < 7; i++) {
+            player2_boats.append(boat_positions.get(i).toString() + " ");
+        }
+        player2_boats.append(boat_positions.get(7).toString()); // no ending space
+
+        intent.putExtra("player1_boat_positions", player1_boats.toString());
+        intent.putExtra("player2_boat_positions", player2_boats.toString());
+        intent.putExtra("Player1Name", player1_name);
+        intent.putExtra("Player2Name", player2_name);
+        startActivity(intent);
+    }
 
     public void onDonePlacement (View view) {
 
@@ -53,8 +82,7 @@ public class ShipPlacement extends AppCompatActivity {
         }
         // if player 2 done, we go to game activity
         else {
-            Intent intent = new Intent(this, GameActivity.class);
-            startActivity(intent);
+            startGame();
         }
 
 
