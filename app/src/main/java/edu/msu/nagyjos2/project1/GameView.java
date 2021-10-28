@@ -38,6 +38,7 @@ public class GameView extends View {
 
     private void init(AttributeSet attrs, int defStyle) {
         player_1_Board = new BattleshipBoard(getContext(), this);
+        player_2_Board = new BattleshipBoard(getContext(), this);
     }
 
     public boolean isGameStarted() {
@@ -53,6 +54,15 @@ public class GameView extends View {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        /*
+        deciding which board to draw has 2 condition:
+        1. whose turn it is (currPlayer)
+        2. what part of the game we are at (ship placement or game)
+
+        if we are in the actual game, display the opponents board, if we are in
+        ship placement, display the current players board.
+        */
+
         if ((!gameStarted && currPlayer == 1) || (gameStarted && currPlayer == 2)) {  // player 1 board draw
             player_1_Board.draw(canvas);
         }
@@ -63,6 +73,28 @@ public class GameView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return player_1_Board.onTouchEvent(this, event);
+        if ((!gameStarted && currPlayer == 1) || (gameStarted && currPlayer == 2))
+            return player_1_Board.onTouchEvent(this, event);
+        else {
+            return player_2_Board.onTouchEvent(this, event);
+        }
+    }
+
+    public int getCurrPlayer() { return currPlayer; }
+
+    public void setCurrPlayer(final int playerNum) {
+        currPlayer = playerNum;
+        invalidate();
+    }
+
+    public int getNumShips(final int playerNum) {
+        assert(playerNum == 1 || playerNum == 2);
+        if (playerNum == 1) {
+            return player_1_Board.getNumBoats();
+        }
+
+        else {
+            return player_2_Board.getNumBoats();
+        }
     }
 }
