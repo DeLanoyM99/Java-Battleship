@@ -5,14 +5,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ShipPlacement">
 
-    <view
-        android:id="@+id/gameBoard"
-        class="edu.msu.nagyjos2.project1.GameView"
+
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="4" />
+        android:layout_weight="4">
+
+        <TextView
+            android:id="@+id/PlayerTurnText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+
+        <view
+            android:id="@+id/gameBoard"
+            class="edu.msu.nagyjos2.project1.GameView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_weight="4" />
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="0dp"

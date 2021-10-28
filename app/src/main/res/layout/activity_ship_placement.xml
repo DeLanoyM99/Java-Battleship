@@ -10,6 +10,12 @@
     tools:context=".ShipPlacement">
     <!--    tools:context=".MainActivity"-->
 
+    <TextView
+        android:id="@+id/PlayerTurnText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal" />
+
     <view
         android:id="@+id/GameViewShip"
         class="edu.msu.nagyjos2.project1.GameView"
