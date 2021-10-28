@@ -56,10 +56,6 @@ public class BattleshipBoard {
      */
     private int numBoats;
 
-    public int getNumBoats() {
-        return numBoats;
-    }
-
     /**
      * The games current playing status: True when the game starts, False when in battleship setup mode
      */
@@ -89,6 +85,22 @@ public class BattleshipBoard {
 
     public void setGameStarted(boolean started) {
         gameStarted = started;
+    }
+
+    public int getNumBoats() {
+        return numBoats;
+    }
+
+    public ArrayList<Integer> getBoatPositions() {
+        ArrayList<Integer> pos_arr = new ArrayList<Integer>();
+
+        for (int i = 0; i < 16; i++) {
+            if (tiles.get(i).hasBoat()) {
+                pos_arr.add(i);
+            }
+        }
+
+        return pos_arr;
     }
 
     public void draw(Canvas canvas) {
@@ -203,6 +215,14 @@ public class BattleshipBoard {
         }
 
         return false;
+    }
+
+    public void setBoatPosition(int pos) {
+
+        // place a boat down at this tile (if its not already set)
+        if (!tiles.get(pos).hasBoat()) {
+            tiles.get(pos).placeShip();
+        }
     }
 
 

@@ -8,8 +8,11 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.ArrayList;
 
 /**
  * TODO: document your custom view class.
@@ -96,5 +99,31 @@ public class GameView extends View {
         else {
             return player_2_Board.getNumBoats();
         }
+    }
+
+    public ArrayList<Integer> getBoatPositions() {
+        ArrayList<Integer> player1_boats = player_1_Board.getBoatPositions();
+        ArrayList<Integer> player2_boats = player_2_Board.getBoatPositions();
+        player1_boats.addAll(player2_boats);
+        return player1_boats;
+    }
+
+    public void loadBoatPositions(String player1_boats, String player2_boats) {
+        // load in each players selected boats to their game boards
+        // positions are coming in as strings, must convert
+        try {
+            for (String player1_pos : player1_boats.split(" ")) {
+                int pos = Integer.parseInt(player1_pos);
+                player_1_Board.setBoatPosition(pos);
+            }
+
+            for (String player2_pos : player2_boats.split(" ")) {
+                int pos = Integer.parseInt(player2_pos);
+                player_2_Board.setBoatPosition(pos);
+            }
+        } catch (NumberFormatException ex) {
+            Log.d("Error: ", "Cannot convert in to string");
+        }
+
     }
 }
