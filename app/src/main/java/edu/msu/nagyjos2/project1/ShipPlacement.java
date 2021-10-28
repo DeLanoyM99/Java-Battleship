@@ -16,6 +16,7 @@ public class ShipPlacement extends AppCompatActivity {
     private String player1_name;
     private String player2_name;
     private TextView PlayersTurn;
+    private boolean isclick = false;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -90,4 +91,19 @@ public class ShipPlacement extends AppCompatActivity {
 
 //
     }
+
+    public void onMenuPlacement (View view) {
+        if(!isclick){
+            AlertDialog.Builder builder =
+                    new AlertDialog.Builder(view.getContext());
+            builder.setTitle("Dialog Box");
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.setNegativeButton(R.string.help, null);
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+
+    }
+
 }
