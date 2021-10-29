@@ -10,7 +10,7 @@
 
 
     <view
-        android:id="@+id/gameBoard"
+        android:id="@+id/GameViewShip"
         class="edu.msu.nagyjos2.project1.GameView"
         android:layout_width="0dp"
         android:layout_height="match_parent"

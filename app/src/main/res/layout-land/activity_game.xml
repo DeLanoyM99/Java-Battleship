@@ -4,20 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:context=".GameActivity">
-
-    <TextView
-        android:id="@+id/PlayersTurn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center_horizontal|center_vertical" />
 
     <view
         android:id="@+id/GameView"
         class="edu.msu.nagyjos2.project1.GameView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7" />
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3">
+
+        <TextView
+            android:id="@+id/PlayersTurn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:textSize="34sp" />
+
+        <TextView
+            android:id="@+id/attack_Instructions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/buffer"
+            android:layout_below="@id/PlayersTurn"
+            android:gravity="center"
+            android:text="@string/attack_instructions"
+            android:textSize="20sp" />
+
+        <FrameLayout
+            android:id="@+id/buffer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@id/buffer"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/doneButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="40dp"
+                android:paddingTop="20dp"
+                android:paddingRight="40dp"
+                android:paddingBottom="20dp"
+                android:text="@string/DoneButton"
+                android:textSize="20sp" />
+        </FrameLayout>
+    </RelativeLayout>
+
 </LinearLayout>
