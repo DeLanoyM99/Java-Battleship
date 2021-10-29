@@ -118,7 +118,7 @@ public class ShipPlacement extends AppCompatActivity {
     public void onMenuPlacement (View view) {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(view.getContext());
-        builder.setTitle("Click to place a ship inside a grid square. " +
+        builder.setMessage("Click to place a ship inside a grid square. " +
                 "Click the same square to remove the ship. " +
                 "Place 4 total ships.");
         builder.setPositiveButton(android.R.string.ok, null);

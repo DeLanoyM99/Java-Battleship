@@ -43,7 +43,7 @@ public class GameActivity extends AppCompatActivity {
     public void onMenuPlacement (View view) {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(view.getContext());
-        builder.setTitle("Click a square to attack, if you miss a circle will appear. " +
+        builder.setMessage("Click a square to attack, if you miss a circle will appear. " +
                         "If you hit an opponet's ship, an x will appear.");
         builder.setPositiveButton(android.R.string.ok, null);
         AlertDialog alertDialog = builder.create();
