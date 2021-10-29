@@ -1,11 +1,15 @@
 package edu.msu.nagyjos2.project1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,6 +33,25 @@ public class ShipPlacement extends AppCompatActivity {
         player2_name = getIntent().getExtras().getString("Player2Name");
         PlayersTurn = (TextView) findViewById(R.id.PlayerTurnText);
         PlayersTurn.setText(player1_name + "'s" + " Turn");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_help, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_help:
+                onMenuPlacement(getGameView());
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private GameView getGameView() { return this.findViewById(R.id.GameViewShip); }
@@ -96,9 +119,10 @@ public class ShipPlacement extends AppCompatActivity {
         if(!isclick){
             AlertDialog.Builder builder =
                     new AlertDialog.Builder(view.getContext());
-            builder.setTitle("Dialog Box");
+            builder.setTitle("Click to place a ship inside a grid square. " +
+                    "Click the same square to remove the ship. " +
+                    "Place 4 total ships.");
             builder.setPositiveButton(android.R.string.ok, null);
-            builder.setNegativeButton(R.string.help, null);
 
             AlertDialog alertDialog = builder.create();
             alertDialog.show();

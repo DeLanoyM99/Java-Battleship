@@ -10,14 +10,6 @@
     tools:context=".ShipPlacement">
     <!--    tools:context=".MainActivity"-->
 
-    <Button
-        android:id="@+id/menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|right|top"
-        android:onClick="onMenuPlacement"
-        android:text="@string/menu" />
-
     <TextView
         android:id="@+id/PlayerTurnText"
         android:layout_width="match_parent"
