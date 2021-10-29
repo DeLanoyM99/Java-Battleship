@@ -50,6 +50,7 @@
             android:paddingBottom="20dp"
             android:text="@string/DoneButton"
             android:textSize="20sp" />
+
     </FrameLayout>
 
 </LinearLayout>

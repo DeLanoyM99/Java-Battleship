@@ -12,5 +12,8 @@
     <string name="player_1">Player 1</string>
     <string name="player_2">Player 2</string>
     <string name="picture_desc">Image of bold battleship text</string>
+    <string name="menu">menu</string>
+    <string name="help">Help</string>
+
 
 </resources>
