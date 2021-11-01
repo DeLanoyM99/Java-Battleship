@@ -170,8 +170,8 @@ public class BattleshipBoard {
         int boardPos = row + col * 4;
 
         // handle touch when game in setup mode
-        if (!gameStarted && numBoats < 4 || tiles.get(boardPos).isHasBoat()) {
-            if(tiles.get(boardPos).placeShip()){
+        if ((!gameStarted && numBoats < 4) || (!gameStarted && tiles.get(boardPos).hasBoat())) {
+            if(tiles.get(boardPos).toggleShip()){
                 numBoats += 1;
             }
             else {
@@ -181,7 +181,15 @@ public class BattleshipBoard {
 
         // tile selected for attack
         else {
+            if(!tiles.get(boardPos).isTileHit()) { // make sure tile is not already hit
+                tiles.get(boardPos).setTileHit();
+                if (tiles.get(boardPos).hasBoat()) { // hit a boat
+                    numBoats -= 1;
+                }
+            }
+            else { // tile already hit before, send message to user to select another tile
 
+            }
         }
 
         gameView.invalidate();
@@ -217,11 +225,11 @@ public class BattleshipBoard {
         return false;
     }
 
-    public void setBoatPosition(int pos) {
+    public void loadBoatPosition(int pos) {
 
-        // place a boat down at this tile (if its not already set)
+        // place a boat down at this tile (if it has been set)
         if (!tiles.get(pos).hasBoat()) {
-            tiles.get(pos).placeShip();
+            tiles.get(pos).toggleShip();
         }
     }
 

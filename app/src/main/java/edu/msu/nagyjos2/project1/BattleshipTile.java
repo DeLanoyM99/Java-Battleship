@@ -32,28 +32,30 @@ public class BattleshipTile {
      */
     private boolean hasBoat = false;
 
-    public boolean isHit() {
-        return isHit;
-    }
-
-    public void setHit(boolean hit) {
-        isHit = hit;
-    }
-
-    public boolean isHasBoat() {
-        return hasBoat;
-    }
-
-    public void setHasBoat(boolean hasBoat) {
-        this.hasBoat = hasBoat;
-    }
-
     private int tileNum;
 
     public BattleshipTile(Context context, int tileNumber) {
-
         tileNum = tileNumber;
         boat = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
+        circleMarker = BitmapFactory.decodeResource(context.getResources(), R.drawable.missmarker);
+        hitMarker = BitmapFactory.decodeResource(context.getResources(), R.drawable.hitmarker);
+    }
+
+    private void setUpdraw(Canvas canvas, int BoardStartX, int BoardStartY, int tileLength) {
+        int startX = BoardStartX + tileLength * (tileNum % 4) + tileLength / 2;
+        int startY = BoardStartY + tileLength * (tileNum / 4) + tileLength / 2;
+        float scaleFactor = (float)((0.7 * tileLength) / boat.getWidth());
+
+        canvas.save();
+
+        // Convert x,y to pixels and add the margin, then draw
+        canvas.translate(startX, startY);
+
+        // Scale it to the right size
+        canvas.scale(scaleFactor, scaleFactor);
+
+        // center of the boat at 0, 0
+        canvas.translate(-boat.getWidth() / 2f, -boat.getHeight() / 2f);
     }
 
     /**
@@ -71,19 +73,20 @@ public class BattleshipTile {
     public void drawGameMode(Canvas canvas, int BoardStartX, int BoardStartY, int tileLength) {
 
         if (isHit) { // draw only if the tile has been hit
-
-            // set up drawing position here
-
+            setUpdraw(canvas, BoardStartX, BoardStartY, tileLength);
             if (hasBoat) {
+                canvas.drawBitmap(boat, 0, 0, null);
 
-                // draw boat and hit marker here
-
+                canvas.translate((boat.getWidth() / 2f) - (hitMarker.getWidth() / 2f),
+                        (boat.getHeight() / 2f) - (hitMarker.getHeight() / 2f));
+                canvas.drawBitmap(hitMarker, 0, 0, null);
             }
             else {
-
-                // draw circle marker here
-
+                canvas.translate((boat.getWidth() / 2f) - (circleMarker.getWidth() / 2f),
+                        (boat.getHeight() / 2f) - (circleMarker.getHeight() / 2f));
+                canvas.drawBitmap(circleMarker, 0, 0, null);
             }
+            canvas.restore();
         }
 
     }
@@ -91,21 +94,7 @@ public class BattleshipTile {
     public void drawPlaceMode(Canvas canvas, int BoardStartX, int BoardStartY, int tileLength) {
 
         if (hasBoat) {
-
-            int startX = BoardStartX + tileLength * (tileNum % 4) + tileLength / 2;
-            int startY = BoardStartY + tileLength * (tileNum / 4) + tileLength / 2;
-            float scaleFactor = (float)((0.7 * tileLength) / boat.getWidth());
-
-            canvas.save();
-
-            // Convert x,y to pixels and add the margin, then draw
-            canvas.translate(startX, startY);
-
-            // Scale it to the right size
-            canvas.scale(scaleFactor, scaleFactor);
-
-            // center of the boat at 0, 0
-            canvas.translate(-boat.getWidth() / 2f, -boat.getHeight() / 2f);
+            setUpdraw(canvas, BoardStartX, BoardStartY, tileLength);
 
             // Draw the bitmap
             canvas.drawBitmap(boat, 0, 0, null);
@@ -120,14 +109,14 @@ public class BattleshipTile {
      * returns true if ship is placed
      * @return true if placed ship, false if removed ship
      */
-    public boolean placeShip() {
+    public boolean toggleShip() {
         hasBoat = !hasBoat;
         return hasBoat;
     }
 
-    public boolean isBoatHit() {
-        return isHit && hasBoat;
-    }
+    public boolean isTileHit() { return isHit; }
+
+    public void setTileHit() { if (!isHit) { isHit = true; } }
 
     public boolean hasBoat() { return hasBoat; }
 }

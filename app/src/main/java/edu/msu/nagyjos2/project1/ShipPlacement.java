@@ -109,10 +109,6 @@ public class ShipPlacement extends AppCompatActivity {
         else {
             startGame();
         }
-
-
-
-//
     }
 
     public void onMenuPlacement (View view) {

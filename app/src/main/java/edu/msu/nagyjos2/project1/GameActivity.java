@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -50,7 +51,6 @@ public class GameActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,12 +71,7 @@ public class GameActivity extends AppCompatActivity {
 
         // display the current players name to screen
         PlayersTurn = (TextView) findViewById(R.id.PlayersTurn);
-        if (rand_player+1 == 1) {
-            PlayersTurn.setText(player1_name + "'s" + " Turn");
-        }
-        else {
-            PlayersTurn.setText(player2_name + "'s" + " Turn");
-        }
+        SetNameText(rand_player + 1);
 
         // set the current player (to display opponents board)
         getGameView().setCurrPlayer(rand_player + 1); // set random starting player (1 or 2)
@@ -84,6 +79,27 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private GameView getGameView() { return this.findViewById(R.id.GameView); }
+
+    @SuppressLint("SetTextI18n")
+    private void SetNameText(int player_num) {
+        if (player_num == 1) {
+            PlayersTurn.setText(player1_name + "'s" + " Turn");
+        }
+        else {
+            PlayersTurn.setText(player2_name + "'s" + " Turn");
+        }
+    }
+
+    public void onDoneGame (View view) {
+        // disable button until next player selects tile to hit
+        Button done = (Button)findViewById(R.id.doneButton);
+        done.setEnabled(false);
+
+        // assign next player
+        int nextPlayer = 1 + getGameView().getCurrPlayer() % 2;
+        SetNameText(nextPlayer);
+        getGameView().setCurrPlayer(nextPlayer);
+    }
 
     public void onSurrenderButtom(View view) {
         Intent intent = new Intent(this, EndActivity.class);
