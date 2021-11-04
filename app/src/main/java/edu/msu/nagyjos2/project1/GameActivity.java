@@ -55,7 +55,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
+        getDoneButton().setEnabled(false);
         String player1_boat_pos = getIntent().getExtras().getString("player1_boat_positions");
         String player2_boat_pos = getIntent().getExtras().getString("player2_boat_positions");
         player1_name = getIntent().getExtras().getString("Player1Name");
@@ -78,6 +78,7 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    public Button getDoneButton() {return this.findViewById(R.id.doneButton); }
     private GameView getGameView() { return this.findViewById(R.id.GameView); }
 
     @SuppressLint("SetTextI18n")
@@ -90,9 +91,9 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public void onDoneGame (View view) {
+    public void onDoneTurn (View view) {
         // disable button until next player selects tile to hit
-        Button done = (Button)findViewById(R.id.doneButton);
+        Button done = getDoneButton();
         done.setEnabled(false);
 
         // assign next player
@@ -101,7 +102,12 @@ public class GameActivity extends AppCompatActivity {
         getGameView().setCurrPlayer(nextPlayer);
     }
 
-    public void onSurrenderButtom(View view) {
+    public void onSurrenderButton(View view) {
+        if (getGameView().getCurrPlayer() == 1) {
+            //player two wins
+        } else if (getGameView().getCurrPlayer() == 2) {
+            //player one wins
+        }
         Intent intent = new Intent(this, EndActivity.class);
         startActivity(intent);
     }
