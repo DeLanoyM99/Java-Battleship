@@ -1,5 +1,6 @@
 package edu.msu.nagyjos2.project1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -47,6 +48,11 @@ public class GameActivity extends AppCompatActivity {
         // set the current player (to display opponents board)
         getGameView().setCurrPlayer(rand_player + 1); // set random starting player (1 or 2)
 
+        if(savedInstanceState != null) {
+            // We have saved state
+            getGameView().loadInstanceState(savedInstanceState);
+        }
+
     }
 
     private GameView getGameView() { return this.findViewById(R.id.GameView); }
@@ -54,5 +60,12 @@ public class GameActivity extends AppCompatActivity {
     public void onSurrenderButtom(View view) {
         Intent intent = new Intent(this, EndActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+
+        getGameView().saveInstanceState(bundle);
     }
 }

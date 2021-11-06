@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -23,6 +24,7 @@ public class GameView extends View {
     private BattleshipBoard player_2_Board; // need later on when we have 2 players
     private boolean gameStarted = false;  // will probably need this later
     private int currPlayer = 1; // to know whose turn it is and what board to show -> implement later
+    private final static String CURRPLAYER = "GameView.currplayer";
 
 
     public GameView(Context context) {
@@ -126,5 +128,34 @@ public class GameView extends View {
             Log.d("Error: ", "Cannot convert in to string");
         }
 
+    }
+
+    /**
+     * Save the puzzle to a bundle
+     * @param bundle The bundle we save to
+     */
+    public void saveInstanceState(Bundle bundle) {
+        bundle.putInt(CURRPLAYER, currPlayer);
+        if(currPlayer == 1){
+            player_1_Board.saveInstanceState(bundle);
+        }
+        else{
+            player_2_Board.saveInstanceState(bundle);
+        }
+
+    }
+
+    /**
+     * Load the puzzle from a bundle
+     * @param bundle The bundle we save to
+     */
+    public void loadInstanceState(Bundle bundle) {
+        currPlayer = bundle.getInt(CURRPLAYER);
+        if(currPlayer == 1){
+            player_1_Board.loadInstanceState(bundle);
+        }
+        else {
+            player_2_Board.loadInstanceState(bundle);
+        }
     }
 }

@@ -32,7 +32,20 @@ public class ShipPlacement extends AppCompatActivity {
         player1_name = getIntent().getExtras().getString("Player1Name");
         player2_name = getIntent().getExtras().getString("Player2Name");
         PlayersTurn = (TextView) findViewById(R.id.PlayerTurnText);
-        PlayersTurn.setText(player1_name + "'s" + " Turn");
+
+
+
+        if(savedInstanceState != null) {
+            // We have saved state
+            getGameView().loadInstanceState(savedInstanceState);
+        }
+        int curr_player = getGameView().getCurrPlayer();
+        if(curr_player == 1){
+            PlayersTurn.setText(player1_name + "'s" + " Turn");
+        }
+        else{
+            PlayersTurn.setText(player2_name + "'s" + " Turn");
+        }
     }
 
     @Override
@@ -129,5 +142,28 @@ public class ShipPlacement extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+
+        getGameView().saveInstanceState(bundle);
+    }
+
+//    /**
+//     * Save the puzzle to a bundle
+//     * @param bundle The bundle we save to
+//     */
+//    public void saveInstanceState(Bundle bundle) {
+//        getGameView().saveInstanceState(bundle);
+//    }
+//
+//    /**
+//     * Load the puzzle from a bundle
+//     * @param bundle The bundle we save to
+//     */
+//    public void loadInstanceState(Bundle bundle) {
+//        getGameView().loadInstanceState(bundle);
+//    }
 
 }
