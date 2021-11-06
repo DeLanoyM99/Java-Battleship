@@ -114,6 +114,14 @@ public class BattleshipTile {
         return hasBoat;
     }
 
+    public void setHit(boolean hit) {
+        isHit = hit;
+    }
+
+    public void setHasBoat(boolean hasBoat) {
+        this.hasBoat = hasBoat;
+    }
+
     public boolean isTileHit() { return isHit; }
 
     public void setTileHit() { if (!isHit) { isHit = true; } }

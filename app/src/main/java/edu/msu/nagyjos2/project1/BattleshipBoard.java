@@ -265,8 +265,8 @@ public class BattleshipBoard {
 
         for (int i=0; i<tiles.size(); i++){
             BattleshipTile tile = tiles.get(i);
-            boat[i] = tile.isHasBoat();
-            hit[i] = tile.isHit();
+            boat[i] = tile.hasBoat();
+            hit[i] = tile.isTileHit();
         }
         bundle.putIntegerArrayList(BOATPOS, boatPos);
         bundle.putBooleanArray(BOAT, boat);
