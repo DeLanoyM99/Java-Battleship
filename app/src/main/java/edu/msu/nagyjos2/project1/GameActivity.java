@@ -83,6 +83,13 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        // check to make sure user wants to return to main screen
+        BackButtonDlg checkDlg = new BackButtonDlg();
+        checkDlg.show(getSupportFragmentManager(), "check");
+    }
+
     public Button getDoneButton() {return this.findViewById(R.id.doneButton); }
     private GameView getGameView() { return this.findViewById(R.id.GameView); }
 

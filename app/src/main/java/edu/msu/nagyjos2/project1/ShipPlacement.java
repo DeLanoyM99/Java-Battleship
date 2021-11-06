@@ -49,6 +49,13 @@ public class ShipPlacement extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        // check to make sure user wants to return to main screen
+        BackButtonDlg checkDlg = new BackButtonDlg();
+        checkDlg.show(getSupportFragmentManager(), "check");
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_help, menu);
