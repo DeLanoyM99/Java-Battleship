@@ -122,25 +122,18 @@ public class ShipPlacement extends AppCompatActivity {
         else {
             startGame();
         }
-
-
-
-//
     }
 
     public void onMenuPlacement (View view) {
-        if(!isclick){
-            AlertDialog.Builder builder =
-                    new AlertDialog.Builder(view.getContext());
-            builder.setTitle("Click to place a ship inside a grid square. " +
-                    "Click the same square to remove the ship. " +
-                    "Place 4 total ships.");
-            builder.setPositiveButton(android.R.string.ok, null);
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(view.getContext());
+        builder.setMessage("Click to place a ship inside a grid square. " +
+                "Click the same square to remove the ship. " +
+                "Place 4 total ships.");
+        builder.setPositiveButton(android.R.string.ok, null);
 
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-        }
-
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override

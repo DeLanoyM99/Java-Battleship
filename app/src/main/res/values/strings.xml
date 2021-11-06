@@ -8,6 +8,7 @@
     <string name="place_instructions">Click to Add or Remove Ship</string>
     <string name="attack_instructions">Click a Tile to Attack</string>
     <string name="DoneButton">Done</string>
+    <string name="SurrenderButton">Surrender</string>
     <string name="picture_of_game_board">Picture of game board</string>
     <string name="player_1">Player 1</string>
     <string name="player_2">Player 2</string>

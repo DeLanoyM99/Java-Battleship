@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -79,11 +80,40 @@ public class GameView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if ((!gameStarted && currPlayer == 1) || (gameStarted && currPlayer == 2))
-            return player_1_Board.onTouchEvent(this, event);
-        else {
-            return player_2_Board.onTouchEvent(this, event);
+        if (!gameStarted) {
+            return onPlacementTouch(event);
         }
+        else {
+            return onGameTouch(event);
+        }
+    }
+
+    public boolean onGameTouch(MotionEvent event) {
+        boolean handled;
+        if (currPlayer == 1) { // player 1's turn
+            handled = player_2_Board.onTouchEvent(this, event);
+            if (player_2_Board.getNumBoats() == 0) {
+                // player 1 winner
+
+            }
+        }
+        else { // player 2's turn
+            handled = player_1_Board.onTouchEvent(this, event);
+            if (player_1_Board.getNumBoats() == 0) {
+                // player 2 winner
+            }
+        }
+
+        //((Button)findViewById(R.id.doneButton)).setEnabled(true);
+
+        return handled;
+    }
+
+    public boolean onPlacementTouch(MotionEvent event) {
+        if (currPlayer == 1) {
+            return player_1_Board.onTouchEvent(this, event);
+        }
+        return player_2_Board.onTouchEvent(this, event);
     }
 
     public int getCurrPlayer() { return currPlayer; }
@@ -117,12 +147,12 @@ public class GameView extends View {
         try {
             for (String player1_pos : player1_boats.split(" ")) {
                 int pos = Integer.parseInt(player1_pos);
-                player_1_Board.setBoatPosition(pos);
+                player_1_Board.loadBoatPosition(pos);
             }
 
             for (String player2_pos : player2_boats.split(" ")) {
                 int pos = Integer.parseInt(player2_pos);
-                player_2_Board.setBoatPosition(pos);
+                player_2_Board.loadBoatPosition(pos);
             }
         } catch (NumberFormatException ex) {
             Log.d("Error: ", "Cannot convert in to string");
