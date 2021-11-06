@@ -79,6 +79,7 @@ public class GameActivity extends AppCompatActivity {
         if(savedInstanceState != null) {
             // We have saved state
             getGameView().loadInstanceState(savedInstanceState);
+            SetNameText(getGameView().getCurrPlayer());
         }
 
     }
