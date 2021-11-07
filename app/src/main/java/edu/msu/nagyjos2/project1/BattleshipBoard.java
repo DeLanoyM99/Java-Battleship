@@ -3,6 +3,7 @@ package edu.msu.nagyjos2.project1;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -56,6 +57,19 @@ public class BattleshipBoard {
      */
     private int numBoats;
 
+
+    /**
+     * The name of the bundle keys to save the puzzle
+     */
+    private final static String BOAT1 = "BattleshipTile.hasBoat1";
+    private final static String HIT1 = "BattleshipTile.isHit1";
+    private final static String NUMBOATS1 = "BattleshipBoard.numboats1";
+    private final static String BOAT2 = "BattleshipTile.hasBoat2";
+    private final static String HIT2 = "BattleshipTile.isHit2";
+    private final static String NUMBOATS2 = "BattleshipBoard.numboats2";
+    private final static String BOATPOS = "BattleshipBoard.boatpositions";
+
+
     /**
      * The games current playing status: True when the game starts, False when in battleship setup mode
      */
@@ -99,7 +113,6 @@ public class BattleshipBoard {
                 pos_arr.add(i);
             }
         }
-
         return pos_arr;
     }
 
@@ -233,5 +246,56 @@ public class BattleshipBoard {
         }
     }
 
+    /**
+     * Save the puzzle to a bundle
+     * @param bundle The bundle we save to
+     */
+    public void saveInstanceState(Bundle bundle, int playerNum) {
+        //getBoatPositions();
+        boolean [] boat = new boolean[tiles.size()];
+        boolean [] hit = new boolean[tiles.size()];
+
+        for (int i=0; i<tiles.size(); i++){
+            boat[i] = tiles.get(i).hasBoat();
+            hit[i] = tiles.get(i).isTileHit();
+        }
+
+        if (playerNum == 1) {
+            bundle.putBooleanArray(BOAT1, boat);
+            bundle.putBooleanArray(HIT1, hit);
+            bundle.putInt(NUMBOATS1, numBoats);
+        }
+        else {
+            bundle.putBooleanArray(BOAT2, boat);
+            bundle.putBooleanArray(HIT2, hit);
+            bundle.putInt(NUMBOATS2, numBoats);
+        }
+        //bundle.putIntegerArrayList(BOATPOS, boatPos);
+
+    }
+
+    /**
+     * Read the puzzle from a bundle
+     * @param bundle The bundle we save to
+     */
+    public void loadInstanceState(Bundle bundle, int playerNum) {
+        boolean [] boat;
+        boolean [] hit;
+        if (playerNum == 1) {
+            numBoats = bundle.getInt(NUMBOATS1);
+            boat = bundle.getBooleanArray(BOAT1);
+            hit = bundle.getBooleanArray(HIT1);
+        }
+        else {
+            numBoats = bundle.getInt(NUMBOATS2);
+            boat = bundle.getBooleanArray(BOAT2);
+            hit = bundle.getBooleanArray(HIT2);
+        }
+        //boatPos = bundle.getIntegerArrayList(BOATPOS);
+        for (int i=0; i<tiles.size(); i++){
+            tiles.get(i).setHasBoat(boat[i]);
+            tiles.get(i).setHit(hit[i]);
+        }
+    }
 
 }

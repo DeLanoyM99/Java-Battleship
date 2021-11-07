@@ -76,6 +76,19 @@ public class GameActivity extends AppCompatActivity {
         // set the current player (to display opponents board)
         getGameView().setCurrPlayer(rand_player + 1); // set random starting player (1 or 2)
 
+        if(savedInstanceState != null) {
+            // We have saved state
+            getGameView().loadInstanceState(savedInstanceState);
+            SetNameText(getGameView().getCurrPlayer());
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        // check to make sure user wants to return to main screen
+        BackButtonDlg checkDlg = new BackButtonDlg();
+        checkDlg.show(getSupportFragmentManager(), "check");
     }
 
     public Button getDoneButton() {return this.findViewById(R.id.doneButton); }
@@ -112,5 +125,12 @@ public class GameActivity extends AppCompatActivity {
             intent.putExtra("LoserName", player2_name);
         }
         startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+
+        getGameView().saveInstanceState(bundle);
     }
 }
