@@ -18,6 +18,7 @@
     <string name="back_check_title">Are you sure?</string>
     <string name="back_check_body">going back will end the game</string>
     <string name="tile_already_hit">Please choose an unselected grid block</string>
+    <string name="player_warning">Warning: Players cannot have identical names</string>
 
 
 </resources>
