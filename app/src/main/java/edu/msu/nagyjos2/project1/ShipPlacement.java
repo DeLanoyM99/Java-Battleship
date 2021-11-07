@@ -41,10 +41,21 @@ public class ShipPlacement extends AppCompatActivity {
         }
         int curr_player = getGameView().getCurrPlayer();
         if(curr_player == 1){
-            PlayersTurn.setText(player1_name + "'s" + " Turn");
+            if (player1_name.charAt(player1_name.length() - 1)== 's'){
+                PlayersTurn.setText(player1_name + "'" + " Turn");
+            }
+            else{
+                PlayersTurn.setText(player1_name + "'s" + " Turn");
+            }
         }
         else{
-            PlayersTurn.setText(player2_name + "'s" + " Turn");
+            if (player2_name.charAt(player2_name.length() - 1)== 's'){
+                PlayersTurn.setText(player2_name + "'" + " Turn");
+            }
+            else{
+                PlayersTurn.setText(player2_name + "'s" + " Turn");
+            }
+           ;
         }
     }
 
