@@ -13,7 +13,7 @@ public class EndActivity extends AppCompatActivity {
     private String loser_name;
     private TextView winner;
     private TextView loser;
-
+    //delete this
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
