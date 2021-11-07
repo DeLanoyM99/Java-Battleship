@@ -111,8 +111,23 @@ public class GameActivity extends AppCompatActivity {
 
         // assign next player
         int nextPlayer = 1 + getGameView().getCurrPlayer() % 2;
-        SetNameText(nextPlayer);
-        getGameView().setCurrPlayer(nextPlayer);
+
+        if(getGameView().getNumShips(nextPlayer) == -4) {
+            Intent intent = new Intent(this, EndActivity.class);
+            if (getGameView().getCurrPlayer() == 2) {
+                intent.putExtra("WinnerName", player2_name);
+                intent.putExtra("LoserName", player1_name);
+            } else if (getGameView().getCurrPlayer() == 1) {
+                intent.putExtra("WinnerName", player1_name);
+                intent.putExtra("LoserName", player2_name);
+            }
+            startActivity(intent);
+        }
+
+        else {
+            SetNameText(nextPlayer);
+            getGameView().setCurrPlayer(nextPlayer);
+        }
     }
 
     public void onSurrenderButton(View view) {
