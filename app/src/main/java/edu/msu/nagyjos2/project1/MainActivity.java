@@ -46,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ShipPlacement.class);
         player1_result = player1.getText().toString();
         player2_result = player2.getText().toString();
+        if (player1_result.length() == 0) {
+            player1_result = "Player 1";
+        }
+        else if(player2_result.length() == 0) {
+            player2_result = "Player 2";
+        }
         intent.putExtra("Player1Name", player1_result);
         intent.putExtra("Player2Name", player2_result);
         startActivity(intent);
