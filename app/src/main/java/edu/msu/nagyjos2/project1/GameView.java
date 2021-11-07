@@ -24,6 +24,7 @@ public class GameView extends View {
     private BattleshipBoard player_2_Board; // need later on when we have 2 players
     private boolean gameStarted = false;  // will probably need this later
     private int currPlayer = 1; // to know whose turn it is and what board to show -> implement later
+    private boolean hasAttacked = false;
 
 
     public GameView(Context context) {

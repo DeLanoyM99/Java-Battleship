@@ -103,12 +103,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void onSurrenderButton(View view) {
-        if (getGameView().getCurrPlayer() == 1) {
-            //player two wins
-        } else if (getGameView().getCurrPlayer() == 2) {
-            //player one wins
-        }
         Intent intent = new Intent(this, EndActivity.class);
+        if (getGameView().getCurrPlayer() == 1) {
+            intent.putExtra("WinnerName", player2_name);
+            intent.putExtra("LoserName", player1_name);
+        } else if (getGameView().getCurrPlayer() == 2) {
+            intent.putExtra("WinnerName", player1_name);
+            intent.putExtra("LoserName", player2_name);
+        }
         startActivity(intent);
     }
 }
