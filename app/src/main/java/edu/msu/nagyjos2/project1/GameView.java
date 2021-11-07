@@ -27,6 +27,7 @@ public class GameView extends View {
     private int currPlayer = 1; // to know whose turn it is and what board to show -> implement later
     private final static String CURRPLAYER = "GameView.currplayer";
     private final static String GAMESTATE = "GameView.gameStarted";
+    private boolean hasAttacked = false;
 
 
 
