@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         if (player1_result.length() == 0) {
             player1_result = "Player 1";
         }
-        else if(player2_result.length() == 0) {
+        if(player2_result.length() == 0) {
             player2_result = "Player 2";
         }
         intent.putExtra("Player1Name", player1_result);
