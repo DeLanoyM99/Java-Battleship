@@ -134,7 +134,13 @@ public class ShipPlacement extends AppCompatActivity {
 
         else if (curr_player == 1) {
             getGameView().setCurrPlayer(2);
-            PlayersTurn.setText(player2_name + "'s" + " Turn");
+            if (player1_name.charAt(player2_name.length() - 1)== 's'){
+                PlayersTurn.setText(player2_name + "'" + " Turn");
+            }
+            else{
+                PlayersTurn.setText(player2_name + "'s" + " Turn");
+            }
+
         }
         // if player 2 done, we go to game activity
         else {

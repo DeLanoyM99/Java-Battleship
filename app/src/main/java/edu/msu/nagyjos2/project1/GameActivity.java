@@ -96,12 +96,17 @@ public class GameActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void SetNameText(int player_num) {
-        if (player_num == 1) {
-            PlayersTurn.setText(player1_name + "'s" + " Turn");
+        if (player1_name.charAt(player1_name.length() - 1)== 's'){
+            PlayersTurn.setText(player1_name + "'" + " Turn");
         }
-        else {
+        if (player2_name.charAt(player2_name.length() - 1)== 's'){
+            PlayersTurn.setText(player2_name + "'" + " Turn");
+        }
+        else{
+            PlayersTurn.setText(player1_name + "'s" + " Turn");
             PlayersTurn.setText(player2_name + "'s" + " Turn");
         }
+       
     }
 
     public void onDoneTurn (View view) {
