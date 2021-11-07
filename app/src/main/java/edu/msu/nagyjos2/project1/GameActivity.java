@@ -95,16 +95,20 @@ public class GameActivity extends AppCompatActivity {
     private GameView getGameView() { return this.findViewById(R.id.GameView); }
 
     @SuppressLint("SetTextI18n")
-    private void SetNameText(int player_num) {
-        if (player1_name.charAt(player1_name.length() - 1)== 's'){
+    private void SetNameText(int current_player) {
+        if (player1_name.charAt(player1_name.length() - 1)== 's' && current_player == 1){
             PlayersTurn.setText(player1_name + "'" + " Turn");
         }
-        if (player2_name.charAt(player2_name.length() - 1)== 's'){
+        else if (player2_name.charAt(player2_name.length() - 1)== 's' && current_player == 2){
             PlayersTurn.setText(player2_name + "'" + " Turn");
         }
         else{
-            PlayersTurn.setText(player1_name + "'s" + " Turn");
-            PlayersTurn.setText(player2_name + "'s" + " Turn");
+            if (current_player == 1) {
+                PlayersTurn.setText(player1_name + "'s" + " Turn");
+            }
+            else {
+                PlayersTurn.setText(player2_name + "'s" + " Turn");
+            }
         }
        
     }

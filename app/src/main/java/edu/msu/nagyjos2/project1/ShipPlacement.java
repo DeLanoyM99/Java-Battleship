@@ -134,7 +134,7 @@ public class ShipPlacement extends AppCompatActivity {
 
         else if (curr_player == 1) {
             getGameView().setCurrPlayer(2);
-            if (player1_name.charAt(player2_name.length() - 1)== 's'){
+            if (player2_name.charAt(player2_name.length() - 1)== 's'){
                 PlayersTurn.setText(player2_name + "'" + " Turn");
             }
             else{
