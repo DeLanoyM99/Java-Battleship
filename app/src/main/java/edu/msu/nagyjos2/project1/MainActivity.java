@@ -9,13 +9,28 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
-
+    /**
+     * Text input for player1
+     */
     private EditText player1;
+    /**
+     * Text input for player2
+     */
     private EditText player2;
+    /**
+     * result for player1
+     */
     private String player1_result;
+    /**
+     * result for player2
+     */
     private String player2_result;
 
     @Override
+    /**
+     * Create the game
+     * @param savedInstanceState The bundle we get
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -23,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
         player2 = findViewById(R.id.Player2NameText);
     }
 
+    /**
+     * start the game button
+     * @param view The view we get
+     */
     public void onStartGame(View view) {
         Intent intent = new Intent(this, ShipPlacement.class);
         player1_result = player1.getText().toString();
