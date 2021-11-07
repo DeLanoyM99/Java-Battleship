@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal|center_vertical"
-            android:textSize="34sp" />
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/attack_Instructions"
@@ -35,13 +35,14 @@
             android:layout_below="@id/PlayersTurn"
             android:gravity="center"
             android:text="@string/attack_instructions"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <FrameLayout
             android:id="@+id/buffer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true">
+            android:layout_alignTop="@id/DoneFrame"
+            android:layout_centerVertical="false">
 
         </FrameLayout>
 
@@ -50,7 +51,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/SurrenderFrame"
-            android:layout_below="@id/buffer"
             android:layout_alignParentEnd="false"
             android:layout_alignParentBottom="false">
 
@@ -88,7 +88,8 @@
                 android:paddingRight="16dp"
                 android:paddingBottom="10dp"
                 android:text="@string/SurrenderButton"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:ignore="TouchTargetSizeCheck" />
         </FrameLayout>
     </RelativeLayout>
 
