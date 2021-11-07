@@ -9,9 +9,21 @@ import android.widget.TextView;
 
 public class EndActivity extends AppCompatActivity {
 
+    /**
+     * The name of winner
+     */
     private String winner_name;
+    /**
+     * The name of loser
+     */
     private String loser_name;
+    /**
+     * winner text
+     */
     private TextView winner;
+    /**
+     * loser text
+     */
     private TextView loser;
     //delete this
     @Override
@@ -29,6 +41,9 @@ public class EndActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Create a new game
+     */
     public void onNewGame(View view) {
         // go back to main activity (top of activity stack)
         Intent main_act = new Intent(this, MainActivity.class);
@@ -37,6 +52,9 @@ public class EndActivity extends AppCompatActivity {
     }
 
     @Override
+    /**
+     * Press the back button
+     */
     public void onBackPressed() {
         // back button sends to main screen
         onNewGame(null);
