@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -105,6 +106,9 @@ public class BattleshipBoard {
         return numBoats;
     }
 
+    public void setNumBoats(int num) { numBoats = num; }
+
+
     public ArrayList<Integer> getBoatPositions() {
         ArrayList<Integer> pos_arr = new ArrayList<Integer>();
 
@@ -193,14 +197,19 @@ public class BattleshipBoard {
         }
 
         // tile selected for attack
-        else {
+        else if (gameStarted){
             if(!tiles.get(boardPos).isTileHit()) { // make sure tile is not already hit
-                tiles.get(boardPos).setTileHit();
+
+                tiles.get(boardPos).setTileHit(); // draw hit boat
+                gameView.setTurnCompleted(true); // tile selected, signal to view to prevent further hits
+                gameView.setDoneButton(true); // activate done button (allow user to press it)
+
                 if (tiles.get(boardPos).hasBoat()) { // hit a boat
                     numBoats -= 1;
                 }
             }
             else { // tile already hit before, send message to user to select another tile
+                Toast.makeText(gameView.getContext(), R.string.tile_already_hit, Toast.LENGTH_LONG).show();
 
             }
         }

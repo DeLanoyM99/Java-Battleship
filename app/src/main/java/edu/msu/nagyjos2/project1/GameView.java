@@ -25,11 +25,11 @@ public class GameView extends View {
     private BattleshipBoard player_2_Board; // need later on when we have 2 players
     private boolean gameStarted = false;  // will probably need this later
     private int currPlayer = 1; // to know whose turn it is and what board to show -> implement later
+    private boolean turnCompleted = false; // during gameplay, used so that players dont select more than 1 tile to hit
+
     private final static String CURRPLAYER = "GameView.currplayer";
     private final static String GAMESTATE = "GameView.gameStarted";
-
-
-
+    private final static String TURNSTATE = "GameView.turnCompleted";
 
     public GameView(Context context) {
         super(context);
@@ -91,23 +91,25 @@ public class GameView extends View {
         }
     }
 
+    public void setDoneButton(boolean bool) {
+        ((GameActivity)getContext()).findViewById(R.id.doneButton).setEnabled(bool);
+    }
+
     public boolean onGameTouch(MotionEvent event) {
-        boolean handled;
-        if (currPlayer == 1) { // player 1's turn
+        boolean handled = false;
+        if (currPlayer == 1 && !turnCompleted) { // player 1's turn
             handled = player_2_Board.onTouchEvent(this, event);
             if (player_2_Board.getNumBoats() == 0) {
                 // player 1 winner
 
             }
         }
-        else { // player 2's turn
+        else if (currPlayer == 2 && !turnCompleted) { // player 2's turn
             handled = player_1_Board.onTouchEvent(this, event);
             if (player_1_Board.getNumBoats() == 0) {
                 // player 2 winner
             }
         }
-
-        //((Button)findViewById(R.id.doneButton)).setEnabled(true);
 
         return handled;
     }
@@ -125,6 +127,8 @@ public class GameView extends View {
         currPlayer = playerNum;
         invalidate();
     }
+
+    public void setTurnCompleted(boolean completed) { turnCompleted = completed; }
 
     public int getNumShips(final int playerNum) {
         assert(playerNum == 1 || playerNum == 2);
@@ -152,11 +156,14 @@ public class GameView extends View {
                 int pos = Integer.parseInt(player1_pos);
                 player_1_Board.loadBoatPosition(pos);
             }
+            player_1_Board.setNumBoats(4);
 
             for (String player2_pos : player2_boats.split(" ")) {
                 int pos = Integer.parseInt(player2_pos);
                 player_2_Board.loadBoatPosition(pos);
             }
+            player_2_Board.setNumBoats(4);
+
         } catch (NumberFormatException ex) {
             Log.d("Error: ", "Cannot convert in to string");
         }
@@ -170,6 +177,8 @@ public class GameView extends View {
     public void saveInstanceState(Bundle bundle) {
         bundle.putInt(CURRPLAYER, currPlayer); // save whose turn it is
         bundle.putBoolean(GAMESTATE, gameStarted); // save which game mode were in
+        bundle.putBoolean(TURNSTATE, turnCompleted); // save whether the player has hit a tile yet
+
         player_1_Board.saveInstanceState(bundle, 1); // save player 1's board
         player_2_Board.saveInstanceState(bundle, 2); // save player 2's board
     }
@@ -180,7 +189,17 @@ public class GameView extends View {
      */
     public void loadInstanceState(Bundle bundle) {
         currPlayer = bundle.getInt(CURRPLAYER); // load current player
+
         gameStarted = bundle.getBoolean(GAMESTATE); // load the game mode
+        player_1_Board.setGameStarted(gameStarted);
+        player_2_Board.setGameStarted(gameStarted);
+        turnCompleted = bundle.getBoolean(TURNSTATE); // load turn completed status
+
+        // set the button (make sure we are in game activity)
+        if (gameStarted) {
+            setDoneButton(turnCompleted);
+        }
+
         player_1_Board.loadInstanceState(bundle, 1); // re-load player 1's board
         player_2_Board.loadInstanceState(bundle, 2); // re-load player 2's board
 

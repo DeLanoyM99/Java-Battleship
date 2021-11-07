@@ -109,19 +109,38 @@ public class GameActivity extends AppCompatActivity {
         Button done = getDoneButton();
         done.setEnabled(false);
 
-        // assign next player
         int nextPlayer = 1 + getGameView().getCurrPlayer() % 2;
-        SetNameText(nextPlayer);
-        getGameView().setCurrPlayer(nextPlayer);
+
+        // check game won
+        if(getGameView().getNumShips(nextPlayer) == 0) {
+            Intent intent = new Intent(this, EndActivity.class);
+            if (getGameView().getCurrPlayer() == 2) {
+                intent.putExtra("WinnerName", player2_name);
+                intent.putExtra("LoserName", player1_name);
+            } else if (getGameView().getCurrPlayer() == 1) {
+                intent.putExtra("WinnerName", player1_name);
+                intent.putExtra("LoserName", player2_name);
+            }
+            startActivity(intent);
+        }
+
+        else {
+            // assign next player
+            getGameView().setTurnCompleted(false);
+            SetNameText(nextPlayer);
+            getGameView().setCurrPlayer(nextPlayer);
+        }
     }
 
     public void onSurrenderButton(View view) {
-        if (getGameView().getCurrPlayer() == 1) {
-            //player two wins
-        } else if (getGameView().getCurrPlayer() == 2) {
-            //player one wins
-        }
         Intent intent = new Intent(this, EndActivity.class);
+        if (getGameView().getCurrPlayer() == 1) {
+            intent.putExtra("WinnerName", player2_name);
+            intent.putExtra("LoserName", player1_name);
+        } else if (getGameView().getCurrPlayer() == 2) {
+            intent.putExtra("WinnerName", player1_name);
+            intent.putExtra("LoserName", player2_name);
+        }
         startActivity(intent);
     }
 

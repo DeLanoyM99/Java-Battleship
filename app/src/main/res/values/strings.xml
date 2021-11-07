@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Project1</string>
-    <string name="end_loser">Better luck next time Player Two</string>
-    <string name="end_winner">Player One Wins!</string>
+    <string name="app_name">Project1Team 12</string>
+    <string name="end_loser">Better luck next time</string>
+    <string name="end_winner">Wins!</string>
     <string name="end_button">Play Again</string>
     <string name="StartButton">Play</string>
     <string name="player_board">Player One\'s Board</string>
@@ -17,6 +17,7 @@
     <string name="help">Help</string>
     <string name="back_check_title">Are you sure?</string>
     <string name="back_check_body">going back will end the game</string>
+    <string name="tile_already_hit">Please choose an unselected grid block</string>
 
 
 </resources>

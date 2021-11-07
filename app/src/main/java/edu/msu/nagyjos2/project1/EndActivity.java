@@ -9,22 +9,36 @@ import android.widget.TextView;
 
 public class EndActivity extends AppCompatActivity {
 
-    private String player1_name;
-    private String player2_name;
-    private TextView Winner;
+    private String winner_name;
+    private String loser_name;
+    private TextView winner;
+    private TextView loser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end);
-        player1_name = getIntent().getExtras().getString("Player1Name");
-        player2_name = getIntent().getExtras().getString("Player2Name");
-        Winner = (TextView) findViewById(R.id.winnerName);
-        Winner.setText(player1_name);
+        winner_name = getIntent().getExtras().getString("WinnerName");
+        loser_name = getIntent().getExtras().getString("LoserName");
+        winner = (TextView) findViewById(R.id.winnerText);
+        String winner_text = getString(R.string.end_winner);
+        winner.setText(winner_name + " " + winner_text);
+        loser = (TextView) findViewById(R.id.loserText);
+        String loser_text = getString(R.string.end_loser);
+        loser.setText(loser_text + " " + loser_name);
+
     }
 
     public void onNewGame(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        // go back to main activity (top of activity stack)
+        Intent main_act = new Intent(this, MainActivity.class);
+        main_act.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(main_act);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // back button sends to main screen
+        onNewGame(null);
     }
 }
