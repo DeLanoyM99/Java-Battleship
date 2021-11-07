@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ShipPlacement extends AppCompatActivity {
 
@@ -21,6 +22,15 @@ public class ShipPlacement extends AppCompatActivity {
     private String player2_name;
     private TextView PlayersTurn;
     private boolean isclick = false;
+    private boolean bothDone = false; // boolean if player 2 places first
+
+    public boolean isBothDone() {
+        return bothDone;
+    }
+
+    public void setBothDone(boolean bothDone) {
+        this.bothDone = bothDone;
+    }
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -39,6 +49,11 @@ public class ShipPlacement extends AppCompatActivity {
             // We have saved state
             getGameView().loadInstanceState(savedInstanceState);
         }
+
+        Random random = new Random();
+        int rand_player = random.nextInt(2); // generate random number between 0 - 1
+        getGameView().setCurrPlayer(rand_player + 1);
+
         int curr_player = getGameView().getCurrPlayer();
         if(curr_player == 1){
             if (player1_name.charAt(player1_name.length() - 1)== 's'){
@@ -121,6 +136,7 @@ public class ShipPlacement extends AppCompatActivity {
         // add pop-up dialog box if not all 4 boats placed
         int curr_player = getGameView().getCurrPlayer();
 
+
         if (getGameView().getNumShips(curr_player) < 4) {
             AlertDialog.Builder builder =
                     new AlertDialog.Builder(view.getContext());
@@ -132,13 +148,26 @@ public class ShipPlacement extends AppCompatActivity {
             alertDialog.show();
         }
 
-        else if (curr_player == 1) {
+        else if (curr_player == 1 && isBothDone() == false) {
+            setBothDone(true);
             getGameView().setCurrPlayer(2);
             if (player2_name.charAt(player2_name.length() - 1)== 's'){
                 PlayersTurn.setText(player2_name + "'" + " Turn");
             }
             else{
                 PlayersTurn.setText(player2_name + "'s" + " Turn");
+            }
+
+        }
+
+        else if (curr_player == 2 && isBothDone() == false) {
+            setBothDone(true);
+            getGameView().setCurrPlayer(1);
+            if (player1_name.charAt(player1_name.length() - 1)== 's'){
+                PlayersTurn.setText(player1_name + "'" + " Turn");
+            }
+            else{
+                PlayersTurn.setText(player1_name + "'s" + " Turn");
             }
 
         }
