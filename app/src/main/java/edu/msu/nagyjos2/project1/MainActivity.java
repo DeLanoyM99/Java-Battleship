@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("Player1Name", player1_result);
             intent.putExtra("Player2Name", player2_result);
             startActivity(intent);
-            finish();
         }
     }
 
