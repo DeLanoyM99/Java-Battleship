@@ -25,7 +25,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal|center_vertical"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:ellipsize="middle"
+            android:singleLine="true"/>
 
         <TextView
             android:id="@+id/attack_Instructions"

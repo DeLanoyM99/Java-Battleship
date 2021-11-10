@@ -28,7 +28,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginTop="20dp"
+            android:ellipsize="middle"
             android:gravity="bottom|center_horizontal"
+            android:singleLine="true"
             android:textSize="34sp" />
 
         <TextView

@@ -27,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private String player2_result;
 
-    private boolean toast_test;
-
     @Override
     /**
      * Create the game
@@ -46,41 +44,17 @@ public class MainActivity extends AppCompatActivity {
      * @param view The view we get
      */
     public void onStartGame(View view) {
-        toast_test = true;
         Intent intent = new Intent(this, ShipPlacement.class);
-        player1_result = player1.getText().toString();
-        player2_result = player2.getText().toString();
-        if (player1_result.length() == 0) {
-            player1_result = "Player 1";
+        String name1 = player1.getText().toString();
+        String name2 = player2.getText().toString();
+        player1_result = name1.equals("") ? "Player 1" : name1; // set name with defaults
+        player2_result = name2.equals("") ? "Player 2" : name2;
+
+        if (player1_result.equals(player2_result)) { // names cannot be the same
+            Toast.makeText(view.getContext(), R.string.player_warning, Toast.LENGTH_SHORT).show();
         }
-        if(player2_result.length() == 0) {
-            player2_result = "Player 2";
-        }
 
-        if(player1_result.toLowerCase().equals(player2_result.toLowerCase())) {
-            toast_test = false;
-            /*
-             * Create a thread to load the hatting from the cloud
-             */
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    // Create a cloud object and get the XML
-
-                    view.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(view.getContext(), R.string.player_warning, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-
-                }
-
-            }).start();
-        }
-        if (toast_test == true) {
+        else {
             intent.putExtra("Player1Name", player1_result);
             intent.putExtra("Player2Name", player2_result);
             startActivity(intent);
