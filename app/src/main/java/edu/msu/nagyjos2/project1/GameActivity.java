@@ -140,6 +140,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+
     public void onSurrenderButton(View view) {
         Intent intent = new Intent(this, EndActivity.class);
         if (getGameView().getCurrPlayer() == 1) {
