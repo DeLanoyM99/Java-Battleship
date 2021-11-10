@@ -19,6 +19,13 @@
     <string name="back_check_body">going back will end the game</string>
     <string name="tile_already_hit">Please choose an unselected grid block</string>
     <string name="player_warning">Warning: Players cannot have identical names</string>
+    <string name="game_instructions">Click a square to attack. If you miss a circle will appear,
+        and if you hit an opponents ship, an X will appear. Destroy all 4 of your opponents ships
+        to win the game!</string>
+    <string name="placement_instructions">Click to place a ship inside a grid square. Click the
+        same square to remove the ship. Place 4 ships to proceed.</string>
+    <string name="placement_done_message">Make sure you place all 4 boats before pressing done!</string>
+    <string name="placement_done_title">Whoops!</string>
 
 
 </resources>

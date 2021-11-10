@@ -18,19 +18,13 @@ import java.util.Random;
 
 public class ShipPlacement extends AppCompatActivity {
 
+    private final static String ONEDONE = "GameView.oneDone";
+
     private String player1_name;
     private String player2_name;
     private TextView PlayersTurn;
-    private boolean isclick = false;
-    private boolean bothDone = false; // boolean if player 2 places first
+    private boolean oneDone = false; // true if one player has set their boats
 
-    public boolean isBothDone() {
-        return bothDone;
-    }
-
-    public void setBothDone(boolean bothDone) {
-        this.bothDone = bothDone;
-    }
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -41,36 +35,50 @@ public class ShipPlacement extends AppCompatActivity {
 
         player1_name = getIntent().getExtras().getString("Player1Name");
         player2_name = getIntent().getExtras().getString("Player2Name");
-        PlayersTurn = (TextView) findViewById(R.id.PlayerTurnText);
-
-
+        PlayersTurn = findViewById(R.id.PlayerTurnText);
 
         if(savedInstanceState != null) {
-            // We have saved state
+            // We have saved state, load current player
             getGameView().loadInstanceState(savedInstanceState);
+            oneDone = savedInstanceState.getBoolean(ONEDONE);
+
+            int curr_player = getGameView().getCurrPlayer();
+            SetNameText(curr_player);
         }
+        else { // first time creating the activity, generate random player
+            Random random = new Random();
+            int curr_player = random.nextInt(2) + 1; // generate random number between 0 - 1
+            getGameView().setCurrPlayer(curr_player); // set current random player
+            SetNameText(curr_player); // set the name for the player
+        }
+    }
 
-        Random random = new Random();
-        int rand_player = random.nextInt(2); // generate random number between 0 - 1
-        getGameView().setCurrPlayer(rand_player + 1);
+    public boolean isOneDone() {
+        return oneDone;
+    }
 
-        int curr_player = getGameView().getCurrPlayer();
-        if(curr_player == 1){
-            if (player1_name.charAt(player1_name.length() - 1)== 's'){
-                PlayersTurn.setText(player1_name + "'" + " Turn");
-            }
-            else{
-                PlayersTurn.setText(player1_name + "'s" + " Turn");
-            }
+    public void setOneDone(boolean oneDone) {
+        this.oneDone = oneDone;
+    }
+
+    private GameView getGameView() { return this.findViewById(R.id.GameViewShip); }
+
+    @SuppressLint("SetTextI18n")
+    private void SetNameText(int current_player) {
+
+        if (player1_name.charAt(player1_name.length() - 1)== 's' && current_player == 1){
+            PlayersTurn.setText(player1_name + "'" + " Turn");
+        }
+        else if (player2_name.charAt(player2_name.length() - 1)== 's' && current_player == 2){
+            PlayersTurn.setText(player2_name + "'" + " Turn");
         }
         else{
-            if (player2_name.charAt(player2_name.length() - 1)== 's'){
-                PlayersTurn.setText(player2_name + "'" + " Turn");
+            if (current_player == 1) {
+                PlayersTurn.setText(player1_name + "'s" + " Turn");
             }
-            else{
+            else {
                 PlayersTurn.setText(player2_name + "'s" + " Turn");
             }
-           ;
         }
     }
 
@@ -100,8 +108,23 @@ public class ShipPlacement extends AppCompatActivity {
         }
     }
 
-    private GameView getGameView() { return this.findViewById(R.id.GameViewShip); }
+    /**
+     * Creates a dialog box for the help option
+     * @param view the game view
+     */
+    public void onMenuPlacement (View view) {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(view.getContext());
+        builder.setMessage(getString(R.string.placement_instructions));
+        builder.setPositiveButton(android.R.string.ok, null);
 
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    /**
+     * Starts the game activity. Passes each boards information to the next activity
+     */
     private void startGame() {
         Intent intent = new Intent(this, GameActivity.class);
 
@@ -129,6 +152,11 @@ public class ShipPlacement extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Handles a done button press. checks to see if both players have finished placing boats, and
+     * starts the game activity if they are.
+     * @param view the game view
+     */
     @SuppressLint("SetTextI18n")
     public void onDonePlacement (View view) {
 
@@ -136,80 +164,40 @@ public class ShipPlacement extends AppCompatActivity {
         // add pop-up dialog box if not all 4 boats placed
         int curr_player = getGameView().getCurrPlayer();
 
-
         if (getGameView().getNumShips(curr_player) < 4) {
             AlertDialog.Builder builder =
                     new AlertDialog.Builder(view.getContext());
-            builder.setTitle("Boat Placement");
-            builder.setMessage("Make sure you place all 4 boats before pressing done!");
+            builder.setTitle(getString(R.string.placement_done_title));
+            builder.setMessage(getString(R.string.placement_done_message));
             builder.setPositiveButton(android.R.string.ok, null);
 
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
 
-        else if (curr_player == 1 && isBothDone() == false) {
-            setBothDone(true);
+        else if (curr_player == 1 && !isOneDone()) { // if player 1 goes first
+            setOneDone(true);
             getGameView().setCurrPlayer(2);
-            if (player2_name.charAt(player2_name.length() - 1)== 's'){
-                PlayersTurn.setText(player2_name + "'" + " Turn");
-            }
-            else{
-                PlayersTurn.setText(player2_name + "'s" + " Turn");
-            }
-
+            SetNameText(2);
         }
 
-        else if (curr_player == 2 && isBothDone() == false) {
-            setBothDone(true);
+        else if (curr_player == 2 && !isOneDone()) { // if player 2 goes first
+            setOneDone(true);
             getGameView().setCurrPlayer(1);
-            if (player1_name.charAt(player1_name.length() - 1)== 's'){
-                PlayersTurn.setText(player1_name + "'" + " Turn");
-            }
-            else{
-                PlayersTurn.setText(player1_name + "'s" + " Turn");
-            }
-
+            SetNameText(1);
         }
-        // if player 2 done, we go to game activity
+        // all players done, we go to game activity
         else {
             startGame();
         }
-    }
-
-    public void onMenuPlacement (View view) {
-        AlertDialog.Builder builder =
-                new AlertDialog.Builder(view.getContext());
-        builder.setMessage("Click to place a ship inside a grid square. " +
-                "Click the same square to remove the ship. " +
-                "Place 4 total ships.");
-        builder.setPositiveButton(android.R.string.ok, null);
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle bundle) {
         super.onSaveInstanceState(bundle);
 
+        bundle.putBoolean(ONEDONE, oneDone);
         getGameView().saveInstanceState(bundle);
     }
-
-//    /**
-//     * Save the puzzle to a bundle
-//     * @param bundle The bundle we save to
-//     */
-//    public void saveInstanceState(Bundle bundle) {
-//        getGameView().saveInstanceState(bundle);
-//    }
-//
-//    /**
-//     * Load the puzzle from a bundle
-//     * @param bundle The bundle we save to
-//     */
-//    public void loadInstanceState(Bundle bundle) {
-//        getGameView().loadInstanceState(bundle);
-//    }
 
 }
