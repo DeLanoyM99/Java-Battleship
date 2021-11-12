@@ -96,6 +96,7 @@ public class GameView extends View {
     }
 
     public boolean onGameTouch(MotionEvent event) {
+        /*
         boolean handled = false;
         if (currPlayer == 1 && !turnCompleted) { // player 1's turn
             handled = player_2_Board.onTouchEvent(this, event);
@@ -110,8 +111,12 @@ public class GameView extends View {
                 // player 2 winner
             }
         }
+        */
 
-        return handled;
+        if (currPlayer == 1) {
+            return player_2_Board.onTouchEvent(this, event);
+        }
+        return player_1_Board.onTouchEvent(this, event);
     }
 
     public boolean onPlacementTouch(MotionEvent event) {
@@ -129,6 +134,8 @@ public class GameView extends View {
     }
 
     public void setTurnCompleted(boolean completed) { turnCompleted = completed; }
+
+    public boolean getTurnCompleted() { return turnCompleted; }
 
     public int getNumShips(final int playerNum) {
         assert(playerNum == 1 || playerNum == 2);

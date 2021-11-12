@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -15,12 +14,14 @@ public class BattleshipBoard {
 
     /**
      * The percentage of the minimum of width or height that is
-     * used for the board
+     * used for the board. Min size is 0.5, max size is 2.0.
      * ex: width is 300px, so the board length on all sides will be
      * SCALE_IN_VIEW * 300.
      */
-    final static float SCALE_IN_VIEW = 0.9f;
+    private float gridScale = 0.9f;
 
+    private static final float MIN_SCALE = 0.5f;
+    private static final float MAX_SCALE = 2.0f;
     /**
      * The length of the board for each of the sides in pixels
      */
@@ -58,6 +59,10 @@ public class BattleshipBoard {
      */
     private int numBoats;
 
+    private Touch touch1 = new Touch();
+    private Touch touch2 = new Touch();
+    private boolean isZooming = false;
+
 
     /**
      * The name of the bundle keys to save the puzzle
@@ -68,7 +73,8 @@ public class BattleshipBoard {
     private final static String BOAT2 = "BattleshipTile.hasBoat2";
     private final static String HIT2 = "BattleshipTile.isHit2";
     private final static String NUMBOATS2 = "BattleshipBoard.numboats2";
-    private final static String BOATPOS = "BattleshipBoard.boatpositions";
+    private static final String GRIDSCALE1 = "BattleshipBoard.gridScale1";
+    private static final String GRIDSCALE2 = "BattleshipBoard.gridScale2";
 
 
     /**
@@ -127,7 +133,7 @@ public class BattleshipBoard {
         // Determine the minimum of the two dimensions (helps to layout puzzle in landscape and portrait)
         int minDim = Math.min(wid, hit);
 
-        boardLength = (int)(minDim * SCALE_IN_VIEW);
+        boardLength = (int)(minDim * gridScale);
 
         // Compute the margins so we center the board
         marginX = (wid - boardLength) / 2;
@@ -174,12 +180,12 @@ public class BattleshipBoard {
     }
 
     /**
-     * Handle a release of a touch message.
+     * Handle a release of a touch message on game board. Places ships and attacks
      * @param relX x location for the touch release, relative to the board - 0 to 1
      * @param relY y location for the touch release, relative to the board - 0 to 1
      * @return true if the touch is handled
      */
-    private boolean onReleased(float relX, float relY) {
+    private void onReleased(float relX, float relY) {
 
         int row = (int)Math.floor(relX * 4);
         int col = (int)Math.floor(relY * 4);
@@ -197,7 +203,7 @@ public class BattleshipBoard {
         }
 
         // tile selected for attack
-        else if (gameStarted){
+        else if (gameStarted && !gameView.getTurnCompleted()){
             if(!tiles.get(boardPos).isTileHit()) { // make sure tile is not already hit
 
                 tiles.get(boardPos).setTileHit(); // draw hit boat
@@ -213,11 +219,67 @@ public class BattleshipBoard {
 
             }
         }
+    }
 
+    private class Touch {
+
+        public int id = -1;
+        public float x = 0;
+        public float y = 0;
+        public float lastX = 0;
+        public float lastY = 0;
+        public float dX = 0;
+        public float dY = 0;
+
+        public void copyToLast() {
+            lastX = x;
+            lastY = y;
+        }
+
+        public void computeDeltas() {
+            dX = x - lastX;
+            dY = y - lastY;
+        }
+    }
+
+    private void getPositions(MotionEvent event) {
+        for(int i=0;  i<event.getPointerCount();  i++) {
+
+            // Get the pointer id
+            int id = event.getPointerId(i);
+
+            // Convert to image coordinates
+            float x = (event.getX(i) - marginX) / gridScale;
+            float y = (event.getY(i) - marginY) / gridScale;
+
+            if(id == touch1.id) {
+                touch1.copyToLast();
+                touch1.x = x;
+                touch1.y = y;
+            } else if(id == touch2.id) {
+                touch2.copyToLast();
+                touch2.x = x;
+                touch2.y = y;
+            }
+        }
         gameView.invalidate();
+    }
 
+    private float length(float x1, float y1, float x2, float y2) {
+        float dx = x2 - x1;
+        float dy = y2 - y1;
+        return (float)Math.sqrt(dx * dx + dy * dy);
+    }
 
-        return true;
+    private void scaleBoard() {
+        float length1 = length(touch1.lastX, touch1.lastY, touch2.lastX, touch2.lastY);
+        float length2 = length(touch1.x, touch1.y, touch2.x, touch2.y);
+
+        float scale = gridScale * (length2 / length1);
+
+        if (scale <= MAX_SCALE && scale >= MIN_SCALE) {
+            gridScale = scale;
+        }
     }
 
     /**
@@ -231,19 +293,64 @@ public class BattleshipBoard {
         float relX = (event.getX() - marginX) / boardLength;
         float relY = (event.getY() - marginY) / boardLength;
 
-        // check if touch is within board boundaries, if so, perform touch operations
-        if ( (0 <= relX && relX <= 1) && (0 <= relY && relY <= 1) ) {
-            switch (event.getActionMasked()) {
+        int id = event.getPointerId(event.getActionIndex());
 
-                case MotionEvent.ACTION_DOWN:
+        switch (event.getActionMasked()) {
+
+            case MotionEvent.ACTION_DOWN: // first finger down
+                touch1.id = id;
+                touch2.id = -1;
+                getPositions(event);
+                touch1.copyToLast();
+                isZooming = false;
+                return true;
+
+            case MotionEvent.ACTION_POINTER_DOWN: // second finger down
+                if(touch1.id >= 0 && touch2.id < 0) {
+                    touch2.id = id;
+                    getPositions(event);
+                    touch2.copyToLast();
+                    isZooming = true;
                     return true;
+                }
+                break;
 
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL:
-                    return onReleased(relX, relY);
-            }
+            case MotionEvent.ACTION_UP: // last touch released
+                if (id == touch2.id) {
+                    touch2.id = -1;
+                }
+                else if (id == touch1.id) {
+                    // Make what was touch2 now be touch1 by
+                    // swapping the objects.
+                    Touch t = touch1;
+                    touch1 = touch2;
+                    touch2 = t;
+                    touch2.id = -1;
+                }
+
+                // handle touch (if it is on board and we are not zooming
+                if (!isZooming && (0 <= relX && relX <= 1) && (0 <= relY && relY <= 1)) {
+                    onReleased(relX, relY);
+                    gameView.invalidate();
+                }
+                return true;
+
+            case MotionEvent.ACTION_CANCEL: // both fingers released
+                touch1.id = -1;
+                touch2.id = -1;
+                gameView.invalidate();
+                return true;
+
+            case MotionEvent.ACTION_POINTER_UP: //one finger lifted, one remains on
+                return true;
+
+            case MotionEvent.ACTION_MOVE:
+                getPositions(event);
+                if (touch2.id >= 0) {
+                    scaleBoard();
+                }
+                return true;
         }
-
         return false;
     }
 
@@ -260,7 +367,6 @@ public class BattleshipBoard {
      * @param bundle The bundle we save to
      */
     public void saveInstanceState(Bundle bundle, int playerNum) {
-        //getBoatPositions();
         boolean [] boat = new boolean[tiles.size()];
         boolean [] hit = new boolean[tiles.size()];
 
@@ -273,13 +379,15 @@ public class BattleshipBoard {
             bundle.putBooleanArray(BOAT1, boat);
             bundle.putBooleanArray(HIT1, hit);
             bundle.putInt(NUMBOATS1, numBoats);
+            bundle.putFloat(GRIDSCALE1, gridScale);
         }
         else {
             bundle.putBooleanArray(BOAT2, boat);
             bundle.putBooleanArray(HIT2, hit);
             bundle.putInt(NUMBOATS2, numBoats);
+            bundle.putFloat(GRIDSCALE2, gridScale);
+
         }
-        //bundle.putIntegerArrayList(BOATPOS, boatPos);
 
     }
 
@@ -294,13 +402,15 @@ public class BattleshipBoard {
             numBoats = bundle.getInt(NUMBOATS1);
             boat = bundle.getBooleanArray(BOAT1);
             hit = bundle.getBooleanArray(HIT1);
+            gridScale = bundle.getFloat(GRIDSCALE1, gridScale);
         }
         else {
             numBoats = bundle.getInt(NUMBOATS2);
             boat = bundle.getBooleanArray(BOAT2);
             hit = bundle.getBooleanArray(HIT2);
+            gridScale = bundle.getFloat(GRIDSCALE2, gridScale);
         }
-        //boatPos = bundle.getIntegerArrayList(BOATPOS);
+
         for (int i=0; i<tiles.size(); i++){
             tiles.get(i).setHasBoat(boat[i]);
             tiles.get(i).setHit(hit[i]);
