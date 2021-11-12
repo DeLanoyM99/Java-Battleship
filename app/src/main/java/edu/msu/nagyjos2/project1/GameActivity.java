@@ -89,9 +89,18 @@ public class GameActivity extends AppCompatActivity {
         checkDlg.show(getSupportFragmentManager(), "check");
     }
 
+    public void onSurrenderButton(View view) {
+        SurrenderDlg dlg = new SurrenderDlg();
+        dlg.show(getSupportFragmentManager(), "surrender");
+    }
+
     public Button getDoneButton() {return this.findViewById(R.id.doneButton); }
 
-    private GameView getGameView() { return this.findViewById(R.id.GameView); }
+    public GameView getGameView() { return this.findViewById(R.id.GameView); }
+
+    public String getPlayer1Name() { return player1_name; }
+
+    public String getPlayer2Name() { return player2_name; }
 
     @SuppressLint("SetTextI18n")
     private void SetNameText(int current_player) {
@@ -138,19 +147,6 @@ public class GameActivity extends AppCompatActivity {
             SetNameText(nextPlayer);
             getGameView().setCurrPlayer(nextPlayer);
         }
-    }
-
-
-    public void onSurrenderButton(View view) {
-        Intent intent = new Intent(this, EndActivity.class);
-        if (getGameView().getCurrPlayer() == 1) {
-            intent.putExtra("WinnerName", player2_name);
-            intent.putExtra("LoserName", player1_name);
-        } else if (getGameView().getCurrPlayer() == 2) {
-            intent.putExtra("WinnerName", player1_name);
-            intent.putExtra("LoserName", player2_name);
-        }
-        startActivity(intent);
     }
 
     @Override

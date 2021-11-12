@@ -8,31 +8,39 @@ import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 
-public class BackButtonDlg extends DialogFragment {
+public class SurrenderDlg extends DialogFragment {
+
     @Override
     public Dialog onCreateDialog(Bundle bundle) {
         AlertDialog.Builder checkDlg = new AlertDialog.Builder(getActivity());
 
         // Set the title
-        checkDlg.setTitle(getString(R.string.back_check_title));
+        checkDlg.setTitle(getString(R.string.surrender_check_title));
 
         // Set the body text
-        checkDlg.setMessage(getString(R.string.back_check_body));
+        checkDlg.setMessage(getString(R.string.surrender_check_body));
 
         checkDlg.setNegativeButton("no", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                // do not go back to main
+                // do not surrender
             }
         });
 
         checkDlg.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                // go back to main activity
-                Intent main_act = new Intent(getActivity(), MainActivity.class);
-                main_act.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(main_act);
+                // surrender
+                GameActivity act = (GameActivity)getActivity();
+                Intent intent = new Intent(act, EndActivity.class);
+                if (act.getGameView().getCurrPlayer() == 1) {
+                    intent.putExtra("WinnerName", act.getPlayer2Name());
+                    intent.putExtra("LoserName", act.getPlayer1Name());
+                } else if (act.getGameView().getCurrPlayer() == 2) {
+                    intent.putExtra("WinnerName", act.getPlayer1Name());
+                    intent.putExtra("LoserName", act.getPlayer2Name());
+                }
+                startActivity(intent);
             }
         });
 

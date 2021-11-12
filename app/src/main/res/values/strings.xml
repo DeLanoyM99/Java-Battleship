@@ -15,8 +15,10 @@
     <string name="picture_desc">Image of bold battleship text</string>
     <string name="menu">menu</string>
     <string name="help">Help</string>
-    <string name="back_check_title">Are you sure?</string>
-    <string name="back_check_body">going back will end the game</string>
+    <string name="back_check_title">End the Game?</string>
+    <string name="back_check_body">Choose \"yes\" to end the game or \"no\" to continue</string>
+    <string name="surrender_check_title">Surrender the Battle?</string>
+    <string name="surrender_check_body">Choose \"yes\" to surrender or \"no\" to continue</string>
     <string name="tile_already_hit">Please choose an unselected grid block</string>
     <string name="player_warning">Warning: Players cannot have identical names</string>
     <string name="game_instructions">Click a square to attack. If you miss a circle will appear,
