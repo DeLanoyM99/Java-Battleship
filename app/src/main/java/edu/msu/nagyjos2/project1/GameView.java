@@ -1,18 +1,12 @@
 package edu.msu.nagyjos2.project1;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -51,7 +45,7 @@ public class GameView extends View {
     private boolean turnCompleted = false;
 
 
-    /** ================================= Constructors ===================================*/
+    /* ================================= Constructors =================================== */
 
     public GameView(Context context) {
         super(context);
@@ -73,7 +67,7 @@ public class GameView extends View {
         player_2_Board = new BattleshipBoard(getContext(), this);
     }
 
-    /** =============================== Setters and Getters ===================================*/
+    /* =============================== Setters and Getters =================================== */
 
     /**
      * Tells the view and each board that the game has started (changes how things are drawn)
@@ -130,7 +124,7 @@ public class GameView extends View {
         return (playerNum == 1) ? player_1_Board.getNumBoats() : player_2_Board.getNumBoats();
     }
 
-    /** ================================ Function Methods ===================================*/
+    /* ================================ Function Methods =================================== */
 
     /**
      * deciding which board to draw has 2 condition:
@@ -195,18 +189,18 @@ public class GameView extends View {
         try {
             for (String player1_pos : player1_boats.split(" ")) {
                 int pos = Integer.parseInt(player1_pos);
-                player_1_Board.loadBoatPosition(pos);
+                player_1_Board.setBoatPosition(pos);
             }
             player_1_Board.setNumBoats(4);
 
             for (String player2_pos : player2_boats.split(" ")) {
                 int pos = Integer.parseInt(player2_pos);
-                player_2_Board.loadBoatPosition(pos);
+                player_2_Board.setBoatPosition(pos);
             }
             player_2_Board.setNumBoats(4);
 
         } catch (NumberFormatException ex) {
-            Log.d("Error: ", "Cannot convert in to string");
+            Log.d("Error: ", "Cannot convert int to string");
         }
 
     }

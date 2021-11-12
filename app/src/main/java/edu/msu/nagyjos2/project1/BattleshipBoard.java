@@ -10,18 +10,32 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/**
+ * Class representing a Battleship Board
+ */
 public class BattleshipBoard {
+    /**
+     * The name of the bundle keys to save the state of the board
+     */
+    private final static String BOAT = "BattleshipTile.hasBoat";
+    private final static String HIT = "BattleshipTile.isHit";
+    private final static String NUM_BOATS = "BattleshipBoard.numboats";
+    private static final String GRID_SCALE = "BattleshipBoard.gridScale";
+
+    /**
+     * max and min for the scale of the board
+     */
+    private static final float MIN_SCALE = 0.9f;
+    private static final float MAX_SCALE = 2.0f;
 
     /**
      * The percentage of the minimum of width or height that is
-     * used for the board. Min size is 0.5, max size is 2.0.
+     * used for the board. Min size is 0.9, max size is 2.0.
      * ex: width is 300px, so the board length on all sides will be
-     * SCALE_IN_VIEW * 300.
+     * gridScale * 300.
      */
     private float gridScale = 0.9f;
 
-    private static final float MIN_SCALE = 0.5f;
-    private static final float MAX_SCALE = 2.0f;
     /**
      * The length of the board for each of the sides in pixels
      */
@@ -47,7 +61,10 @@ public class BattleshipBoard {
      */
     private Paint gridPaint;
 
-    private GameView gameView; // might need this later for saving
+    /**
+     * The view this board will be drawn in
+     */
+    private GameView gameView;
 
     /**
      * Collection of tile objects representing a tile on the grid
@@ -59,33 +76,24 @@ public class BattleshipBoard {
      */
     private int numBoats;
 
+    /**
+     * Two touches (at max) that the user may have
+     */
     private Touch touch1 = new Touch();
     private Touch touch2 = new Touch();
-    private boolean isZooming = false;
-
 
     /**
-     * The name of the bundle keys to save the puzzle
+     * Set to true when the user places 2 touches on the screen. Helps to not confuse
+     * single touch handling with zoom handling.
      */
-    private final static String BOAT1 = "BattleshipTile.hasBoat1";
-    private final static String HIT1 = "BattleshipTile.isHit1";
-    private final static String NUMBOATS1 = "BattleshipBoard.numboats1";
-    private final static String BOAT2 = "BattleshipTile.hasBoat2";
-    private final static String HIT2 = "BattleshipTile.isHit2";
-    private final static String NUMBOATS2 = "BattleshipBoard.numboats2";
-    private static final String GRIDSCALE1 = "BattleshipBoard.gridScale1";
-    private static final String GRIDSCALE2 = "BattleshipBoard.gridScale2";
-
-    private final static String BOAT = "BattleshipTile.hasBoat";
-    private final static String HIT = "BattleshipTile.isHit";
-    private final static String NUMBOATS = "BattleshipBoard.numboats";
-    private static final String GRIDSCALE = "BattleshipBoard.gridScale";
-
+    private boolean isZooming = false;
 
     /**
      * The games current playing status: True when the game starts, False when in battleship setup mode
      */
     public boolean gameStarted = false;
+
+    /* ================================= Constructor =================================== */
 
     public BattleshipBoard(Context context, GameView view) {
         gameView = view;
@@ -105,21 +113,34 @@ public class BattleshipBoard {
 
     }
 
-    public boolean isGameStarted() {
-        return gameStarted;
-    }
+    /* =============================== Setters and Getters =================================== */
 
+    /**
+     * sets the game to started (now in game activity)
+     * @param started true or false
+     */
     public void setGameStarted(boolean started) {
         gameStarted = started;
     }
 
+    /**
+     * gets the current number of boats on the board (does not count hit boats)
+     * @return integer number of boats
+     */
     public int getNumBoats() {
         return numBoats;
     }
 
+    /**
+     * set the number of boats
+     * @param num integer number of boats
+     */
     public void setNumBoats(int num) { numBoats = num; }
 
-
+    /**
+     * Gets all the current boat positions into an array
+     * @return Array of boat positions
+     */
     public ArrayList<Integer> getBoatPositions() {
         ArrayList<Integer> pos_arr = new ArrayList<Integer>();
 
@@ -131,6 +152,25 @@ public class BattleshipBoard {
         return pos_arr;
     }
 
+    /**
+     * Sets a boat on a tile
+     * @param pos the board position
+     */
+    public void setBoatPosition(int pos) {
+        // place a boat down at this tile (if it has been set)
+        if (!tiles.get(pos).hasBoat()) {
+            tiles.get(pos).toggleShip();
+        }
+    }
+
+    /* ================================ Function Methods =================================== */
+
+    /**
+     * Draws the board in the view. Each board is drawn as a 4 by 4 grid, each grid tile
+     * is represented as a "tile" object. Each tile is drawn based on the current state of the
+     * game.
+     * @param canvas drawing object
+     */
     public void draw(Canvas canvas) {
         int wid = canvas.getWidth();
         int hit = canvas.getHeight();
@@ -226,29 +266,56 @@ public class BattleshipBoard {
         }
     }
 
+    /**
+     * Touch class to hold data for a touch event
+     */
     private class Touch {
 
+        /**
+         * id of a touch, -1 if touch is not active
+         */
         public int id = -1;
-        public float x = 0;
-        public float y = 0;
-        public float lastX = 0;
-        public float lastY = 0;
-        public float dX = 0;
-        public float dY = 0;
 
+        /**
+         * current x location of a touch
+         */
+        public float x = 0;
+
+        /**
+         * current y location of a touch
+         */
+        public float y = 0;
+
+        /**
+         * last x location of a touch
+         */
+        public float lastX = 0;
+
+        /**
+         * last y location of a touch
+         */
+        public float lastY = 0;
+
+        /**
+         * copies the current locations to last. Used after a touch has been handled.
+         */
         public void copyToLast() {
             lastX = x;
             lastY = y;
         }
     }
 
+    /**
+     * Gets the positions for a single touch, updates the current locations and old locations
+     * @param event the touch event
+     */
     private void getPositions(MotionEvent event) {
         for(int i=0;  i<event.getPointerCount();  i++) {
 
             // Get the pointer id
             int id = event.getPointerId(i);
 
-            // Convert to image coordinates
+            // Convert to board coordinates
             float x = (event.getX(i) - marginX) / gridScale;
             float y = (event.getY(i) - marginY) / gridScale;
 
@@ -265,12 +332,23 @@ public class BattleshipBoard {
         gameView.invalidate();
     }
 
+    /**
+     * calculate length between 2 touches
+     * @param x1 touch1 x
+     * @param y1 touch1 y
+     * @param x2 touch2 x
+     * @param y2 touch2 y
+     * @return float for length relative to board
+     */
     private float length(float x1, float y1, float x2, float y2) {
         float dx = x2 - x1;
         float dy = y2 - y1;
         return (float)Math.sqrt(dx * dx + dy * dy);
     }
 
+    /**
+     * Scales the board based on the touches displacement. (if scale is between min and max)
+     */
     private void scaleBoard() {
         float length1 = length(touch1.lastX, touch1.lastY, touch2.lastX, touch2.lastY);
         float length2 = length(touch1.x, touch1.y, touch2.x, touch2.y);
@@ -354,14 +432,6 @@ public class BattleshipBoard {
         return false;
     }
 
-    public void loadBoatPosition(int pos) {
-
-        // place a boat down at this tile (if it has been set)
-        if (!tiles.get(pos).hasBoat()) {
-            tiles.get(pos).toggleShip();
-        }
-    }
-
     /**
      * Save the puzzle to a bundle
      * @param bundle The bundle we save to
@@ -377,8 +447,8 @@ public class BattleshipBoard {
 
         bundle.putBooleanArray(BOAT + playerNum, boat);
         bundle.putBooleanArray(HIT + playerNum, hit);
-        bundle.putInt(NUMBOATS + playerNum, numBoats);
-        bundle.putFloat(GRIDSCALE + playerNum, gridScale);
+        bundle.putInt(NUM_BOATS + playerNum, numBoats);
+        bundle.putFloat(GRID_SCALE + playerNum, gridScale);
     }
 
     /**
@@ -389,10 +459,10 @@ public class BattleshipBoard {
         boolean [] boat;
         boolean [] hit;
 
-        numBoats = bundle.getInt(NUMBOATS + playerNum);
+        numBoats = bundle.getInt(NUM_BOATS + playerNum);
         boat = bundle.getBooleanArray(BOAT + playerNum);
         hit = bundle.getBooleanArray(HIT + playerNum);
-        gridScale = bundle.getFloat(GRIDSCALE + playerNum);
+        gridScale = bundle.getFloat(GRID_SCALE + playerNum);
 
         for (int i=0; i<tiles.size(); i++){
             tiles.get(i).setHasBoat(boat[i]);
