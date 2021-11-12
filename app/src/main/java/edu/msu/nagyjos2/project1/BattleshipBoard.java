@@ -76,6 +76,11 @@ public class BattleshipBoard {
     private static final String GRIDSCALE1 = "BattleshipBoard.gridScale1";
     private static final String GRIDSCALE2 = "BattleshipBoard.gridScale2";
 
+    private final static String BOAT = "BattleshipTile.hasBoat";
+    private final static String HIT = "BattleshipTile.isHit";
+    private final static String NUMBOATS = "BattleshipBoard.numboats";
+    private static final String GRIDSCALE = "BattleshipBoard.gridScale";
+
 
     /**
      * The games current playing status: True when the game starts, False when in battleship setup mode
@@ -235,11 +240,6 @@ public class BattleshipBoard {
             lastX = x;
             lastY = y;
         }
-
-        public void computeDeltas() {
-            dX = x - lastX;
-            dY = y - lastY;
-        }
     }
 
     private void getPositions(MotionEvent event) {
@@ -375,20 +375,10 @@ public class BattleshipBoard {
             hit[i] = tiles.get(i).isTileHit();
         }
 
-        if (playerNum == 1) {
-            bundle.putBooleanArray(BOAT1, boat);
-            bundle.putBooleanArray(HIT1, hit);
-            bundle.putInt(NUMBOATS1, numBoats);
-            bundle.putFloat(GRIDSCALE1, gridScale);
-        }
-        else {
-            bundle.putBooleanArray(BOAT2, boat);
-            bundle.putBooleanArray(HIT2, hit);
-            bundle.putInt(NUMBOATS2, numBoats);
-            bundle.putFloat(GRIDSCALE2, gridScale);
-
-        }
-
+        bundle.putBooleanArray(BOAT + playerNum, boat);
+        bundle.putBooleanArray(HIT + playerNum, hit);
+        bundle.putInt(NUMBOATS + playerNum, numBoats);
+        bundle.putFloat(GRIDSCALE + playerNum, gridScale);
     }
 
     /**
@@ -398,18 +388,11 @@ public class BattleshipBoard {
     public void loadInstanceState(Bundle bundle, int playerNum) {
         boolean [] boat;
         boolean [] hit;
-        if (playerNum == 1) {
-            numBoats = bundle.getInt(NUMBOATS1);
-            boat = bundle.getBooleanArray(BOAT1);
-            hit = bundle.getBooleanArray(HIT1);
-            gridScale = bundle.getFloat(GRIDSCALE1, gridScale);
-        }
-        else {
-            numBoats = bundle.getInt(NUMBOATS2);
-            boat = bundle.getBooleanArray(BOAT2);
-            hit = bundle.getBooleanArray(HIT2);
-            gridScale = bundle.getFloat(GRIDSCALE2, gridScale);
-        }
+
+        numBoats = bundle.getInt(NUMBOATS + playerNum);
+        boat = bundle.getBooleanArray(BOAT + playerNum);
+        hit = bundle.getBooleanArray(HIT + playerNum);
+        gridScale = bundle.getFloat(GRIDSCALE + playerNum);
 
         for (int i=0; i<tiles.size(); i++){
             tiles.get(i).setHasBoat(boat[i]);

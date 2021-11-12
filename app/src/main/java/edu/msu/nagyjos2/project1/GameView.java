@@ -17,19 +17,41 @@ import android.widget.Button;
 import java.util.ArrayList;
 
 /**
- * TODO: document your custom view class.
+ * The main view of the battleship game. Provides support for 2 players.
  */
 public class GameView extends View {
 
-    private BattleshipBoard player_1_Board;
-    private BattleshipBoard player_2_Board; // need later on when we have 2 players
-    private boolean gameStarted = false;  // will probably need this later
-    private int currPlayer = 1; // to know whose turn it is and what board to show -> implement later
-    private boolean turnCompleted = false; // during gameplay, used so that players dont select more than 1 tile to hit
-
+    /**
+     * State parameters to save/load data
+     */
     private final static String CURRPLAYER = "GameView.currplayer";
     private final static String GAMESTATE = "GameView.gameStarted";
     private final static String TURNSTATE = "GameView.turnCompleted";
+
+    /**
+     * Current Game supports 2 boards (2 players)
+     */
+    private BattleshipBoard player_1_Board;
+    private BattleshipBoard player_2_Board;
+
+    /**
+     * True is the game has started (game activity)
+     */
+    private boolean gameStarted = false;
+
+    /**
+     * The current player (1 or 2). Used to know whose turn it is and what board to show
+     */
+    private int currPlayer = 1;
+
+    /**
+     * True is the current players turn is completed. Used in game activity to prevent player
+     * from attacking more than 1 tile
+     */
+    private boolean turnCompleted = false;
+
+
+    /** ================================= Constructors ===================================*/
 
     public GameView(Context context) {
         super(context);
@@ -51,27 +73,78 @@ public class GameView extends View {
         player_2_Board = new BattleshipBoard(getContext(), this);
     }
 
-    public boolean isGameStarted() {
-        return gameStarted;
-    }
+    /** =============================== Setters and Getters ===================================*/
 
+    /**
+     * Tells the view and each board that the game has started (changes how things are drawn)
+     * @param started True is the game is started
+     */
     public void setGameStarted(boolean started) {
         gameStarted = started;
         player_1_Board.setGameStarted(started);
         player_2_Board.setGameStarted(started);
     }
 
+    /**
+     * Activates the done button outside this view in the game activity (only called in
+     * game activity). The done button is enabled when a player has attacked a tile.
+     * @param bool True is button should be enabled
+     */
+    public void setDoneButton(boolean bool) {
+        ((GameActivity)getContext()).findViewById(R.id.doneButton).setEnabled(bool);
+    }
+
+    /**
+     * get the current player
+     * @return 1 or 2
+     */
+    public int getCurrPlayer() { return currPlayer; }
+
+    /**
+     * set the current player. Meaning we also need to invalidate to draw the correct board
+     * @param playerNum 1 or 2
+     */
+    public void setCurrPlayer(int playerNum) {
+        currPlayer = playerNum;
+        invalidate();
+    }
+
+    /**
+     * Sets to True whenever a player finishes their turn in game activity
+     * @param completed True or False
+     */
+    public void setTurnCompleted(boolean completed) { turnCompleted = completed; }
+
+    /**
+     * gets turn completed
+     * @return True or False
+     */
+    public boolean getTurnCompleted() { return turnCompleted; }
+
+    /**
+     * Gets the number of ships the provided player currently has available (hit ships do not count)
+     * @param playerNum 1 or 2
+     * @return
+     */
+    public int getNumShips(int playerNum) {
+        return (playerNum == 1) ? player_1_Board.getNumBoats() : player_2_Board.getNumBoats();
+    }
+
+    /** ================================ Function Methods ===================================*/
+
+    /**
+     * deciding which board to draw has 2 condition:
+     *         1. whose turn it is (currPlayer)
+     *         2. what part of the game we are at (ship placement or game)
+     *
+     *         if we are in the actual game, display the opponents board, if we are in
+     *         ship placement, display the current players board.
+     *
+     * @param canvas the drawing object
+     */
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        /*
-        deciding which board to draw has 2 condition:
-        1. whose turn it is (currPlayer)
-        2. what part of the game we are at (ship placement or game)
-
-        if we are in the actual game, display the opponents board, if we are in
-        ship placement, display the current players board.
-        */
 
         if ((!gameStarted && currPlayer == 1) || (gameStarted && currPlayer == 2)) {  // player 1 board draw
             player_1_Board.draw(canvas);
@@ -81,73 +154,27 @@ public class GameView extends View {
         }
     }
 
+    /**
+     * Deciding which board was touched has same principles as draw function
+     * @param event the touch event
+     * @return true if touch event was handled (always)
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!gameStarted) {
-            return onPlacementTouch(event);
-        }
-        else {
-            return onGameTouch(event);
-        }
-    }
-
-    public void setDoneButton(boolean bool) {
-        ((GameActivity)getContext()).findViewById(R.id.doneButton).setEnabled(bool);
-    }
-
-    public boolean onGameTouch(MotionEvent event) {
-        /*
-        boolean handled = false;
-        if (currPlayer == 1 && !turnCompleted) { // player 1's turn
-            handled = player_2_Board.onTouchEvent(this, event);
-            if (player_2_Board.getNumBoats() == 0) {
-                // player 1 winner
-
-            }
-        }
-        else if (currPlayer == 2 && !turnCompleted) { // player 2's turn
-            handled = player_1_Board.onTouchEvent(this, event);
-            if (player_1_Board.getNumBoats() == 0) {
-                // player 2 winner
-            }
-        }
-        */
-
-        if (currPlayer == 1) {
-            return player_2_Board.onTouchEvent(this, event);
-        }
-        return player_1_Board.onTouchEvent(this, event);
-    }
-
-    public boolean onPlacementTouch(MotionEvent event) {
-        if (currPlayer == 1) {
+        if ((!gameStarted && currPlayer == 1) || (gameStarted && currPlayer == 2)) {
             return player_1_Board.onTouchEvent(this, event);
         }
-        return player_2_Board.onTouchEvent(this, event);
-    }
-
-    public int getCurrPlayer() { return currPlayer; }
-
-    public void setCurrPlayer(final int playerNum) {
-        currPlayer = playerNum;
-        invalidate();
-    }
-
-    public void setTurnCompleted(boolean completed) { turnCompleted = completed; }
-
-    public boolean getTurnCompleted() { return turnCompleted; }
-
-    public int getNumShips(final int playerNum) {
-        assert(playerNum == 1 || playerNum == 2);
-        if (playerNum == 1) {
-            return player_1_Board.getNumBoats();
-        }
-
         else {
-            return player_2_Board.getNumBoats();
+            return player_2_Board.onTouchEvent(this, event);
         }
     }
 
+    /**
+     * Gets the boat positions for each board. These are the boats set in ship placement
+     * and are used in Game Activity. This function assists with gathering all the boats
+     * into 1 array to carry over the data.
+     * @return Array of all boat positions. First 4 are player 1 boats, next 4 are player 2 boats
+     */
     public ArrayList<Integer> getBoatPositions() {
         ArrayList<Integer> player1_boats = player_1_Board.getBoatPositions();
         ArrayList<Integer> player2_boats = player_2_Board.getBoatPositions();
@@ -155,6 +182,13 @@ public class GameView extends View {
         return player1_boats;
     }
 
+    /**
+     * Takes 2 string sequences of integers. Each sequence is 4 integers long, representing
+     * the board position the boats were placed on. This function loads the data from ship
+     * placement back into the boards for game activity.
+     * @param player1_boats String of player 1 boats
+     * @param player2_boats String of player 2 boats
+     */
     public void loadBoatPositions(String player1_boats, String player2_boats) {
         // load in each players selected boats to their game boards
         // positions are coming in as strings, must convert
