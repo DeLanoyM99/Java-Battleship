@@ -106,7 +106,7 @@ public class GameActivity extends AppCompatActivity {
             PlayersTurn.setText(player1_name + "'s" + " Turn");
             PlayersTurn.setText(player2_name + "'s" + " Turn");
         }
-       
+
     }
 
     public void onDoneTurn (View view) {

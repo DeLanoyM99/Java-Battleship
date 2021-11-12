@@ -32,8 +32,16 @@ public class BattleshipTile {
      */
     private boolean hasBoat = false;
 
+    /**
+     * int number of tile
+     */
     private int tileNum;
 
+    /**
+     * create the battleship tile
+     * @param context context we get
+     * @param tileNumber number of battle ship
+     */
     public BattleshipTile(Context context, int tileNumber) {
         tileNum = tileNumber;
         boat = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
@@ -41,6 +49,12 @@ public class BattleshipTile {
         hitMarker = BitmapFactory.decodeResource(context.getResources(), R.drawable.hitmarker);
     }
 
+    /**
+     * create location of board
+     * @param BoardStartX X location of board
+     * @param BoardStartY y location of board
+     * @param tileLength length of battle title
+     */
     private void setUpdraw(Canvas canvas, int BoardStartX, int BoardStartY, int tileLength) {
         int startX = BoardStartX + tileLength * (tileNum % 4) + tileLength / 2;
         int startY = BoardStartY + tileLength * (tileNum / 4) + tileLength / 2;
