@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     /**
@@ -44,18 +45,20 @@ public class MainActivity extends AppCompatActivity {
      */
     public void onStartGame(View view) {
         Intent intent = new Intent(this, ShipPlacement.class);
-        player1_result = player1.getText().toString();
-        player2_result = player2.getText().toString();
-        if (player1_result.length() == 0) {
-            player1_result = "Player 1";
+        String name1 = player1.getText().toString();
+        String name2 = player2.getText().toString();
+        player1_result = name1.equals("") ? "Player 1" : name1; // set name with defaults
+        player2_result = name2.equals("") ? "Player 2" : name2;
+
+        if (player1_result.equals(player2_result)) { // names cannot be the same
+            Toast.makeText(view.getContext(), R.string.player_warning, Toast.LENGTH_SHORT).show();
         }
-        if(player2_result.length() == 0) {
-            player2_result = "Player 2";
+
+        else {
+            intent.putExtra("Player1Name", player1_result);
+            intent.putExtra("Player2Name", player2_result);
+            startActivity(intent);
         }
-        intent.putExtra("Player1Name", player1_result);
-        intent.putExtra("Player2Name", player2_result);
-        startActivity(intent);
-        finish();
     }
 
 

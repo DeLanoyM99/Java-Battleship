@@ -23,35 +23,6 @@ public class GameActivity extends AppCompatActivity {
     private TextView PlayersTurn;
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_help, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_help:
-                onMenuPlacement(getGameView());
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    public void onMenuPlacement (View view) {
-        AlertDialog.Builder builder =
-                new AlertDialog.Builder(view.getContext());
-        builder.setMessage("Click a square to attack, if you miss a circle will appear. " +
-                        "If you hit an opponet's ship, an x will appear.");
-        builder.setPositiveButton(android.R.string.ok, null);
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
@@ -81,7 +52,34 @@ public class GameActivity extends AppCompatActivity {
             getGameView().loadInstanceState(savedInstanceState);
             SetNameText(getGameView().getCurrPlayer());
         }
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_help, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_help:
+                onMenuPlacement(getGameView());
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void onMenuPlacement (View view) {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(view.getContext());
+        builder.setMessage(getString(R.string.game_instructions));
+        builder.setPositiveButton(android.R.string.ok, null);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override
@@ -92,21 +90,26 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public Button getDoneButton() {return this.findViewById(R.id.doneButton); }
+
     private GameView getGameView() { return this.findViewById(R.id.GameView); }
 
     @SuppressLint("SetTextI18n")
-    private void SetNameText(int player_num) {
-        if (player1_name.charAt(player1_name.length() - 1)== 's'){
+    private void SetNameText(int current_player) {
+
+        if (player1_name.charAt(player1_name.length() - 1)== 's' && current_player == 1){
             PlayersTurn.setText(player1_name + "'" + " Turn");
         }
-        if (player2_name.charAt(player2_name.length() - 1)== 's'){
+        else if (player2_name.charAt(player2_name.length() - 1)== 's' && current_player == 2){
             PlayersTurn.setText(player2_name + "'" + " Turn");
         }
         else{
-            PlayersTurn.setText(player1_name + "'s" + " Turn");
-            PlayersTurn.setText(player2_name + "'s" + " Turn");
+            if (current_player == 1) {
+                PlayersTurn.setText(player1_name + "'s" + " Turn");
+            }
+            else {
+                PlayersTurn.setText(player2_name + "'s" + " Turn");
+            }
         }
-
     }
 
     public void onDoneTurn (View view) {
@@ -136,6 +139,7 @@ public class GameActivity extends AppCompatActivity {
             getGameView().setCurrPlayer(nextPlayer);
         }
     }
+
 
     public void onSurrenderButton(View view) {
         Intent intent = new Intent(this, EndActivity.class);

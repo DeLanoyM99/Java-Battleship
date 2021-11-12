@@ -14,7 +14,9 @@
         android:id="@+id/PlayerTurnText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ellipsize="middle"
         android:gravity="center_horizontal"
+        android:singleLine="true"
         android:textSize="34sp" />
 
     <view
