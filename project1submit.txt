@@ -8,7 +8,7 @@ When you have completed the project, complete the following form and include it 
 
 Member 1: Sadeem Boji
 
-Responsiblity:
+Responsiblity: Saving and loading when switching between landscape and portrait, Logic for ship placement
 
 
 
