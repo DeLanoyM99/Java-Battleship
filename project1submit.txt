@@ -26,7 +26,7 @@ Responsiblity: Gameplay flow, changing between player 1 and player 2 and changin
 
 Member 4 : Kyle Ernster
 
-Responsiblity:
+Responsiblity: xml layouts and making sure they fit cleanly on various devices. Implemented the done and surrender buttons for game view and the transition from one activity to the next. Assisted Joseph in setting up ship placement and moving from ship placement to GameActivity. Implemented winner and loser in final end screen and the option to play again.
 
 
 Member 5 : Zhendong Liu
