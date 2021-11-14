@@ -20,7 +20,7 @@ Responsiblity:
 
 Member 3: Joseph Nagy
 
-Responsiblity:
+Responsiblity: Gameplay flow, changing between player 1 and player 2 and changing the board on the screen. Responsible for zooming, touch events, and all board functionality. Drawing the boards
 
 
 
