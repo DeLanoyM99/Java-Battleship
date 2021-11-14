@@ -8,13 +8,13 @@ When you have completed the project, complete the following form and include it 
 
 Member 1: Sadeem Boji
 
-Responsiblity: Saving and loading when switching between landscape and portrait, Logic for ship placement
+Responsiblity: Saving and loading when switching between landscape and portrait, Logic for ship placement, set up the discord
 
 
 
 Member 2: Matthew DeLanoy
 
-Responsiblity:
+Responsiblity: set up the Git, set up player name logic, UI elements (help menu, Toast), Graphics (app icons, app title image)
 
 
 
