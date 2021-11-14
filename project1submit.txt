@@ -31,6 +31,6 @@ Responsiblity:
 
 Member 5 : Zhendong Liu
 
-Responsiblity:
+Responsiblity: Added the help menu, and surrender button, added images
 
 
