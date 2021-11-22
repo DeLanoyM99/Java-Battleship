@@ -27,7 +27,7 @@
         android:ems="10"
         android:hint="@string/player_1"
         android:inputType="textPersonName"
-        android:minHeight="48dp" />
+        android:minHeight="50dp" />
 
     <EditText
         android:id="@+id/Player2NameText"
@@ -38,7 +38,16 @@
         android:ems="10"
         android:hint="@string/player_2"
         android:inputType="textPersonName"
-        android:minHeight="48dp" />
+        android:minHeight="50dp" />
+
+    <CheckBox
+        android:id="@+id/SavePreferencesCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/save_preferences_check" />
 
     <FrameLayout
         android:layout_width="match_parent"

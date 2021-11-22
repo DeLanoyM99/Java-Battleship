@@ -10,8 +10,9 @@
     <string name="DoneButton">Done</string>
     <string name="SurrenderButton">Surrender</string>
     <string name="picture_of_game_board">Picture of game board</string>
-    <string name="player_1">Player 1</string>
-    <string name="player_2">Player 2</string>
+    <string name="player_1">Player 1 (to be username field)</string>
+    <string name="player_2">Player 2 (to be password field)</string>
+    <string name="save_preferences_check">Remember</string>
     <string name="picture_desc">Image of bold battleship text</string>
     <string name="menu">menu</string>
     <string name="help">Help</string>

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity {
-//te
+
     private String player1_name;
     private String player2_name;
     private TextView PlayersTurn;
