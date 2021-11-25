@@ -30,7 +30,8 @@
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_marginTop="50dp"
             android:ems="10"
-            android:hint="@string/player_2"
+            android:hint="@string/password"
+            android:hintTextColor="#006064"
             android:inputType="textPersonName"
             android:minHeight="50dp" />
 
@@ -42,7 +43,7 @@
             android:layout_marginTop="50dp"
             android:layout_marginBottom="50dp"
             android:ems="10"
-            android:hint="@string/player_1"
+            android:hint="@string/username"
             android:inputType="textPersonName"
             android:minHeight="50dp" />
 
@@ -56,18 +57,44 @@
 
     </FrameLayout>
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <Button
-            android:id="@+id/buttonStart"
+        <FrameLayout
+            android:id="@+id/buffer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:onClick="onStartGame"
-            android:text="@string/StartButton" />
-    </FrameLayout>
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true">
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toStartOf="@id/buffer">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="onStartGame"
+                android:text="@string/login" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/buffer">
+
+            <Button
+                android:id="@+id/SignUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/sign_up" />
+        </FrameLayout>
+    </RelativeLayout>
 
 </LinearLayout>

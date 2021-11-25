@@ -10,10 +10,15 @@
     <string name="DoneButton">Done</string>
     <string name="SurrenderButton">Surrender</string>
     <string name="picture_of_game_board">Picture of game board</string>
-    <string name="player_1">Player 1 (to be username field)</string>
-    <string name="player_2">Player 2 (to be password field)</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="password_confirm">Confirm Password</string>
+    <string name="remember_me">Remember this User</string>
     <string name="save_preferences_check">Remember</string>
     <string name="picture_desc">Image of bold battleship text</string>
+    <string name = "image_desc">Image of a small battleship</string>
     <string name="menu">menu</string>
     <string name="help">Help</string>
     <string name="back_check_title">End the Game?</string>
@@ -29,6 +34,13 @@
         same square to remove the ship. Place 4 ships to proceed.</string>
     <string name="placement_done_message">Make sure you place all 4 boats before pressing done!</string>
     <string name="placement_done_title">Whoops!</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
 
 
 </resources>

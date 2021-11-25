@@ -10,6 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project1">
         <activity
+            android:name=".LobbyActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.login.SignUpActivity"
+            android:exported="true"
+            android:label="@string/title_activity_sign_up" />
+        <activity
             android:name=".ShipPlacement"
             android:exported="true" />
         <activity
