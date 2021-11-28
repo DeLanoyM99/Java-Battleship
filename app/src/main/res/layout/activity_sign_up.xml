@@ -24,7 +24,6 @@ tools:context=".SignUpActivity">
         android:layout_marginTop="50dp"
         android:ems="10"
         android:hint="@string/password"
-        android:hintTextColor="#006064"
         android:inputType="textPersonName"
         android:minHeight="50dp" />
 
