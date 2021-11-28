@@ -13,9 +13,9 @@
             android:name=".LobbyActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.login.SignUpActivity"
+            android:name=".SignUpActivity"
             android:exported="true"
-            android:label="@string/title_activity_sign_up" />
+            />
         <activity
             android:name=".ShipPlacement"
             android:exported="true" />
