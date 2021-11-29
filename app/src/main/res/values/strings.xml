@@ -42,6 +42,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="lobby_select">Select a Lobby</string>
+    <string name="lobby_create">Create Lobby</string>
 
 
 </resources>
