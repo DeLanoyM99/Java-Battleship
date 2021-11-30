@@ -24,18 +24,18 @@
             app:srcCompat="@drawable/battleship_text" />
 
         <EditText
-            android:id="@+id/Player2NameText"
+            android:id="@+id/passwordTextField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_marginTop="50dp"
             android:ems="10"
             android:hint="@string/password"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:minHeight="50dp" />
 
         <EditText
-            android:id="@+id/Player1NameText"
+            android:id="@+id/usernameTextField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center_vertical"
@@ -75,10 +75,11 @@
             android:layout_toStartOf="@id/buffer">
 
             <Button
+                android:id="@+id/loginButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:onClick="onStartGame"
+                android:onClick="onLogin"
                 android:text="@string/login" />
         </FrameLayout>
 
@@ -88,10 +89,11 @@
             android:layout_toEndOf="@id/buffer">
 
             <Button
-                android:id="@+id/SignUp"
+                android:id="@+id/SignupButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:onClick="onSignup"
                 android:text="@string/sign_up" />
         </FrameLayout>
     </RelativeLayout>

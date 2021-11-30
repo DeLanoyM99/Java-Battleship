@@ -53,10 +53,10 @@ public class Cloud {
         }
     }
 
-    public boolean login(final String user, final String password) {
+    public boolean login(final String username, final String password) {
         BattleshipNetwork service = retrofit.create(BattleshipNetwork.class);
         try {
-            Response<LoginResult> response = service.login(user, password).execute();
+            Response<LoginResult> response = service.login(username, password).execute();
 
             // check if signup query failed
             if (!response.isSuccessful()) {

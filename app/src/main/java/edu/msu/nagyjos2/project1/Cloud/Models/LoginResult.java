@@ -9,7 +9,7 @@ public class LoginResult {
     @Attribute
     private String status; // will be a 'yes' or a 'no'
 
-    @Attribute
+    @Attribute(name = "msg", required = false)
     private String msg; // will be "user" or "password" IF status is no
 
     public String getStatus() {
@@ -19,16 +19,6 @@ public class LoginResult {
     public String getMsg() {
         return msg;
     }
-
-    /*
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-    */
 
     public LoginResult() {} // required by retrofit
 

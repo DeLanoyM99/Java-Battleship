@@ -6,10 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import edu.msu.nagyjos2.project1.Cloud.Cloud;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,11 +22,11 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Text input for player1
      */
-    private EditText player1;
+    private EditText usernameView;
     /**
      * Text input for player2
      */
-    private EditText player2;
+    private EditText passwordView;
     /**
      * The preferences checkbox
      */
@@ -33,11 +34,16 @@ public class MainActivity extends AppCompatActivity {
     /**
      * result for player1
      */
-    private String player1_result;
+    private String username;
     /**
      * result for player2
      */
-    private String player2_result;
+    private String password;
+
+    /**
+     * cloud object to perform networking calls
+     */
+    private Cloud cloud = new Cloud();
 
     @Override
     /**
@@ -47,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        player1 = findViewById(R.id.Player1NameText);
-        player2 = findViewById(R.id.Player2NameText);
+        usernameView = findViewById(R.id.usernameTextField);
+        passwordView = findViewById(R.id.passwordTextField);
         rememberCheck = findViewById(R.id.SavePreferencesCheckBox);
 
         // check preferences
@@ -59,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
             String username = settings.getString(USERNAME, "");
             String password = settings.getString(PASSWORD, "");
 
-            player1.setText(username);
-            player2.setText(password);
+            usernameView.setText(username);
+            passwordView.setText(password);
             rememberCheck.setChecked(true);
         }
         else {
@@ -69,20 +75,68 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * send the user to the sign up activity
+     * @param view
+     */
+    public void onSignup(View view) {
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * login the user, sends user to lobby activity if valid
+     * @param view
+     */
+    public void onLogin(View view) {
+        /*
+         * Create new thread to check if user is valid
+         */
+        MainActivity main = this;
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                // create cloud object and get xml message
+                final boolean result = cloud.login(usernameView.getText().toString(), passwordView.getText().toString());
+
+                view.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if (result) { // user is valid
+                            Intent intent = new Intent(main, LobbyActivity.class);
+                            startActivity(intent);
+                        }
+                        else { // user or password invalid
+                            Toast.makeText(view.getContext(),
+                                    R.string.invalid_login,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+            }
+        }).start();
+    }
+
+    /**
+     *  *****FUNCTION IS DEPRECATED*****
+     *
      * start the game button
      * @param view The view we get
      */
     public void onStartGame(View view) {
         Intent intent = new Intent(this, ShipPlacement.class);
-        String name1 = player1.getText().toString();
-        String name2 = player2.getText().toString();
-        player1_result = name1.equals("") ? "Player 1" : name1; // set name with defaults
-        player2_result = name2.equals("") ? "Player 2" : name2;
+        String name1 = usernameView.getText().toString();
+        String name2 = passwordView.getText().toString();
+        username = name1.equals("") ? "Player 1" : name1; // set name with defaults
+        password = name2.equals("") ? "Player 2" : name2;
 
         onRemember(view);
 
-        intent.putExtra("Player1Name", player1_result);
-        intent.putExtra("Player2Name", player2_result);
+        intent.putExtra("Player1Name", username);
+        intent.putExtra("Player2Name", password);
         startActivity(intent);
     }
 
@@ -91,15 +145,15 @@ public class MainActivity extends AppCompatActivity {
      * @param view the checkbox view
      */
     public void onRemember(View view) {
-        if (!player1_result.equals("") && !player2_result.equals("")) {
+        if (!username.equals("") && !password.equals("")) {
 
             SharedPreferences settings =
                     getSharedPreferences(LOGIN, MODE_PRIVATE);
 
             SharedPreferences.Editor editor = settings.edit();
 
-            editor.putString(USERNAME, player1_result);
-            editor.putString(PASSWORD, player2_result);
+            editor.putString(USERNAME, username);
+            editor.putString(PASSWORD, password);
             editor.putBoolean(REMEMBER, rememberCheck.isChecked());
             editor.commit();
         }

@@ -9,7 +9,7 @@ public class SignupResult {
     @Attribute
     private String status; // will be a 'yes' or a 'no'
 
-    @Attribute
+    @Attribute(name = "msg", required = false)
     private String msg; // will be "user exists" or "insertfail" IF status is no
 
     public String getStatus() {
@@ -19,16 +19,6 @@ public class SignupResult {
     public String getMsg() {
         return msg;
     }
-
-    /*
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-    */
 
     public SignupResult() {} // required by retrofit
 
