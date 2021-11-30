@@ -39,11 +39,15 @@
     <string name="action_sign_in">Sign in or register</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password_len">Password must be at least 6 characters</string>
+    <string name="invalid_password_diff">Passwords do not match</string>
     <string name="login_failed">"Login failed"</string>
     <string name="lobby_select">Select a Lobby</string>
     <string name="lobby_create">Create Lobby</string>
     <string name="invalid_login">Invalid Username or Password</string>
+    <string name="new_to_battleship">New to Battleship?</string>
+    <string name="username_taken">Username is already registered</string>
+    <string name="signup_success">Account created, please login</string>
 
 
 </resources>

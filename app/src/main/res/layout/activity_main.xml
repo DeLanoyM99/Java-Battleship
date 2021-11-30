@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="bottom"
-        android:layout_weight="3">
+        android:layout_weight="5">
 
         <ImageView
             android:id="@+id/imageView"
@@ -56,10 +56,68 @@
 
     </FrameLayout>
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:onClick="onLogin"
+            android:text="@string/login" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="3">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/newBattleshipText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="false"
+                android:layout_centerVertical="false"
+                android:gravity="center"
+                android:minHeight="50dp"
+                android:paddingRight="5dp"
+                android:text="@string/new_to_battleship" />
+
+            <TextView
+                android:id="@+id/signupTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="false"
+                android:layout_centerVertical="false"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:minHeight="50dp"
+                android:onClick="onSignup"
+                android:shadowColor="#000000"
+                android:text="@string/sign_up"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:visibility="gone">
 
         <FrameLayout
             android:id="@+id/buffer"
@@ -72,16 +130,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toStartOf="@id/buffer">
-
-            <Button
-                android:id="@+id/loginButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:onClick="onLogin"
-                android:text="@string/login" />
-        </FrameLayout>
+            android:layout_toStartOf="@id/buffer"/>
 
         <FrameLayout
             android:layout_width="match_parent"

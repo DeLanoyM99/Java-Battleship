@@ -52,19 +52,59 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2">
+        android:layout_weight="1">
 
         <Button
-            android:id="@+id/Login"
+            android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:onClick="onStartGame"
-            android:paddingLeft="25dp"
-            android:paddingTop="10dp"
-            android:paddingRight="25dp"
-            android:paddingBottom="10dp"
-            android:text="@string/StartButton" />
+            android:minHeight="50dp"
+            android:onClick="onLogin"
+            android:text="@string/login" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/newBattleshipText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="false"
+                android:layout_centerVertical="false"
+                android:gravity="center"
+                android:minHeight="50dp"
+                android:paddingRight="5dp"
+                android:text="@string/new_to_battleship" />
+
+            <TextView
+                android:id="@+id/signupTextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="false"
+                android:layout_centerVertical="false"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:minHeight="50dp"
+                android:onClick="onSignup"
+                android:shadowColor="#6A6A6A"
+                android:text="@string/sign_up"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+        </LinearLayout>
 
     </FrameLayout>
 

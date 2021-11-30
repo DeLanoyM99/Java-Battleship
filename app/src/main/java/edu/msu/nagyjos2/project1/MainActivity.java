@@ -91,21 +91,21 @@ public class MainActivity extends AppCompatActivity {
         /*
          * Create new thread to check if user is valid
          */
-        MainActivity main = this;
         new Thread(new Runnable() {
 
             @Override
             public void run() {
                 // create cloud object and get xml message
-                final boolean result = cloud.login(usernameView.getText().toString(), passwordView.getText().toString());
+                username = usernameView.getText().toString();
+                password = passwordView.getText().toString();
+                final boolean result = cloud.login(username, password);
 
                 view.post(new Runnable() {
 
                     @Override
                     public void run() {
                         if (result) { // user is valid
-                            Intent intent = new Intent(main, LobbyActivity.class);
-                            startActivity(intent);
+                            GoToLobby(view);
                         }
                         else { // user or password invalid
                             Toast.makeText(view.getContext(),
@@ -121,22 +121,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *  *****FUNCTION IS DEPRECATED*****
-     *
-     * start the game button
+     * go to the lobby (after account logged in)
      * @param view The view we get
      */
-    public void onStartGame(View view) {
-        Intent intent = new Intent(this, ShipPlacement.class);
-        String name1 = usernameView.getText().toString();
-        String name2 = passwordView.getText().toString();
-        username = name1.equals("") ? "Player 1" : name1; // set name with defaults
-        password = name2.equals("") ? "Player 2" : name2;
+    private void GoToLobby(View view) {
+        Intent intent = new Intent(this, LobbyActivity.class);
 
         onRemember(view);
 
-        intent.putExtra("Player1Name", username);
-        intent.putExtra("Player2Name", password);
+        intent.putExtra("Username", username);
         startActivity(intent);
     }
 
