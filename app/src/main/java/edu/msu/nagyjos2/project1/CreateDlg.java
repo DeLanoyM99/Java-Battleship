@@ -75,7 +75,7 @@ public class CreateDlg extends DialogFragment {
             @Override
             public void run() {
                 Cloud cloud = new Cloud();
-                cloud.lobbyCreate(hostId, name);
+                boolean ok = cloud.lobbyCreate(hostId, name);
 
                 WaitingDlg waitDlg = new WaitingDlg();
                 waitDlg.setId(hostId);

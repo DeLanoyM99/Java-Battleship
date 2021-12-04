@@ -32,13 +32,13 @@ public interface BattleshipNetwork {
 
     @GET(CREATE_PATH)
     Call<CreateResult> createLobby(
-            @Query("user") String userId,
+            @Query("userid") String userId,
             @Query("name") String name
             );
 
     @GET(DELETE_PATH)
     Call<DeleteResult> deleteLobby(
-            @Query("user") String userId
+            @Query("userid") String userId
     );
 
 

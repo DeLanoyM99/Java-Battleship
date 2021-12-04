@@ -18,8 +18,8 @@ public class Cloud {
     public static final String BASE_URL = "https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/";
     public static final String LOGIN_PATH = "battleship-login.php";
     public static final String SIGNUP_PATH = "battleship-signup.php";
-    public static final String CREATE_PATH = "lobby_create.php";
-    public static final String DELETE_PATH = "lobby_delete.php";
+    public static final String CREATE_PATH = "lobby-create.php";
+    public static final String DELETE_PATH = "lobby-delete.php";
 
 
     private static Retrofit retrofit = new Retrofit.Builder()
@@ -101,8 +101,6 @@ public class Cloud {
                 Log.e("signup", "Failed to login the user, response code is = " + response.code());
                 return false;
             }
-
-            CreateResult result = response.body();
 
             return true;
 

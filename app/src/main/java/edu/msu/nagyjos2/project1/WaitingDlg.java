@@ -79,7 +79,7 @@ public class WaitingDlg extends DialogFragment {
             @Override
             public void run() {
                 Cloud cloud = new Cloud();
-                cloud.lobbyDelete(hostId);
+                boolean ok = cloud.lobbyDelete(hostId);
             }
 
         }).start();
