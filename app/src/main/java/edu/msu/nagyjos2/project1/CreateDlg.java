@@ -18,12 +18,14 @@ import edu.msu.nagyjos2.project1.Cloud.Cloud;
 public class CreateDlg extends DialogFragment {
 
     private AlertDialog dlg;
-
     private String hostId;
+    private View lobbyview = null;
 
     public void setHostId(String id) {
         this.hostId = id;
     }
+
+    public void setLobbyview(View view) { this.lobbyview = view; }
 
     /**
      * Create the dialog box
@@ -70,20 +72,39 @@ public class CreateDlg extends DialogFragment {
      */
     private void save(final String hostId, final String name) {
 
+        final View view = this.lobbyview;
         new Thread(new Runnable() {
 
             @Override
             public void run() {
                 Cloud cloud = new Cloud();
-                cloud.lobbyCreate(hostId, name);
+                boolean result = cloud.lobbyCreate(hostId, name);
 
-                WaitingDlg waitDlg = new WaitingDlg();
-                waitDlg.setId(hostId);
-                waitDlg.show(getActivity().getSupportFragmentManager(), "waiting");
+                view.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if (!result) { // lobby could not be created
+                            Toast.makeText(view.getContext(),
+                                    R.string.lobby_fail,
+                                    Toast.LENGTH_SHORT).show();
+
+                            dlg.dismiss();
+                        }
+                        else {
+                            Toast.makeText(view.getContext(),
+                                    R.string.lobby_success,
+                                    Toast.LENGTH_SHORT).show();
+
+                            dlg.dismiss();
+                            //WaitingDlg waitDlg = new WaitingDlg();
+                            //waitDlg.setId(hostId);
+                            //waitDlg.show(getActivity().getSupportFragmentManager(), "waiting");
+                        }
+                    }
+                });
             }
 
         }).start();
     }
-
-
 }

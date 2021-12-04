@@ -32,7 +32,7 @@ public interface BattleshipNetwork {
 
     @GET(CREATE_PATH)
     Call<CreateResult> createLobby(
-            @Query("user") String userId,
+            @Query("hostid") String hostid,
             @Query("name") String name
             );
 

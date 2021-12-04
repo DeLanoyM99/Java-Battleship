@@ -18,8 +18,8 @@ public class Cloud {
     public static final String BASE_URL = "https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/";
     public static final String LOGIN_PATH = "battleship-login.php";
     public static final String SIGNUP_PATH = "battleship-signup.php";
-    public static final String CREATE_PATH = "lobby_create.php";
-    public static final String DELETE_PATH = "lobby_delete.php";
+    public static final String CREATE_PATH = "lobby-create.php";
+    public static final String DELETE_PATH = "lobby-delete.php";
 
 
     private static Retrofit retrofit = new Retrofit.Builder()
@@ -103,6 +103,16 @@ public class Cloud {
             }
 
             CreateResult result = response.body();
+            // check if lobby could not be created
+            if (result.getStatus().equals("no")) {
+                if (result.getMessage().equals("insertfail")) {
+                    Log.e("insert", "insert failed");
+                }
+                else {
+                    Log.e("userid", "missing userid or name");
+                }
+                return false;
+            }
 
             return true;
 

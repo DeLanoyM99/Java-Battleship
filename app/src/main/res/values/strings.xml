@@ -51,6 +51,8 @@
     <string name="waiting">Waiting For Player…</string>
     <string name="lobby_name">Create New Lobby</string>
     <string name="create_name">Name</string>
+    <string name="lobby_fail">Could not create lobby</string>
+    <string name="lobby_success">Lobby created</string>
 
 
 </resources>
