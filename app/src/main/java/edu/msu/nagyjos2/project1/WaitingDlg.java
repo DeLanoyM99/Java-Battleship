@@ -16,11 +16,6 @@ public class WaitingDlg extends DialogFragment {
      */
     private String Id;
 
-    /**
-     * Set true if we want to cancel
-     */
-    private volatile boolean cancel = false;
-
     public void setId(String id) {
         this.Id = id;
     }

@@ -58,6 +58,9 @@ public class CreateDlg extends DialogFragment {
             public void onClick(DialogInterface dialog, int id) {
                 EditText editName = (EditText)dlg.findViewById(R.id.editName);
                 save(hostId, editName.getText().toString().trim());
+                WaitingDlg waitDlg = new WaitingDlg();
+                waitDlg.setId(hostId);
+                waitDlg.show(getActivity().getSupportFragmentManager(), "waiting");
             }
         });
 
@@ -97,9 +100,6 @@ public class CreateDlg extends DialogFragment {
                                     Toast.LENGTH_SHORT).show();
 
                             dlg.dismiss();
-                            //WaitingDlg waitDlg = new WaitingDlg();
-                            //waitDlg.setId(hostId);
-                            //waitDlg.show(getActivity().getSupportFragmentManager(), "waiting");
                         }
                     }
                 });

@@ -38,7 +38,7 @@ public interface BattleshipNetwork {
 
     @GET(DELETE_PATH)
     Call<DeleteResult> deleteLobby(
-            @Query("user") String userId
+            @Query("hostid") String userId
     );
 
 
