@@ -96,16 +96,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // create cloud object and get xml message
-                username = usernameView.getText().toString();
-                password = passwordView.getText().toString();
-                final boolean result = cloud.login(username, password);
+                username = usernameView.getText().toString().trim();
+                password = passwordView.getText().toString().trim();
+                final String id = cloud.login(username, password);
 
                 view.post(new Runnable() {
 
                     @Override
                     public void run() {
-                        if (result) { // user is valid
-                            GoToLobby(view);
+                        if (id != "") { // user is valid
+                            GoToLobby(id, view);
                         }
                         else { // user or password invalid
                             Toast.makeText(view.getContext(),
@@ -124,12 +124,13 @@ public class MainActivity extends AppCompatActivity {
      * go to the lobby (after account logged in)
      * @param view The view we get
      */
-    private void GoToLobby(View view) {
+    private void GoToLobby(String id, View view) {
         Intent intent = new Intent(this, LobbyActivity.class);
 
         onRemember(view);
 
         intent.putExtra("Username", username);
+        intent.putExtra( "UserId", id);
         startActivity(intent);
     }
 

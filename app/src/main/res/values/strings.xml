@@ -48,6 +48,9 @@
     <string name="new_to_battleship">New to Battleship?</string>
     <string name="username_taken">Username is already registered</string>
     <string name="signup_success">Account created, please login</string>
+    <string name="waiting">Waiting For Player…</string>
+    <string name="lobby_name">Create New Lobby</string>
+    <string name="create_name">Name</string>
 
 
 </resources>

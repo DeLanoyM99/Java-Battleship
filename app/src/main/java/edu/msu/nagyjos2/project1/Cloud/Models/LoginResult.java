@@ -12,6 +12,11 @@ public class LoginResult {
     @Attribute(name = "msg", required = false)
     private String msg; // will be "user" or "password" IF status is no
 
+    @Attribute(name = "user_id", required = false)
+    private String user_id; // will be "user" or "password" IF status is no
+
+    public String getUserId() {return user_id;}
+
     public String getStatus() {
         return status;
     }
@@ -22,8 +27,9 @@ public class LoginResult {
 
     public LoginResult() {} // required by retrofit
 
-    public LoginResult(String status, String msg) {
+    public LoginResult(String status, String msg, String userid) {
         this.status = status;
         this.msg = msg;
+        this.user_id = userid;
     }
 }
