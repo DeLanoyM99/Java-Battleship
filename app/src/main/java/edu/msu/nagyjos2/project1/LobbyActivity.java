@@ -23,6 +23,7 @@ public class LobbyActivity extends AppCompatActivity {
     public void onCreateLobby(View view) {
         CreateDlg dlg = new CreateDlg();
         dlg.setHostId(userId);
+        dlg.setLobbyview(view);
         dlg.show(getSupportFragmentManager(), "create");
     }
 }

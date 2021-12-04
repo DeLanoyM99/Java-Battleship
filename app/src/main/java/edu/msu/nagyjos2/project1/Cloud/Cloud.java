@@ -102,6 +102,18 @@ public class Cloud {
                 return false;
             }
 
+            CreateResult result = response.body();
+            // check if lobby could not be created
+            if (result.getStatus().equals("no")) {
+                if (result.getMessage().equals("insertfail")) {
+                    Log.e("insert", "insert failed");
+                }
+                else {
+                    Log.e("userid", "missing userid or name");
+                }
+                return false;
+            }
+
             return true;
 
         } catch (IOException | RuntimeException e) {
