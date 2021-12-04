@@ -11,4 +11,6 @@
     <color name="light_blue_600">#FF039BE5</color>
     <color name="gray_400">#FFBDBDBD</color>
     <color name="gray_600">#FF757575</color>
+    <color name="lobby_background_color">#7262C3FB</color>
+    <color name="lobby_border_color">#B5015180</color>
 </resources>

@@ -10,5 +10,12 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:choiceMode="singleChoice" />
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/border"
+        android:choiceMode="singleChoice"
+        android:divider="@color/lobby_border_color"
+        android:dividerHeight="2dp" />
 </RelativeLayout>
