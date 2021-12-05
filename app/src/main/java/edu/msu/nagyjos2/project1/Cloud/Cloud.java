@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import edu.msu.nagyjos2.project1.Cloud.Models.JoinResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.Lobbies;
 import edu.msu.nagyjos2.project1.Cloud.Models.CreateResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.DeleteResult;
@@ -29,6 +30,7 @@ public class Cloud {
     public static final String SIGNUP_PATH = "battleship-signup.php";
     public static final String CREATE_PATH = "lobby-create.php";
     public static final String DELETE_PATH = "lobby-delete.php";
+    public static final String JOIN_PATH = "lobby-join.php";
     public static final String LOBBY_LOAD_PATH = "lobby-load.php";
 
 
@@ -242,4 +244,29 @@ public class Cloud {
             return false;
         }
     }
+
+    public boolean lobbyJoin(final String hostid, final String guestid){
+        BattleshipNetwork service = retrofit.create(BattleshipNetwork.class);
+        try{
+            Response<JoinResult> response = service.joinLobby(hostid, guestid).execute();
+            // check if request failed
+            if (!response.isSuccessful()) {
+                Log.e("JoinLobby", "Failed to join lobby, response code is = " + response.code());
+                return false;
+            }
+
+            JoinResult result = response.body();
+            if (!result.getStatus().equals("yes")) {
+                Log.e("JoinLobby", "Failed to join lobby, message is = '" + result.getMessage() + "'");
+                return false;
+            }
+
+            return true;
+
+            } catch (IOException | RuntimeException e) {
+                Log.e("JoinLobby", "Exception occurred while joining lobby!", e);
+                return false;
+            }
+    }
+
 }

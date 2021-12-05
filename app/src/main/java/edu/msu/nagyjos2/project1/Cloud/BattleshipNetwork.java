@@ -5,7 +5,9 @@ import static edu.msu.nagyjos2.project1.Cloud.Cloud.DELETE_PATH;
 import static edu.msu.nagyjos2.project1.Cloud.Cloud.LOGIN_PATH;
 import static edu.msu.nagyjos2.project1.Cloud.Cloud.SIGNUP_PATH;
 import static edu.msu.nagyjos2.project1.Cloud.Cloud.LOBBY_LOAD_PATH;
+import static edu.msu.nagyjos2.project1.Cloud.Cloud.JOIN_PATH;
 
+import edu.msu.nagyjos2.project1.Cloud.Models.JoinResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.Lobbies;
 import edu.msu.nagyjos2.project1.Cloud.Models.CreateResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.DeleteResult;
@@ -46,7 +48,11 @@ public interface BattleshipNetwork {
     @GET(LOBBY_LOAD_PATH)
     Call<Lobbies> getLobbies ();
 
-
+    @GET(JOIN_PATH)
+    Call<JoinResult> joinLobby(
+            @Query("hostid") String hostid,
+            @Query("guestid") String guestid
+    );
 
 
 }

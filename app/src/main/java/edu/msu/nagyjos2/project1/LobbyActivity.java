@@ -16,6 +16,7 @@ public class LobbyActivity extends AppCompatActivity {
     private String userId;
     private ListView list;
     private Cloud.LobbiesAdapter adapter;
+    private Cloud cloud = new Cloud();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,8 @@ public class LobbyActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
 
                 // join game here
+                cloud.lobbyJoin(hostid, userId);
+
             }
         });
 
