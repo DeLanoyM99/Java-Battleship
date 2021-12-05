@@ -53,6 +53,7 @@
     <string name="create_name">Name</string>
     <string name="lobby_fail">Could not create lobby</string>
     <string name="lobby_success">Lobby created</string>
+    <string name="lobby_join_fail">Error - could not join Lobby</string>
 
 
 </resources>

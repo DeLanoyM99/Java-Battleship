@@ -31,16 +31,38 @@ public class LobbyActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String hostid = adapter.getLobbies().getItems().get(position).getId();
-                String lobbyName = adapter.getLobbies().getItems().get(position).getName();
+                final String hostid = adapter.getLobbies().getItems().get(position).getId();
+                final String lobbyName = adapter.getLobbies().getItems().get(position).getName();
 
                 Toast.makeText(view.getContext(),
                         "Joined: " + lobbyName + "\nid: " + hostid,
                         Toast.LENGTH_SHORT).show();
 
                 // join game here
-                cloud.lobbyJoin(hostid, userId);
+                new Thread(new Runnable() {
 
+                    @Override
+                    public void run() {
+                        boolean result = cloud.lobbyJoin(hostid, userId);
+
+                        if (!result) {
+                            Toast.makeText(view.getContext(), R.string.lobby_join_fail, Toast.LENGTH_SHORT).show();
+                        }
+
+                        view.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(view.getContext(),
+                                        "Joined: " + lobbyName + "\nid: " + hostid,
+                                        Toast.LENGTH_SHORT).show();
+
+                                // start ship placement here
+                                // send hostid and guestid to ship placement
+                                // host will create game, and receive the guestid as well
+                            }
+                        });
+                    }
+                }).start();
             }
         });
 
@@ -55,10 +77,6 @@ public class LobbyActivity extends AppCompatActivity {
     }
 
     public void LoadLobbies() {
-        // Get the layout inflater
-        //LayoutInflater inflater = getLayoutInflater();
-        //View view = inflater.inflate(R.layout.lobby_list, null);
-        //setContentView(view);
         list = (ListView) this.findViewById(R.id.listLobbies);
 
         // Create an adapter
