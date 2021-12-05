@@ -76,6 +76,10 @@ public class LobbyActivity extends AppCompatActivity {
         dlg.show(getSupportFragmentManager(), "create");
     }
 
+    public void onRefresh(View view) {
+        LoadLobbies();
+    }
+
     public void LoadLobbies() {
         list = (ListView) this.findViewById(R.id.listLobbies);
 
