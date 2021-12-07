@@ -6,9 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
@@ -59,7 +57,7 @@ public class CreateDlg extends DialogFragment {
                 EditText editName = (EditText)dlg.findViewById(R.id.editName);
                 save(hostId, editName.getText().toString().trim());
                 WaitingDlg waitDlg = new WaitingDlg();
-                waitDlg.setId(hostId);
+                waitDlg.setHostid(hostId);
                 waitDlg.show(getActivity().getSupportFragmentManager(), "waiting");
             }
         });

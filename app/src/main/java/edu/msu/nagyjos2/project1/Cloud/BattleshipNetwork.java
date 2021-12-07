@@ -1,6 +1,7 @@
 package edu.msu.nagyjos2.project1.Cloud;
 
 import static edu.msu.nagyjos2.project1.Cloud.Cloud.CREATE_PATH;
+import static edu.msu.nagyjos2.project1.Cloud.Cloud.CREATE_WAIT_PATH;
 import static edu.msu.nagyjos2.project1.Cloud.Cloud.DELETE_PATH;
 import static edu.msu.nagyjos2.project1.Cloud.Cloud.LOGIN_PATH;
 import static edu.msu.nagyjos2.project1.Cloud.Cloud.SIGNUP_PATH;
@@ -52,6 +53,11 @@ public interface BattleshipNetwork {
     Call<JoinResult> joinLobby(
             @Query("hostid") String hostid,
             @Query("guestid") String guestid
+    );
+
+    @GET(CREATE_WAIT_PATH)
+    Call<CreateResult> waitForGuest(
+            @Query("hostid") String hostid
     );
 
 

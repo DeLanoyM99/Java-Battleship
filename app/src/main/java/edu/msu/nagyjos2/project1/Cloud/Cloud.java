@@ -29,6 +29,7 @@ public class Cloud {
     public static final String LOGIN_PATH = "battleship-login.php";
     public static final String SIGNUP_PATH = "battleship-signup.php";
     public static final String CREATE_PATH = "lobby-create.php";
+    public static final String CREATE_WAIT_PATH = "lobby-create-waiting.php";
     public static final String DELETE_PATH = "lobby-delete.php";
     public static final String JOIN_PATH = "lobby-join.php";
     public static final String LOBBY_LOAD_PATH = "lobby-load.php";
@@ -190,7 +191,6 @@ public class Cloud {
     }
 
     public boolean lobbyCreate(final String hostID, final String name) {
-
         BattleshipNetwork service = retrofit.create(BattleshipNetwork.class);
         try {
             Response<CreateResult> response = service.createLobby(hostID, name).execute();
@@ -217,6 +217,37 @@ public class Cloud {
         } catch (IOException | RuntimeException e) {
             Log.e("signup", "Exception occurred while signing up the user", e);
             return false;
+        }
+    }
+
+    public String LobbyWaitForGuest(final String hostID) {
+        BattleshipNetwork service = retrofit.create(BattleshipNetwork.class);
+        try {
+            Response<CreateResult> response = service.waitForGuest(hostID).execute();
+            // check if signup query failed
+            if (!response.isSuccessful()) {
+                Log.e("signup", "Failed to login the user, response code is = " + response.code());
+                return "";
+            }
+
+            CreateResult result = response.body();
+            // check if guest has joined
+            if (result.getStatus().equals("no")) {
+                if (result.getMessage().equals("unjoined")) {
+                    Log.e("waiting", "No one joined yet");
+                    return "-1";
+                }
+                else { // something went wrong
+                    Log.e("waiting", "error - could not retrieve guest");
+                    return "";
+                }
+            }
+
+            return result.getGuestid();
+
+        } catch (IOException | RuntimeException e) {
+            Log.e("signup", "Exception occurred while signing up the user", e);
+            return "";
         }
     }
 

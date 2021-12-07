@@ -2,6 +2,7 @@ package edu.msu.nagyjos2.project1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -57,8 +58,10 @@ public class LobbyActivity extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
 
                                 // start ship placement here
-                                // send hostid and guestid to ship placement
-                                // host will create game, and receive the guestid as well
+                                Intent intent = new Intent(view.getContext(), ShipPlacement.class);
+                                intent.putExtra("Player1Name", hostid);
+                                intent.putExtra("Player2Name", userId);
+                                startActivity(intent);
                             }
                         });
                     }

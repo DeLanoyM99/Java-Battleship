@@ -11,6 +11,9 @@ public class CreateResult {
     @Attribute(name = "msg", required = false)
     private String message;
 
+    @Attribute(name = "guestid", required = false)
+    private String guestid;
+
     public String getMessage() {
         return message;
     }
@@ -26,6 +29,8 @@ public class CreateResult {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getGuestid() { return guestid; }
 
     public CreateResult() {}
 
