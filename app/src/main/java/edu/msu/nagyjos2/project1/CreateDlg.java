@@ -17,10 +17,15 @@ public class CreateDlg extends DialogFragment {
 
     private AlertDialog dlg;
     private String hostId;
+    private String hostName;
     private View lobbyview = null;
 
     public void setHostId(String id) {
         this.hostId = id;
+    }
+
+    public void setHostName(String name) {
+        this.hostName = name;
     }
 
     public void setLobbyview(View view) { this.lobbyview = view; }
@@ -58,6 +63,7 @@ public class CreateDlg extends DialogFragment {
                 save(hostId, editName.getText().toString().trim());
                 WaitingDlg waitDlg = new WaitingDlg();
                 waitDlg.setHostid(hostId);
+                waitDlg.setHostname(hostName);
                 waitDlg.show(getActivity().getSupportFragmentManager(), "waiting");
             }
         });

@@ -14,28 +14,23 @@ public class CreateResult {
     @Attribute(name = "guestid", required = false)
     private String guestid;
 
-    public String getMessage() {
-        return message;
-    }
+    @Attribute(name = "guestname", required = false)
+    private String guestname;
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    public String getMessage() { return message; }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public String getStatus() { return status; }
 
     public String getGuestid() { return guestid; }
 
+    public String getGuestname() { return guestname; }
+
     public CreateResult() {}
 
-    public CreateResult(String status, String msg) {
+    public CreateResult(String status, String guestid, String guestname, String msg) {
         this.status = status;
+        this.guestid = guestid;
+        this.guestname = guestname;
         this.message = msg;
     }
 }

@@ -3,6 +3,7 @@ package edu.msu.nagyjos2.project1;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import edu.msu.nagyjos2.project1.Cloud.Cloud;
+import edu.msu.nagyjos2.project1.Cloud.Models.JoinResult;
 
 public class LobbyActivity extends AppCompatActivity {
 
@@ -35,32 +37,32 @@ public class LobbyActivity extends AppCompatActivity {
                 final String hostid = adapter.getLobbies().getItems().get(position).getId();
                 final String lobbyName = adapter.getLobbies().getItems().get(position).getName();
 
-                Toast.makeText(view.getContext(),
-                        "Joined: " + lobbyName + "\nid: " + hostid,
-                        Toast.LENGTH_SHORT).show();
-
                 // join game here
                 new Thread(new Runnable() {
 
                     @Override
                     public void run() {
-                        boolean result = cloud.lobbyJoin(hostid, userId);
+                        JoinResult result = cloud.lobbyJoin(hostid, userId);
 
-                        if (!result) {
+                        if (result.getStatus().equals("no")) {
                             Toast.makeText(view.getContext(), R.string.lobby_join_fail, Toast.LENGTH_SHORT).show();
+                            return;
                         }
 
+                        final String hostname = result.getHostname();
                         view.post(new Runnable() {
                             @Override
                             public void run() {
                                 Toast.makeText(view.getContext(),
-                                        "Joined: " + lobbyName + "\nid: " + hostid,
+                                        "Joined: " + lobbyName,
                                         Toast.LENGTH_SHORT).show();
 
                                 // start ship placement here
                                 Intent intent = new Intent(view.getContext(), ShipPlacement.class);
-                                intent.putExtra("Player1Name", hostid);
-                                intent.putExtra("Player2Name", userId);
+                                intent.putExtra("hostId", hostid);
+                                intent.putExtra("guestId", userId);
+                                intent.putExtra("guestName", username);
+                                intent.putExtra("hostName", hostname);
                                 startActivity(intent);
                             }
                         });
@@ -75,6 +77,7 @@ public class LobbyActivity extends AppCompatActivity {
     public void onCreateLobby(View view) {
         CreateDlg dlg = new CreateDlg();
         dlg.setHostId(userId);
+        dlg.setHostName(username);
         dlg.setLobbyview(view);
         dlg.show(getSupportFragmentManager(), "create");
     }

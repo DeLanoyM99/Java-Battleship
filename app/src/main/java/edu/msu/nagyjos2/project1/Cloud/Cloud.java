@@ -220,14 +220,14 @@ public class Cloud {
         }
     }
 
-    public String LobbyWaitForGuest(final String hostID) {
+    public CreateResult LobbyWaitForGuest(final String hostID) {
         BattleshipNetwork service = retrofit.create(BattleshipNetwork.class);
         try {
             Response<CreateResult> response = service.waitForGuest(hostID).execute();
             // check if signup query failed
             if (!response.isSuccessful()) {
                 Log.e("signup", "Failed to login the user, response code is = " + response.code());
-                return "";
+                return new CreateResult("no", "", "", "fail");
             }
 
             CreateResult result = response.body();
@@ -235,19 +235,19 @@ public class Cloud {
             if (result.getStatus().equals("no")) {
                 if (result.getMessage().equals("unjoined")) {
                     Log.e("waiting", "No one joined yet");
-                    return "-1";
+                    return new CreateResult("no", "-1", "", "");
                 }
                 else { // something went wrong
                     Log.e("waiting", "error - could not retrieve guest");
-                    return "";
+                    return new CreateResult("no", "", "", "fail");
                 }
             }
 
-            return result.getGuestid();
+            return result;
 
         } catch (IOException | RuntimeException e) {
             Log.e("signup", "Exception occurred while signing up the user", e);
-            return "";
+            return new CreateResult("no", "", "", "fail");
         }
     }
 
@@ -276,27 +276,27 @@ public class Cloud {
         }
     }
 
-    public boolean lobbyJoin(final String hostid, final String guestid){
+    public JoinResult lobbyJoin(final String hostid, final String guestid){
         BattleshipNetwork service = retrofit.create(BattleshipNetwork.class);
         try{
             Response<JoinResult> response = service.joinLobby(hostid, guestid).execute();
             // check if request failed
             if (!response.isSuccessful()) {
                 Log.e("JoinLobby", "Failed to join lobby, response code is = " + response.code());
-                return false;
+                return new JoinResult("no", "", "fail");
             }
 
             JoinResult result = response.body();
             if (!result.getStatus().equals("yes")) {
                 Log.e("JoinLobby", "Failed to join lobby, message is = '" + result.getMessage() + "'");
-                return false;
+                return new JoinResult("no", "", "fail");
             }
 
-            return true;
+            return result;
 
             } catch (IOException | RuntimeException e) {
                 Log.e("JoinLobby", "Exception occurred while joining lobby!", e);
-                return false;
+                return new JoinResult("no", "", "fail");
             }
     }
 

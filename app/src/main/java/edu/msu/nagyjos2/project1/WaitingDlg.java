@@ -9,13 +9,18 @@ import android.widget.Toast;
 import androidx.fragment.app.DialogFragment;
 
 import edu.msu.nagyjos2.project1.Cloud.Cloud;
+import edu.msu.nagyjos2.project1.Cloud.Models.CreateResult;
 
 public class WaitingDlg extends DialogFragment {
+
+    private final static String ID = "id";
+    private final static String NAME = "name";
 
     /**
      * Id for the image we are loading
      */
     private String hostid;
+    private String hostName;
 
     /**
      * Set true if we want to cancel
@@ -26,7 +31,11 @@ public class WaitingDlg extends DialogFragment {
         this.hostid = hostid;
     }
 
-    private final static String ID = "id";
+    public void setHostname(String hostname) {
+        this.hostName = hostname;
+    }
+
+
 
 
     /**
@@ -37,6 +46,7 @@ public class WaitingDlg extends DialogFragment {
         super.onSaveInstanceState(bundle);
 
         bundle.putString(ID, hostid);
+        bundle.putString(NAME, hostName);
     }
 
 
@@ -48,6 +58,7 @@ public class WaitingDlg extends DialogFragment {
 
         if (bundle != null) {
             hostid = bundle.getString(ID);
+            hostName = bundle.getString(NAME);
         }
 
         cancel = false;
@@ -74,6 +85,7 @@ public class WaitingDlg extends DialogFragment {
         new Thread(new Runnable() {
 
             final Cloud cloud = new Cloud();
+            String guestname = "";
 
             @Override
             public void run() {
@@ -103,8 +115,10 @@ public class WaitingDlg extends DialogFragment {
                         @Override
                         public void run() {
                             Intent intent = new Intent(getActivity(), ShipPlacement.class);
-                            intent.putExtra("Player1Name", hostid);
-                            intent.putExtra("Player2Name", guestStrId);
+                            intent.putExtra("hostId", hostid);
+                            intent.putExtra("guestId", guestStrId);
+                            intent.putExtra("hostName", hostName);
+                            intent.putExtra("guestName", guestname);
                             startActivity(intent);
                         }
                     });
@@ -120,7 +134,8 @@ public class WaitingDlg extends DialogFragment {
             public int getGuestId() {
 
                 // start polling
-                final String guestid = cloud.LobbyWaitForGuest(hostid);
+                final CreateResult result = cloud.LobbyWaitForGuest(hostid);
+                final String guestid = result.getGuestid();
 
                 if (cancel) {
                     return -2;
@@ -143,6 +158,7 @@ public class WaitingDlg extends DialogFragment {
                 }
                 else {
                     // poll success, return the guest id if someone joined
+                    guestname = result.getGuestname();
                     int guestIntId = Integer.parseInt(guestid);
                     return Math.max(guestIntId, -1);
                 }

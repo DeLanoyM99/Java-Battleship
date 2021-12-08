@@ -20,8 +20,10 @@ public class ShipPlacement extends AppCompatActivity {
 
     private final static String ONEDONE = "GameView.oneDone";
 
-    private String player1_name;
-    private String player2_name;
+    private String hostName = "host"; // default value;
+    private String guestName = "guest";  // default value;
+    private int hostId;
+    private int guestId ;
     private TextView PlayersTurn;
     private boolean oneDone = false; // true if one player has set their boats
 
@@ -33,8 +35,10 @@ public class ShipPlacement extends AppCompatActivity {
 
         setContentView(R.layout.activity_ship_placement);
 
-        player1_name = getIntent().getExtras().getString("Player1Name");
-        player2_name = getIntent().getExtras().getString("Player2Name");
+        hostId = Integer.parseInt(getIntent().getExtras().getString("hostId"));
+        guestId = Integer.parseInt(getIntent().getExtras().getString("guestId"));
+        hostName = getIntent().getExtras().getString("hostName");
+        guestName = getIntent().getExtras().getString("guestName");
         PlayersTurn = findViewById(R.id.PlayerTurnText);
 
         if(savedInstanceState != null) {
@@ -46,10 +50,8 @@ public class ShipPlacement extends AppCompatActivity {
             SetNameText(curr_player);
         }
         else { // first time creating the activity, generate random player
-            Random random = new Random();
-            int curr_player = random.nextInt(2) + 1; // generate random number between 0 - 1
-            getGameView().setCurrPlayer(curr_player); // set current random player
-            SetNameText(curr_player); // set the name for the player
+            getGameView().setCurrPlayer(1); // set current player to host (player 1)
+            SetNameText(1); // set the name for the host
         }
     }
 
@@ -66,18 +68,18 @@ public class ShipPlacement extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void SetNameText(int current_player) {
 
-        if (player1_name.charAt(player1_name.length() - 1)== 's' && current_player == 1){
-            PlayersTurn.setText(player1_name + "'" + " Turn");
+        if (hostName.charAt(hostName.length() - 1)== 's' && current_player == 1){
+            PlayersTurn.setText(hostName + "'" + " Turn");
         }
-        else if (player2_name.charAt(player2_name.length() - 1)== 's' && current_player == 2){
-            PlayersTurn.setText(player2_name + "'" + " Turn");
+        else if (guestName.charAt(guestName.length() - 1)== 's' && current_player == 2){
+            PlayersTurn.setText(guestName + "'" + " Turn");
         }
         else{
             if (current_player == 1) {
-                PlayersTurn.setText(player1_name + "'s" + " Turn");
+                PlayersTurn.setText(hostName + "'s" + " Turn");
             }
             else {
-                PlayersTurn.setText(player2_name + "'s" + " Turn");
+                PlayersTurn.setText(guestName + "'s" + " Turn");
             }
         }
     }
@@ -147,8 +149,8 @@ public class ShipPlacement extends AppCompatActivity {
 
         intent.putExtra("player1_boat_positions", player1_boats.toString());
         intent.putExtra("player2_boat_positions", player2_boats.toString());
-        intent.putExtra("Player1Name", player1_name);
-        intent.putExtra("Player2Name", player2_name);
+        intent.putExtra("Player1Name", hostName);
+        intent.putExtra("Player2Name", guestName);
         startActivity(intent);
     }
 

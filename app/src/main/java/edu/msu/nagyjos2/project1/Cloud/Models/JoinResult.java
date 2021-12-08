@@ -11,26 +11,24 @@ public class JoinResult {
     @Attribute(name = "msg", required = false)
     private String message;
 
+    @Attribute(name = "hostname", required = false)
+    private String hostname;
+
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public String getHostname() { return hostname; }
 
     public JoinResult() {}
 
-    public JoinResult(String status, String msg) {
+    public JoinResult(String status, String hostname, String msg) {
         this.status = status;
+        this.hostname = hostname;
         this.message = msg;
     }
 }
