@@ -73,19 +73,60 @@ public class WaitingDlg extends DialogFragment {
         // Create a thread to wait for the guest in
         new Thread(new Runnable() {
 
+            final Cloud cloud = new Cloud();
+
             @Override
             public void run() {
-                Cloud cloud = new Cloud();
+
+                int guestid;
+                while (true) {
+
+                    guestid = getGuestId();
+                    if (guestid == -2) {
+                        // error occurred, stop
+                        return;
+                    }
+                    else if (guestid == -1) {
+                        // no guest joined yet
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        continue;
+                    }
+
+                    // guest found, start game
+                    final String guestStrId = Integer.toString(guestid);
+                    getActivity().runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(getActivity(), ShipPlacement.class);
+                            intent.putExtra("Player1Name", hostid);
+                            intent.putExtra("Player2Name", guestStrId);
+                            startActivity(intent);
+                        }
+                    });
+                    return;
+                }
+            }
+
+            /**
+             * Polling function, gets the guest id every 1 second. Returns guest id if
+             * guest joined, -2 on error, -1 on guest not found
+             * @return int representing result of the query
+             */
+            public int getGuestId() {
 
                 // start polling
                 final String guestid = cloud.LobbyWaitForGuest(hostid);
 
                 if (cancel) {
-                    return;
+                    return -2;
                 }
-
                 if (guestid.equals("")) {
-                    //error
+                    // error occurred
                     delete(hostid);
                     dlg.dismiss();
                     getActivity().runOnUiThread(new Runnable() {
@@ -97,33 +138,13 @@ public class WaitingDlg extends DialogFragment {
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
+
+                    return -2;
                 }
-
                 else {
-
-                    final int guestint = Integer.parseInt(guestid);
-                    if (guestint > -1) {
-                        // we have found a guest
-                        getActivity().runOnUiThread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                Intent intent = new Intent(getActivity(), ShipPlacement.class);
-                                intent.putExtra("Player1Name", hostid);
-                                intent.putExtra("Player2Name", guestid);
-                                startActivity(intent);
-                            }
-                        });
-                    }
-                    else {
-                        // no guest joined yet
-                        try {
-                            Thread.sleep(10000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        run();
-                    }
+                    // poll success, return the guest id if someone joined
+                    int guestIntId = Integer.parseInt(guestid);
+                    return Math.max(guestIntId, -1);
                 }
             }
         }).start();
