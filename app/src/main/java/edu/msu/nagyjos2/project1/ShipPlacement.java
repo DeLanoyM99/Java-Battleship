@@ -218,13 +218,16 @@ public class ShipPlacement extends AppCompatActivity {
 
     public void updateBoard(final int current_player) {
 
+        final String hostId_final = Integer.toString(hostId);
+        BattleshipBoard board = getGameView().getPlayerBoard(current_player);
+
         new Thread(new Runnable() {
 
             final Cloud cloud = new Cloud();
 
             @Override
             public void run() {
-                boolean result = cloud.updateBoard(Integer.toString(hostId), getGameView().getPlayerBoard(current_player));
+                boolean result = cloud.updateBoard(hostId_final, board);
 
                 // could not contact server, failed
                 if (!result) {

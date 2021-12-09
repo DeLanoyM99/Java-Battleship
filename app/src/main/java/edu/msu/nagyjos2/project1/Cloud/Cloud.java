@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
@@ -281,7 +283,7 @@ public class Cloud {
             return true;
 
         } catch (IOException | RuntimeException e) {
-            Log.e("OpenFromCloud", "Exception occurred while deleting hat!", e);
+            Log.e("OpenFromCloud", "Exception occurred while deleting lobby!", e);
             return false;
         }
     }
@@ -353,6 +355,7 @@ public class Cloud {
                 xml.attribute(null, "pos", position);
                 xml.attribute(null, "boat", hasBoat);
                 xml.attribute(null, "hit", isHit);
+                xml.endTag(null, "tile");
             }
             xml.endTag(null, "board");
             xml.endDocument();
