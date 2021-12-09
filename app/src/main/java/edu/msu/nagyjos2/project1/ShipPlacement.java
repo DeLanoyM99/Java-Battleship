@@ -25,7 +25,7 @@ import edu.msu.nagyjos2.project1.Cloud.Models.Tile;
 import edu.msu.nagyjos2.project1.Cloud.Models.TurnResult;
 
 public class ShipPlacement extends AppCompatActivity {
-//blah
+
     private final static String ONEDONE = "GameView.oneDone";
 
     private String hostName = "host"; // default value;
@@ -245,6 +245,15 @@ public class ShipPlacement extends AppCompatActivity {
                             startActivity(main_act);
                         }
                     });
+                } else {
+                    // update complete, begin waiting
+                    getActivity().runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            waitForTurn();
+                        }
+                    });
                 }
             }
         }).start();
@@ -308,7 +317,6 @@ public class ShipPlacement extends AppCompatActivity {
                 // update host board
                 updateBoard(curr_player);
                 disableTouch();
-                waitForTurn();
             }
             else {
                 activateTouch();
