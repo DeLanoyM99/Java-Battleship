@@ -11,10 +11,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import edu.msu.nagyjos2.project1.Cloud.Cloud;
+import edu.msu.nagyjos2.project1.Cloud.Models.CreateResult;
+import edu.msu.nagyjos2.project1.Cloud.Models.Tile;
+import edu.msu.nagyjos2.project1.Cloud.Models.TurnResult;
 
 public class ShipPlacement extends AppCompatActivity {
 
@@ -24,6 +32,7 @@ public class ShipPlacement extends AppCompatActivity {
     private String guestName = "guest";  // default value;
     private int hostId;
     private int guestId ;
+    private boolean isHost;
     private TextView PlayersTurn;
     private boolean oneDone = false; // true if one player has set their boats
 
@@ -39,6 +48,7 @@ public class ShipPlacement extends AppCompatActivity {
         guestId = Integer.parseInt(getIntent().getExtras().getString("guestId"));
         hostName = getIntent().getExtras().getString("hostName");
         guestName = getIntent().getExtras().getString("guestName");
+        isHost = getIntent().getExtras().getString("isHost").equals("yes");
         PlayersTurn = findViewById(R.id.PlayerTurnText);
 
         if(savedInstanceState != null) {
@@ -49,9 +59,14 @@ public class ShipPlacement extends AppCompatActivity {
             int curr_player = getGameView().getCurrPlayer();
             SetNameText(curr_player);
         }
-        else { // first time creating the activity, generate random player
+        else { // first time creating the activity
             getGameView().setCurrPlayer(1); // set current player to host (player 1)
             SetNameText(1); // set the name for the host
+        }
+
+        if (!isHost) {
+            disableTouch();
+            waitForTurn();
         }
     }
 
@@ -64,6 +79,8 @@ public class ShipPlacement extends AppCompatActivity {
     }
 
     private GameView getGameView() { return this.findViewById(R.id.GameViewShip); }
+
+    private ShipPlacement getActivity() { return this; }
 
     @SuppressLint("SetTextI18n")
     private void SetNameText(int current_player) {
@@ -124,6 +141,73 @@ public class ShipPlacement extends AppCompatActivity {
         alertDialog.show();
     }
 
+    private void activateTouch() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    private void disableTouch() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    private void waitForTurn() {
+
+        final String hostId_final = Integer.toString(hostId);
+        new Thread(new Runnable() {
+
+            final Cloud cloud = new Cloud();
+
+            @Override
+            public void run() {
+                // get the opponents board and load into board class
+
+                while(true) {
+                    TurnResult result = cloud.waitForTurn(hostId_final);
+
+                    // could not contact server, failed
+                    if (result.getStatus().equals("fail")) {
+                        getActivity().runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                Toast.makeText(getActivity(),
+                                        "Something went wrong",
+                                        Toast.LENGTH_SHORT).show();
+
+                                // go back to main activity (top of activity stack)
+                                Intent main_act = new Intent(getActivity(), MainActivity.class);
+                                main_act.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(main_act);
+                            }
+                        });
+                    }
+                    // still waiting
+                    else if (result.getStatus().equals("no")) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        continue;
+                    }
+                    // opponents turn is over
+                    getActivity().runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            getGameView().loadUpdatedBoard(getGameView().getCurrPlayer(), result.getTiles());
+                            activateTouch();
+                        }
+                    });
+
+                    return;
+                }
+            }
+        }).start();
+
+    }
+
+
     /**
      * Starts the game activity. Passes each boards information to the next activity
      */
@@ -177,19 +261,23 @@ public class ShipPlacement extends AppCompatActivity {
             alertDialog.show();
         }
 
-        else if (curr_player == 1 && !isOneDone()) { // if player 1 goes first
-            setOneDone(true);
+        else if (curr_player == 1) { // host done - set player to 2 and bring up waiting dlg
+            if (isHost) {
+                disableTouch();
+                waitForTurn();
+            }
+            else {
+                activateTouch();
+            }
             getGameView().setCurrPlayer(2);
             SetNameText(2);
         }
 
-        else if (curr_player == 2 && !isOneDone()) { // if player 2 goes first
-            setOneDone(true);
-            getGameView().setCurrPlayer(1);
-            SetNameText(1);
-        }
-        // all players done, we go to game activity
-        else {
+        else { // guest done - send to game activity
+            if (isHost) {
+                activateTouch();
+            }
+
             startGame();
         }
     }

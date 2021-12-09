@@ -63,6 +63,7 @@ public class LobbyActivity extends AppCompatActivity {
                                 intent.putExtra("guestId", userId);
                                 intent.putExtra("guestName", username);
                                 intent.putExtra("hostName", hostname);
+                                intent.putExtra("isHost", "no");
                                 startActivity(intent);
                             }
                         });

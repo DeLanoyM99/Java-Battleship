@@ -9,6 +9,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import edu.msu.nagyjos2.project1.Cloud.Models.Tile;
 
 /**
  * The main view of the battleship game. Provides support for 2 players.
@@ -239,5 +242,11 @@ public class GameView extends View {
         player_2_Board.loadInstanceState(bundle, 2); // re-load player 2's board
 
         invalidate(); // draw correct board immediately
+    }
+
+    /* ================================ Network Functions =================================== */
+
+    public void loadUpdatedBoard(int playerNum, List<Tile> tiles) {
+
     }
 }

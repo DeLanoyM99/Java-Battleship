@@ -17,6 +17,8 @@ import edu.msu.nagyjos2.project1.Cloud.Models.DeleteResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.LobbyItem;
 import edu.msu.nagyjos2.project1.Cloud.Models.LoginResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.SignupResult;
+import edu.msu.nagyjos2.project1.Cloud.Models.Tile;
+import edu.msu.nagyjos2.project1.Cloud.Models.TurnResult;
 import edu.msu.nagyjos2.project1.R;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -33,6 +35,7 @@ public class Cloud {
     public static final String DELETE_PATH = "lobby-delete.php";
     public static final String JOIN_PATH = "lobby-join.php";
     public static final String LOBBY_LOAD_PATH = "lobby-load.php";
+    public static final String WAIT_FOR_TURN = "game-update.php";
 
 
     public static class LobbiesAdapter extends BaseAdapter {
@@ -298,6 +301,30 @@ public class Cloud {
                 Log.e("JoinLobby", "Exception occurred while joining lobby!", e);
                 return new JoinResult("no", "", "fail");
             }
+    }
+
+    public TurnResult waitForTurn(final String hostid) {
+        BattleshipNetwork service = retrofit.create(BattleshipNetwork.class);
+        try {
+            Response<TurnResult> response = service.waitForTurn(hostid).execute();
+            // check if request failed
+            if (!response.isSuccessful()) {
+                Log.e("waitForTurn", "Failed get response, response code is = " + response.code());
+                return new TurnResult("fail", "", new ArrayList<Tile>());
+            }
+
+            TurnResult result = response.body();
+            if (!result.getStatus().equals("yes")) {
+                Log.e("waitForTurn", "Still Waiting");
+                return result;
+            }
+
+            return result;
+
+        } catch (IOException | RuntimeException e) {
+            Log.e("waitForTur", "Exception occurred while waiting!", e);
+            return new TurnResult("fail", "", new ArrayList<Tile>());
+        }
     }
 
 }

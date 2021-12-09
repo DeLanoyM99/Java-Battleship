@@ -119,6 +119,7 @@ public class WaitingDlg extends DialogFragment {
                             intent.putExtra("guestId", guestStrId);
                             intent.putExtra("hostName", hostName);
                             intent.putExtra("guestName", guestname);
+                            intent.putExtra("isHost", "yes");
                             startActivity(intent);
                         }
                     });
