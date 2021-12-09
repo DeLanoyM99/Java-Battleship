@@ -247,7 +247,7 @@ public class ShipPlacement extends AppCompatActivity {
                     });
                 }
             }
-        });
+        }).start();
     }
 
     /**

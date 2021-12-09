@@ -367,7 +367,7 @@ public class Cloud {
         BattleshipNetwork service = retrofit.create(BattleshipNetwork.class);
         final String xmlStr = writer.toString();
         try {
-            Response<UpdateBoardResult> result = service.updateBoard(hostid, xmlStr).execute();
+            Response<UpdateBoardResult> result = service.updateBoard(xmlStr, hostid).execute();
 
             if (result.isSuccessful()) {
                 UpdateBoardResult result2 = result.body();

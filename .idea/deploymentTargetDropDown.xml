@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
+    <runningDeviceTargetsSelectedWithDialog>
     <targetSelectedWithDropDown>
       <Target>
         <type value="QUICK_BOOT_TARGET" />
@@ -16,20 +17,23 @@
     <multipleDevicesSelectedInDropDown value="true" />
     <targetsSelectedWithDialog>
       <Target>
-        <type value="QUICK_BOOT_TARGET" />
+        <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\ernst\.android\avd\Nexus_5_API_28.avd" />
+            <value value="C:\Users\Josep\.android\avd\Nexus_7_API_22.avd" />
           </Key>
         </deviceKey>
       </Target>
+    </targetsSelectedWithDialog>
+    </runningDeviceTargetsSelectedWithDialog>
+    <targetsSelectedWithDialog>
       <Target>
         <type value="QUICK_BOOT_TARGET" />
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\ernst\.android\avd\Nexus_7_API_22.avd" />
+            <value value="C:\Users\Josep\.android\avd\Nexus_7_API_27.avd" />
           </Key>
         </deviceKey>
       </Target>

@@ -70,6 +70,7 @@ public interface BattleshipNetwork {
             @Query("current_player") String current_player
     );
 
+    @FormUrlEncoded
     @POST(TURN_DONE_PATH)
     Call<UpdateBoardResult> updateBoard(
             @Field("xml") String xml,
