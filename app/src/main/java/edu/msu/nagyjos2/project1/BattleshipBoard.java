@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import edu.msu.nagyjos2.project1.Cloud.Models.Tile;
 
 /**
  * Class representing a Battleship Board
@@ -467,6 +470,15 @@ public class BattleshipBoard {
         for (int i=0; i<tiles.size(); i++){
             tiles.get(i).setHasBoat(boat[i]);
             tiles.get(i).setHit(hit[i]);
+        }
+    }
+
+    public void loadUpdatedBoard(List<Tile> tilesNew) {
+
+        for (int i=0; i<tilesNew.size(); i++) {
+            int pos = tilesNew.get(i).getPosToInt();
+            tiles.get(pos).setHasBoat(tilesNew.get(i).getBoatAsBool());
+            tiles.get(pos).setHit(tilesNew.get(i).getHitAsBool());
         }
     }
 

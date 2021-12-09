@@ -202,7 +202,6 @@ public class ShipPlacement extends AppCompatActivity {
                             if (curr_player == 2) {
                                 startGame();
                             }
-
                             else {
                                 getGameView().setCurrPlayer(2); // set current player to host (player 1)
                                 SetNameText(2); // set the name for the host
@@ -214,7 +213,6 @@ public class ShipPlacement extends AppCompatActivity {
                 }
             }
         }).start();
-
     }
 
 

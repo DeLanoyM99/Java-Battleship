@@ -247,6 +247,11 @@ public class GameView extends View {
     /* ================================ Network Functions =================================== */
 
     public void loadUpdatedBoard(int playerNum, List<Tile> tiles) {
-
+        if (playerNum == 1) {
+            player_1_Board.loadUpdatedBoard(tiles);
+        }
+        else {
+            player_2_Board.loadUpdatedBoard(tiles);
+        }
     }
 }
