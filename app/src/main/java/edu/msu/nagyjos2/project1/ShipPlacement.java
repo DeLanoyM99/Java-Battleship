@@ -25,7 +25,7 @@ import edu.msu.nagyjos2.project1.Cloud.Models.Tile;
 import edu.msu.nagyjos2.project1.Cloud.Models.TurnResult;
 
 public class ShipPlacement extends AppCompatActivity {
-
+//blah
     private final static String ONEDONE = "GameView.oneDone";
 
     private String hostName = "host"; // default value;
