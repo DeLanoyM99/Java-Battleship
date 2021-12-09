@@ -42,10 +42,10 @@ public class GameActivity extends AppCompatActivity {
 
         // display the current players name to screen
         PlayersTurn = (TextView) findViewById(R.id.PlayersTurn);
-        SetNameText(rand_player + 1);
+        SetNameText(1);
 
         // set the current player (to display opponents board)
-        getGameView().setCurrPlayer(rand_player + 1); // set random starting player (1 or 2)
+        getGameView().setCurrPlayer(1); // set random starting player (1 or 2)
 
         if(savedInstanceState != null) {
             // We have saved state

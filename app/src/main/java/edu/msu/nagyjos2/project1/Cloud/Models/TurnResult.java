@@ -22,7 +22,7 @@ public class TurnResult {
 
     public String getMsg() { return msg; }
 
-    public List<Tile> getTiles() { return tiles; }
+public List<Tile> getTiles() { return tiles; }
 
     public TurnResult(String status, String msg, ArrayList<Tile> tiles) {
         this.status = status;
