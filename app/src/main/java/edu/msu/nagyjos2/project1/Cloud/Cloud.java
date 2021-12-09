@@ -41,7 +41,7 @@ public class Cloud {
     public static final String DELETE_PATH = "lobby-delete.php";
     public static final String JOIN_PATH = "lobby-join.php";
     public static final String LOBBY_LOAD_PATH = "lobby-load.php";
-    public static final String WAIT_FOR_TURN = "game-update.php";
+    public static final String WAIT_FOR_TURN = "game-waiting.php";
     public static final String TURN_DONE_PATH = "game-update.php";
 
 
