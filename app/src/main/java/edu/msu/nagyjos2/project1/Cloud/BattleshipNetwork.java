@@ -7,6 +7,7 @@ import static edu.msu.nagyjos2.project1.Cloud.Cloud.LOGIN_PATH;
 import static edu.msu.nagyjos2.project1.Cloud.Cloud.SIGNUP_PATH;
 import static edu.msu.nagyjos2.project1.Cloud.Cloud.LOBBY_LOAD_PATH;
 import static edu.msu.nagyjos2.project1.Cloud.Cloud.JOIN_PATH;
+import static edu.msu.nagyjos2.project1.Cloud.Cloud.TURN_DONE_PATH;
 import static edu.msu.nagyjos2.project1.Cloud.Cloud.WAIT_FOR_TURN;
 
 import edu.msu.nagyjos2.project1.Cloud.Models.JoinResult;
@@ -16,6 +17,7 @@ import edu.msu.nagyjos2.project1.Cloud.Models.DeleteResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.LoginResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.SignupResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.TurnResult;
+import edu.msu.nagyjos2.project1.Cloud.Models.UpdateBoardResult;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -64,7 +66,14 @@ public interface BattleshipNetwork {
 
     @GET(WAIT_FOR_TURN)
     Call<TurnResult> waitForTurn(
-            @Query("hostid") String hostid
+            @Query("hostid") String hostid,
+            @Query("current_player") String current_player
+    );
+
+    @POST(TURN_DONE_PATH)
+    Call<UpdateBoardResult> updateBoard(
+            @Field("xml") String xml,
+            @Field("hostid") String hostid
     );
 
 

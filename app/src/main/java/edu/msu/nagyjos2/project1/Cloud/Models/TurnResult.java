@@ -1,6 +1,7 @@
 package edu.msu.nagyjos2.project1.Cloud.Models;
 
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class TurnResult {
     @Attribute(name = "msg", required = false)
     private String msg;
 
-    @Attribute(name = "tile", required = false)
+    @ElementList(name = "tile", inline = true, required = false, type = Tile.class)
     private List<Tile> tiles;
 
     public String getStatus() { return status; }

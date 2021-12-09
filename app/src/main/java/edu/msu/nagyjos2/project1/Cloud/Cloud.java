@@ -1,15 +1,20 @@
 package edu.msu.nagyjos2.project1.Cloud;
 
 import android.util.Log;
+import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlSerializer;
+
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
+import edu.msu.nagyjos2.project1.BattleshipBoard;
 import edu.msu.nagyjos2.project1.Cloud.Models.JoinResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.Lobbies;
 import edu.msu.nagyjos2.project1.Cloud.Models.CreateResult;
@@ -19,6 +24,7 @@ import edu.msu.nagyjos2.project1.Cloud.Models.LoginResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.SignupResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.Tile;
 import edu.msu.nagyjos2.project1.Cloud.Models.TurnResult;
+import edu.msu.nagyjos2.project1.Cloud.Models.UpdateBoardResult;
 import edu.msu.nagyjos2.project1.R;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -36,6 +42,7 @@ public class Cloud {
     public static final String JOIN_PATH = "lobby-join.php";
     public static final String LOBBY_LOAD_PATH = "lobby-load.php";
     public static final String WAIT_FOR_TURN = "game-update.php";
+    public static final String TURN_DONE_PATH = "game-update.php";
 
 
     public static class LobbiesAdapter extends BaseAdapter {
@@ -303,10 +310,10 @@ public class Cloud {
             }
     }
 
-    public TurnResult waitForTurn(final String hostid) {
+    public TurnResult waitForTurn(final String hostid, final String curr_player) {
         BattleshipNetwork service = retrofit.create(BattleshipNetwork.class);
         try {
-            Response<TurnResult> response = service.waitForTurn(hostid).execute();
+            Response<TurnResult> response = service.waitForTurn(hostid, curr_player).execute();
             // check if request failed
             if (!response.isSuccessful()) {
                 Log.e("waitForTurn", "Failed get response, response code is = " + response.code());
@@ -327,4 +334,56 @@ public class Cloud {
         }
     }
 
+    public boolean updateBoard(final String hostid, BattleshipBoard board) {
+        XmlSerializer xml = Xml.newSerializer();
+        StringWriter writer = new StringWriter();
+
+        try {
+            xml.setOutput(writer);
+            xml.startDocument("UTF-8", true);
+
+            xml.startTag(null, "board");
+            xml.attribute(null, "status", "yes");
+            for (int i = 0; i<board.tiles.size(); i++) {
+                String position = Integer.toString(i);
+                String hasBoat = Boolean.toString(board.tiles.get(i).hasBoat());
+                String isHit = Boolean.toString(board.tiles.get(i).isTileHit());
+
+                xml.startTag(null, "tile");
+                xml.attribute(null, "pos", position);
+                xml.attribute(null, "boat", hasBoat);
+                xml.attribute(null, "hit", isHit);
+            }
+            xml.endTag(null, "board");
+            xml.endDocument();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        BattleshipNetwork service = retrofit.create(BattleshipNetwork.class);
+        final String xmlStr = writer.toString();
+        try {
+            Response<UpdateBoardResult> result = service.updateBoard(hostid, xmlStr).execute();
+
+            if (result.isSuccessful()) {
+                UpdateBoardResult result2 = result.body();
+                if (result2.getStatus().equals("yes")) {
+                    return true;
+                }
+                Log.e("updateBoard", "Failed to save, message = '" + result2.getMsg() + "'");
+                return false;
+            }
+
+            Log.e("updateBoard", "Failed to save, message = '" + result.code() + "'");
+            return false;
+
+        } catch (IOException e) {
+            Log.e("updateBoard", "Exception occurred while trying to save the board", e);
+            return false;
+        } catch (RuntimeException e) {	// to catch xml errors to help debug step 6
+            Log.e("updateBoard", "Runtime Exception: " + e.getMessage());
+            return false;
+        }
+    }
 }

@@ -153,6 +153,7 @@ public class ShipPlacement extends AppCompatActivity {
     private void waitForTurn() {
 
         final String hostId_final = Integer.toString(hostId);
+        final String curr_player = Integer.toString(getGameView().getCurrPlayer());
         new Thread(new Runnable() {
 
             final Cloud cloud = new Cloud();
@@ -162,7 +163,7 @@ public class ShipPlacement extends AppCompatActivity {
                 // get the opponents board and load into board class
 
                 while(true) {
-                    TurnResult result = cloud.waitForTurn(hostId_final);
+                    TurnResult result = cloud.waitForTurn(hostId_final, curr_player);
 
                     // could not contact server, failed
                     if (result.getStatus().equals("fail")) {
@@ -215,6 +216,36 @@ public class ShipPlacement extends AppCompatActivity {
         }).start();
     }
 
+    public void updateBoard(final int current_player) {
+
+        new Thread(new Runnable() {
+
+            final Cloud cloud = new Cloud();
+
+            @Override
+            public void run() {
+                boolean result = cloud.updateBoard(Integer.toString(hostId), getGameView().getPlayerBoard(current_player));
+
+                // could not contact server, failed
+                if (!result) {
+                    getActivity().runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(),
+                                    "Something went wrong",
+                                    Toast.LENGTH_SHORT).show();
+
+                            // go back to main activity (top of activity stack)
+                            Intent main_act = new Intent(getActivity(), MainActivity.class);
+                            main_act.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(main_act);
+                        }
+                    });
+                }
+            }
+        });
+    }
 
     /**
      * Starts the game activity. Passes each boards information to the next activity
@@ -271,6 +302,8 @@ public class ShipPlacement extends AppCompatActivity {
 
         else if (curr_player == 1) { // host done - set player to 2 and bring up waiting dlg
             if (isHost) {
+                // update host board
+                updateBoard(curr_player);
                 disableTouch();
                 waitForTurn();
             }
@@ -285,7 +318,10 @@ public class ShipPlacement extends AppCompatActivity {
             if (isHost) {
                 activateTouch();
             }
-
+            else {
+                // update guest board
+                updateBoard(curr_player);
+            }
             startGame();
         }
     }

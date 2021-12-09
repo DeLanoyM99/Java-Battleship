@@ -72,6 +72,13 @@ public class GameView extends View {
 
     /* =============================== Setters and Getters =================================== */
 
+    public BattleshipBoard getPlayerBoard(int player) {
+        if (player == 1) {
+            return player_1_Board;
+        }
+        return player_2_Board;
+    }
+
     /**
      * Tells the view and each board that the game has started (changes how things are drawn)
      * @param started True is the game is started
