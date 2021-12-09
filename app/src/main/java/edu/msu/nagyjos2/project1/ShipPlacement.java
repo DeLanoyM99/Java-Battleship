@@ -195,8 +195,18 @@ public class ShipPlacement extends AppCompatActivity {
 
                         @Override
                         public void run() {
-                            getGameView().loadUpdatedBoard(getGameView().getCurrPlayer(), result.getTiles());
+                            int curr_player = getGameView().getCurrPlayer();
+                            getGameView().loadUpdatedBoard(curr_player, result.getTiles());
                             activateTouch();
+
+                            if (curr_player == 2) {
+                                startGame();
+                            }
+
+                            else {
+                                getGameView().setCurrPlayer(2); // set current player to host (player 1)
+                                SetNameText(2); // set the name for the host
+                            }
                         }
                     });
 
