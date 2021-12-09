@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,6 +22,8 @@ public class GameActivity extends AppCompatActivity {
     private String player1_name;
     private String player2_name;
     private TextView PlayersTurn;
+    private int hostId;
+    private boolean isHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +34,10 @@ public class GameActivity extends AppCompatActivity {
         String player2_boat_pos = getIntent().getExtras().getString("player2_boat_positions");
         player1_name = getIntent().getExtras().getString("Player1Name");
         player2_name = getIntent().getExtras().getString("Player2Name");
+        isHost = getIntent().getExtras().getString("isHost").equals("yes");
+        hostId = Integer.parseInt(getIntent().getExtras().getString("hostId"));
 
         getGameView().loadBoatPositions(player1_boat_pos, player2_boat_pos);
-
-        Random random = new Random();
-        int rand_player = random.nextInt(2); // generate random number between 0 - 1
 
         // start the game and setup the starting player
         getGameView().setGameStarted(true);
@@ -52,7 +54,25 @@ public class GameActivity extends AppCompatActivity {
             getGameView().loadInstanceState(savedInstanceState);
             SetNameText(getGameView().getCurrPlayer());
         }
+        if (!isHost) {
+            disableTouch();
+            waitForUpdate();
+        }
     }
+
+
+    private void activateTouch() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    private void disableTouch() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    private void update(final int current_player) {}
+
+    public void waitForUpdate() {}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -127,6 +147,7 @@ public class GameActivity extends AppCompatActivity {
         done.setEnabled(false);
 
         int nextPlayer = 1 + getGameView().getCurrPlayer() % 2;
+        int curr_player = getGameView().getCurrPlayer();
 
         // check game won
         if(getGameView().getNumShips(nextPlayer) == 0) {
@@ -140,13 +161,34 @@ public class GameActivity extends AppCompatActivity {
             }
             startActivity(intent);
         }
-
-        else {
-            // assign next player
+        else if (curr_player == 1) { // host done - set player to 2 and bring up waiting dlg
+            if (isHost) {
+                // update host board
+                update(curr_player);
+                disableTouch();
+            }
+            else {
+                activateTouch();
+            }
+            getGameView().setCurrPlayer(2);
+            SetNameText(2);
             getGameView().setTurnCompleted(false);
-            SetNameText(nextPlayer);
-            getGameView().setCurrPlayer(nextPlayer);
         }
+
+        else { // guest done - set player to 1 and bring up waiting dlg
+            if (isHost) {
+                activateTouch();
+            }
+            else {
+                // update guest board
+                update(curr_player);
+                disableTouch();
+            }
+            getGameView().setCurrPlayer(1);
+            SetNameText(1);
+            getGameView().setTurnCompleted(false);
+        }
+
     }
 
     @Override
