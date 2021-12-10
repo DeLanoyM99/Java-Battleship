@@ -141,6 +141,8 @@ public class GameActivity extends AppCompatActivity {
                                 getGameView().loadUpdatedBoard(2, result.getTiles());
                             }
 
+                            checkForEnd();
+
                         }
                     });
                 }
@@ -150,6 +152,25 @@ public class GameActivity extends AppCompatActivity {
         }
     }).start();
 }
+
+    public void checkForEnd() {
+
+        if(getGameView().getNumShips(getGameView().getCurrPlayer()) == 0) {
+            Intent intent = new Intent(this, EndActivity.class);
+        if (getGameView().getCurrPlayer() == 1) {
+            updateBoard(1);
+            intent.putExtra("WinnerName", player2_name);
+            intent.putExtra("LoserName", player1_name);
+        } else if (getGameView().getCurrPlayer() == 2) {
+            updateBoard(2);
+            intent.putExtra("WinnerName", player1_name);
+            intent.putExtra("LoserName", player2_name);
+        }
+        startActivity(intent);
+    }
+
+
+    }
 
     public void updateBoard(final int current_player) {
 
@@ -275,9 +296,11 @@ public class GameActivity extends AppCompatActivity {
         if(getGameView().getNumShips(nextPlayer) == 0) {
             Intent intent = new Intent(this, EndActivity.class);
             if (getGameView().getCurrPlayer() == 2) {
+                updateBoard(1);
                 intent.putExtra("WinnerName", player2_name);
                 intent.putExtra("LoserName", player1_name);
             } else if (getGameView().getCurrPlayer() == 1) {
+                updateBoard(2);
                 intent.putExtra("WinnerName", player1_name);
                 intent.putExtra("LoserName", player2_name);
             }
