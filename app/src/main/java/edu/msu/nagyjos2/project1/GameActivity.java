@@ -38,8 +38,8 @@ public class GameActivity extends AppCompatActivity {
         String player2_boat_pos = getIntent().getExtras().getString("player2_boat_positions");
         player1_name = getIntent().getExtras().getString("Player1Name");
         player2_name = getIntent().getExtras().getString("Player2Name");
-        //isHost = getIntent().getExtras().getBoolean("host");
-        //hostId = Integer.parseInt(getIntent().getExtras().getString("idhost"));
+        isHost = getIntent().getExtras().getBoolean("host");
+        hostId = Integer.parseInt(getIntent().getExtras().getString("idhost"));
 
 
 
