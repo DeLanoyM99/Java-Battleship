@@ -201,12 +201,11 @@ public class ShipPlacement extends AppCompatActivity {
                                 getGameView().loadUpdatedBoard(curr_player, result.getTiles());
                                 activateTouch();
 
-                                if (curr_player == 2) {
-                                    startGame();
-                                }
-                                else {
+                                if (curr_player == 1) {
                                     getGameView().setCurrPlayer(2); // set current player to host (player 1)
                                     SetNameText(2); // set the name for the host
+                                } else {
+                                    startGame();
                                 }
 
                             }
@@ -256,9 +255,6 @@ public class ShipPlacement extends AppCompatActivity {
                         public void run() {
                             if (current_player == 1) {
                                 waitForTurn();
-                            }
-                            else {
-                                startGame();
                             }
                         }
                     });
@@ -336,7 +332,7 @@ public class ShipPlacement extends AppCompatActivity {
         else { // guest done - send to game activity
 
             updateBoard(curr_player);
-
+            startGame();
         }
     }
 
