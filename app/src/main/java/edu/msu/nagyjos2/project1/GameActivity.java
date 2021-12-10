@@ -292,7 +292,6 @@ public class GameActivity extends AppCompatActivity {
 
         // check game won
         if(getGameView().getNumShips(nextPlayer) == 0) {
-            delete(String.valueOf(hostId));
             Intent intent = new Intent(this, EndActivity.class);
             if (getGameView().getCurrPlayer() == 2) {
                 updateBoard(1);
@@ -304,6 +303,7 @@ public class GameActivity extends AppCompatActivity {
                 intent.putExtra("LoserName", player2_name);
             }
             startActivity(intent);
+            delete(String.valueOf(hostId));
         }
 
         else if (curr_player == 1) { // host done - set player to 2 and bring up waiting dlg
@@ -313,8 +313,6 @@ public class GameActivity extends AppCompatActivity {
 
             disableTouch();
             updateBoard(2);
-
-
 
         }
 
@@ -336,7 +334,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /**
-     * Delete the lobby
+     * Delete the lobby & game
      * @param hostId id it will remove from table
      */
     private void delete(final String hostId) {
