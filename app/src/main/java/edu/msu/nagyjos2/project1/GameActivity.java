@@ -128,17 +128,18 @@ public class GameActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             int curr_player = getGameView().getCurrPlayer();
+                            activateTouch();
 
                             if (curr_player == 2) {
                                 getGameView().setCurrPlayer(1); // set current player to host (player 1)
                                 SetNameText(1); // set the name for the host
+                                getGameView().loadUpdatedBoard(1, result.getTiles());
                             }
                             else {
                                 getGameView().setCurrPlayer(2); // set current player to host (player 1)
                                 SetNameText(2); // set the name for the host
+                                getGameView().loadUpdatedBoard(2, result.getTiles());
                             }
-                            getGameView().loadUpdatedBoard(curr_player, result.getTiles());
-                            activateTouch();
 
                         }
                     });
@@ -264,6 +265,7 @@ public class GameActivity extends AppCompatActivity {
         // disable button until next player selects tile to hit
         Button done = getDoneButton();
         done.setEnabled(false);
+        getGameView().setTurnCompleted(false);
 
         int nextPlayer = 1 + getGameView().getCurrPlayer() % 2;
 
@@ -287,8 +289,9 @@ public class GameActivity extends AppCompatActivity {
             getGameView().setCurrPlayer(2);
             SetNameText(2);
 
-            updateBoard(curr_player);
             disableTouch();
+            updateBoard(2);
+
 
 
         }
@@ -298,8 +301,8 @@ public class GameActivity extends AppCompatActivity {
             getGameView().setCurrPlayer(1);
             SetNameText(1);
 
-            updateBoard(curr_player);
             disableTouch();
+            updateBoard(1);
         }
     }
 
