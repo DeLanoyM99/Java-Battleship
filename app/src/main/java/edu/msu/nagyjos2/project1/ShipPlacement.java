@@ -290,10 +290,13 @@ public class ShipPlacement extends AppCompatActivity {
         }
         player2_boats.append(boat_positions.get(7).toString()); // no ending space
 
+
         intent.putExtra("player1_boat_positions", player1_boats.toString());
         intent.putExtra("player2_boat_positions", player2_boats.toString());
         intent.putExtra("Player1Name", hostName);
         intent.putExtra("Player2Name", guestName);
+        intent.putExtra("host", isHost);
+        intent.putExtra("idhost", hostId);
         startActivity(intent);
     }
 
