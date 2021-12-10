@@ -15,31 +15,31 @@ Lastly press login
 
 A functionality checklist will not be provided for the project. Treat this as you would a request from a client and identify what the client requires. 
 
-Member 1: 
+Member 1: Sadeem Boji
+
+Responsiblity: creating the database, php for joining a lobby, deleting a lobby and a game, fixing many bugs
+
+
+
+Member 2: Matthew DeLanoy
 
 Responsiblity:
 
 
 
-Member 2: 
+Member 3: Joseph Nagy
 
 Responsiblity:
 
 
 
-Member 3: 
+Member 4 Kyle Ernster:
 
 Responsiblity:
 
 
 
-Member 4 (if applicable): 
-
-Responsiblity:
-
-
-
-Member 5 (if applicable): 
+Member 5 Zhendong Liu:
 
 Responsiblity:
 
@@ -52,6 +52,7 @@ User account the server-side communications is running under: https://webdev.cse
 Paths to all server-side scripts: (Such as https://www.cse.msu.edu/~carter/project2/login.php).
 
 Calls in the code to the server (provide a class name and function, or URL used for debugging):
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/battleshipTesting.php
 
 
 
