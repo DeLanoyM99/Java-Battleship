@@ -324,27 +324,19 @@ public class ShipPlacement extends AppCompatActivity {
         }
 
         else if (curr_player == 1) { // host done - set player to 2 and bring up waiting dlg
-            if (isHost) {
-                // update host board
-                updateBoard(curr_player);
-                disableTouch();
-            }
-            else {
-                activateTouch();
-            }
+
+            // update host board
+            updateBoard(curr_player);
+            disableTouch();
+
             getGameView().setCurrPlayer(2);
             SetNameText(2);
         }
 
         else { // guest done - send to game activity
-            if (isHost) {
-                activateTouch();
-            }
-            else {
-                // update guest board
-                updateBoard(curr_player);
-            }
-            startGame();
+
+            updateBoard(curr_player);
+
         }
     }
 
