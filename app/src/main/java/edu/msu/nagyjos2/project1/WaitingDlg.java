@@ -80,6 +80,7 @@ public class WaitingDlg extends DialogFragment {
 
         // Create the dialog box
         final AlertDialog dlg = builder.create();
+        dlg.setCanceledOnTouchOutside(false);
 
         // Create a thread to wait for the guest in
         new Thread(new Runnable() {
