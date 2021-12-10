@@ -14,8 +14,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
+
+import edu.msu.nagyjos2.project1.Cloud.Cloud;
+import edu.msu.nagyjos2.project1.Cloud.Models.TurnResult;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -60,6 +64,8 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    private GameActivity getActivity() { return this; }
+
 
     private void activateTouch() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -70,9 +76,106 @@ public class GameActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
-    private void update(final int current_player) {}
+    private void update(final int current_player) {
+        final String hostId_final = Integer.toString(hostId);
+        BattleshipBoard board = getGameView().getPlayerBoard(current_player);
 
-    public void waitForUpdate() {}
+        new Thread(new Runnable() {
+
+            final Cloud cloud = new Cloud();
+
+            @Override
+            public void run() {
+                boolean result = cloud.updateBoard(hostId_final, board);
+
+                // could not contact server, failed
+                if (!result) {
+                    getActivity().runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(),
+                                    "Something went wrong",
+                                    Toast.LENGTH_SHORT).show();
+
+                            // go back to main activity (top of activity stack)
+                            Intent main_act = new Intent(getActivity(), MainActivity.class);
+                            main_act.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(main_act);
+                        }
+                    });
+                } else {
+                    // update complete, begin waiting
+                    getActivity().runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            waitForUpdate();
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
+    public void waitForUpdate() {
+
+        final String hostId_final = Integer.toString(hostId);
+        final String curr_player = Integer.toString(getGameView().getCurrPlayer());
+        new Thread(new Runnable() {
+
+            final Cloud cloud = new Cloud();
+
+            @Override
+            public void run() {
+                // get the opponents board and load into board class
+
+                while(true) {
+                    TurnResult result = cloud.waitForTurn(hostId_final, curr_player);
+
+                    // could not contact server, failed
+                    if (result.getStatus().equals("fail")) {
+                        getActivity().runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                Toast.makeText(getActivity(),
+                                        "Something went wrong",
+                                        Toast.LENGTH_SHORT).show();
+
+                                // go back to main activity (top of activity stack)
+                                Intent main_act = new Intent(getActivity(), MainActivity.class);
+                                main_act.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(main_act);
+                            }
+                        });
+                    }
+                    // still waiting
+                    else if (result.getStatus().equals("no")) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        continue;
+                    } else {
+                        // opponents turn is over
+                        getActivity().runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                int curr_player = getGameView().getCurrPlayer();
+                                getGameView().loadUpdatedBoard(curr_player, result.getTiles());
+                                activateTouch();
+                            }
+                        });
+                    }
+
+                    return;
+                }
+            }
+        }).start();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
