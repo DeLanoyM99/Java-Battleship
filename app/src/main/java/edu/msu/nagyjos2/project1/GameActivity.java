@@ -11,23 +11,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Random;
-
-import edu.msu.nagyjos2.project1.Cloud.Cloud;
-import edu.msu.nagyjos2.project1.Cloud.Models.TurnResult;
 
 public class GameActivity extends AppCompatActivity {
 
     private String player1_name;
     private String player2_name;
     private TextView PlayersTurn;
-    private int hostId;
-    private boolean isHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +31,11 @@ public class GameActivity extends AppCompatActivity {
         String player2_boat_pos = getIntent().getExtras().getString("player2_boat_positions");
         player1_name = getIntent().getExtras().getString("Player1Name");
         player2_name = getIntent().getExtras().getString("Player2Name");
-        isHost = getIntent().getExtras().getString("isHost").equals("yes");
-        hostId = Integer.parseInt(getIntent().getExtras().getString("hostId"));
 
         getGameView().loadBoatPositions(player1_boat_pos, player2_boat_pos);
+
+        Random random = new Random();
+        int rand_player = random.nextInt(2); // generate random number between 0 - 1
 
         // start the game and setup the starting player
         getGameView().setGameStarted(true);
@@ -58,123 +52,6 @@ public class GameActivity extends AppCompatActivity {
             getGameView().loadInstanceState(savedInstanceState);
             SetNameText(getGameView().getCurrPlayer());
         }
-        if (!isHost) {
-            disableTouch();
-            waitForUpdate();
-        }
-    }
-
-    private GameActivity getActivity() { return this; }
-
-
-    private void activateTouch() {
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-    }
-
-    private void disableTouch() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-    }
-
-    private void update(final int current_player) {
-        final String hostId_final = Integer.toString(hostId);
-        BattleshipBoard board = getGameView().getPlayerBoard(current_player);
-
-        new Thread(new Runnable() {
-
-            final Cloud cloud = new Cloud();
-
-            @Override
-            public void run() {
-                boolean result = cloud.updateBoard(hostId_final, board);
-
-                // could not contact server, failed
-                if (!result) {
-                    getActivity().runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity(),
-                                    "Something went wrong",
-                                    Toast.LENGTH_SHORT).show();
-
-                            // go back to main activity (top of activity stack)
-                            Intent main_act = new Intent(getActivity(), MainActivity.class);
-                            main_act.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(main_act);
-                        }
-                    });
-                } else {
-                    // update complete, begin waiting
-                    getActivity().runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            waitForUpdate();
-                        }
-                    });
-                }
-            }
-        }).start();
-    }
-
-    public void waitForUpdate() {
-
-        final String hostId_final = Integer.toString(hostId);
-        final String curr_player = Integer.toString(getGameView().getCurrPlayer());
-        new Thread(new Runnable() {
-
-            final Cloud cloud = new Cloud();
-
-            @Override
-            public void run() {
-                // get the opponents board and load into board class
-
-                while(true) {
-                    TurnResult result = cloud.waitForTurn(hostId_final, curr_player);
-
-                    // could not contact server, failed
-                    if (result.getStatus().equals("fail")) {
-                        getActivity().runOnUiThread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                Toast.makeText(getActivity(),
-                                        "Something went wrong",
-                                        Toast.LENGTH_SHORT).show();
-
-                                // go back to main activity (top of activity stack)
-                                Intent main_act = new Intent(getActivity(), MainActivity.class);
-                                main_act.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(main_act);
-                            }
-                        });
-                    }
-                    // still waiting
-                    else if (result.getStatus().equals("no")) {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        continue;
-                    } else {
-                        // opponents turn is over
-                        getActivity().runOnUiThread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                int curr_player = getGameView().getCurrPlayer();
-                                getGameView().loadUpdatedBoard(curr_player, result.getTiles());
-                                activateTouch();
-                            }
-                        });
-                    }
-
-                    return;
-                }
-            }
-        }).start();
     }
 
     @Override
@@ -250,7 +127,6 @@ public class GameActivity extends AppCompatActivity {
         done.setEnabled(false);
 
         int nextPlayer = 1 + getGameView().getCurrPlayer() % 2;
-        int curr_player = getGameView().getCurrPlayer();
 
         // check game won
         if(getGameView().getNumShips(nextPlayer) == 0) {
@@ -264,34 +140,13 @@ public class GameActivity extends AppCompatActivity {
             }
             startActivity(intent);
         }
-        else if (curr_player == 1) { // host done - set player to 2 and bring up waiting dlg
-            if (isHost) {
-                // update host board
-                update(curr_player);
-                disableTouch();
-            }
-            else {
-                activateTouch();
-            }
-            getGameView().setCurrPlayer(2);
-            SetNameText(2);
-            getGameView().setTurnCompleted(false);
-        }
 
-        else { // guest done - set player to 1 and bring up waiting dlg
-            if (isHost) {
-                activateTouch();
-            }
-            else {
-                // update guest board
-                update(curr_player);
-                disableTouch();
-            }
-            getGameView().setCurrPlayer(1);
-            SetNameText(1);
+        else {
+            // assign next player
             getGameView().setTurnCompleted(false);
+            SetNameText(nextPlayer);
+            getGameView().setCurrPlayer(nextPlayer);
         }
-
     }
 
     @Override
@@ -301,3 +156,5 @@ public class GameActivity extends AppCompatActivity {
         getGameView().saveInstanceState(bundle);
     }
 }
+
+

@@ -1,5 +1,6 @@
 package edu.msu.nagyjos2.project1;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -199,6 +200,15 @@ public class ShipPlacement extends AppCompatActivity {
                                 int curr_player = getGameView().getCurrPlayer();
                                 getGameView().loadUpdatedBoard(curr_player, result.getTiles());
                                 activateTouch();
+
+                                if (curr_player == 2) {
+                                    startGame();
+                                }
+                                else {
+                                    getGameView().setCurrPlayer(2); // set current player to host (player 1)
+                                    SetNameText(2); // set the name for the host
+                                }
+
                             }
                         });
                     }
