@@ -39,7 +39,7 @@ public class GameActivity extends AppCompatActivity {
         player1_name = getIntent().getExtras().getString("Player1Name");
         player2_name = getIntent().getExtras().getString("Player2Name");
         isHost = getIntent().getExtras().getBoolean("host");
-        hostId = Integer.parseInt(getIntent().getExtras().getString("idhost"));
+        hostId = getIntent().getExtras().getInt("idhost");
 
 
 
@@ -128,8 +128,6 @@ public class GameActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             int curr_player = getGameView().getCurrPlayer();
-                            getGameView().loadUpdatedBoard(curr_player, result.getTiles());
-                            activateTouch();
 
                             if (curr_player == 2) {
                                 getGameView().setCurrPlayer(1); // set current player to host (player 1)
@@ -139,6 +137,8 @@ public class GameActivity extends AppCompatActivity {
                                 getGameView().setCurrPlayer(2); // set current player to host (player 1)
                                 SetNameText(2); // set the name for the host
                             }
+                            getGameView().loadUpdatedBoard(curr_player, result.getTiles());
+                            activateTouch();
 
                         }
                     });
@@ -283,28 +283,23 @@ public class GameActivity extends AppCompatActivity {
         }
 
         else if (curr_player == 1) { // host done - set player to 2 and bring up waiting dlg
-            if (isHost) {
-                // update host board
-                updateBoard(curr_player);
-                disableTouch();
-            }
-            else {
-                activateTouch();
-            }
+
             getGameView().setCurrPlayer(2);
             SetNameText(2);
+
+            updateBoard(curr_player);
+            disableTouch();
+
+
         }
 
         else { // guest done - send to game activity
-            if (isHost) {
-                activateTouch();
-            }
-            else {
-                // update guest board
-                updateBoard(curr_player);
-            }
+
             getGameView().setCurrPlayer(1);
             SetNameText(1);
+
+            updateBoard(curr_player);
+            disableTouch();
         }
     }
 
