@@ -17,6 +17,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 
 import edu.msu.nagyjos2.project1.BattleshipBoard;
+import edu.msu.nagyjos2.project1.Cloud.Models.DeleteGameResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.JoinResult;
 import edu.msu.nagyjos2.project1.Cloud.Models.Lobbies;
 import edu.msu.nagyjos2.project1.Cloud.Models.CreateResult;
@@ -45,6 +46,7 @@ public class Cloud {
     public static final String LOBBY_LOAD_PATH = "lobby-load.php";
     public static final String WAIT_FOR_TURN = "game-waiting.php";
     public static final String TURN_DONE_PATH = "game-update.php";
+    public static final String DELETE_GAME = "game-delete.php";
 
 
     public static class LobbiesAdapter extends BaseAdapter {
@@ -386,6 +388,31 @@ public class Cloud {
             return false;
         } catch (RuntimeException e) {	// to catch xml errors to help debug step 6
             Log.e("updateBoard", "Runtime Exception: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean gameDelete(final String id) {
+        BattleshipNetwork service = retrofit.create(BattleshipNetwork.class);
+        try {
+            Response<DeleteGameResult> response = service.deleteGame(id).execute();
+
+            // check if request failed
+            if (!response.isSuccessful()) {
+                Log.e("OpenFromCloud", "Failed to load hat, response code is = " + response.code());
+                return false;
+            }
+
+            DeleteGameResult result = response.body();
+            if (!result.getStatus().equals("yes")) {
+                Log.e("OpenFromCloud", "Failed to delete hat, message is = '" + result.getMessage() + "'");
+                return false;
+            }
+
+            return true;
+
+        } catch (IOException | RuntimeException e) {
+            Log.e("OpenFromCloud", "Exception occurred while deleting lobby!", e);
             return false;
         }
     }

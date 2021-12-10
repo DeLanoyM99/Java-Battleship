@@ -273,6 +273,7 @@ public class GameActivity extends AppCompatActivity {
 
         // check game won
         if(getGameView().getNumShips(nextPlayer) == 0) {
+            delete(String.valueOf(hostId));
             Intent intent = new Intent(this, EndActivity.class);
             if (getGameView().getCurrPlayer() == 2) {
                 intent.putExtra("WinnerName", player2_name);
@@ -311,6 +312,24 @@ public class GameActivity extends AppCompatActivity {
         super.onSaveInstanceState(bundle);
 
         getGameView().saveInstanceState(bundle);
+    }
+
+    /**
+     * Delete the lobby
+     * @param hostId id it will remove from table
+     */
+    private void delete(final String hostId) {
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                Cloud cloud = new Cloud();
+                boolean ok = cloud.lobbyDelete(hostId);
+                boolean okGame = cloud.gameDelete(hostId);
+            }
+
+        }).start();
     }
 }
 
