@@ -60,6 +60,7 @@ public class GameActivity extends AppCompatActivity {
             SetNameText(getGameView().getCurrPlayer());
         }
         if (!isHost && getGameView().getCurrPlayer() == 1) {
+            getGameView().setTurnCompleted(true);
             disableTouch();
             waitForTurn();
         }
@@ -68,14 +69,11 @@ public class GameActivity extends AppCompatActivity {
     private GameActivity getActivity() { return this; }
 
     private void activateTouch() {
-        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
         overlay.setVisibility(View.INVISIBLE);
     }
 
     private void disableTouch() {
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-        //        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
         overlay.setVisibility(View.VISIBLE);
     }
