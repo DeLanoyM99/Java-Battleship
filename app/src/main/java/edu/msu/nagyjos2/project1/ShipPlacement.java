@@ -13,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +39,8 @@ public class ShipPlacement extends AppCompatActivity {
     private boolean isHost;
     private TextView PlayersTurn;
     private boolean oneDone = false; // true if one player has set their boats
+    private Animation animFadeIn;
+    private Animation animFadeOut;
 
 
     @SuppressLint("SetTextI18n")
@@ -52,6 +56,8 @@ public class ShipPlacement extends AppCompatActivity {
         guestName = getIntent().getExtras().getString("guestName");
         isHost = getIntent().getExtras().getString("isHost").equals("yes");
         PlayersTurn = findViewById(R.id.PlayerTurnText);
+        animFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        animFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
 
         if(savedInstanceState != null) {
             // We have saved state, load current player
@@ -146,6 +152,10 @@ public class ShipPlacement extends AppCompatActivity {
     private void activateTouch() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
+
+        animFadeOut.reset();
+        overlay.clearAnimation();
+        overlay.startAnimation(animFadeOut);
         overlay.setVisibility(View.INVISIBLE);
     }
 
@@ -153,7 +163,11 @@ public class ShipPlacement extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
+
         overlay.setVisibility(View.VISIBLE);
+        animFadeIn.reset();
+        overlay.clearAnimation();
+        overlay.startAnimation(animFadeIn);
     }
 
     private void waitForTurn() {

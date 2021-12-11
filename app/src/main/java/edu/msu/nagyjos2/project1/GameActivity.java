@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,6 +31,8 @@ public class GameActivity extends AppCompatActivity {
     private TextView PlayersTurn;
     private int hostId;
     private boolean isHost;
+    private Animation animFadeIn;
+    private Animation animFadeOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,9 @@ public class GameActivity extends AppCompatActivity {
         player2_name = getIntent().getExtras().getString("Player2Name");
         isHost = getIntent().getExtras().getBoolean("host");
         hostId = getIntent().getExtras().getInt("idhost");
+
+        animFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        animFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
 
         getGameView().loadBoatPositions(player1_boat_pos, player2_boat_pos);
 
@@ -70,12 +77,20 @@ public class GameActivity extends AppCompatActivity {
 
     private void activateTouch() {
         RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
+
+        animFadeOut.reset();
+        overlay.clearAnimation();
+        overlay.startAnimation(animFadeOut);
         overlay.setVisibility(View.INVISIBLE);
     }
 
     private void disableTouch() {
         RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
+
         overlay.setVisibility(View.VISIBLE);
+        animFadeIn.reset();
+        overlay.clearAnimation();
+        overlay.startAnimation(animFadeIn);
     }
 
     private void waitForTurn() {
