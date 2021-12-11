@@ -130,23 +130,24 @@ public class GameActivity extends AppCompatActivity {
                             int curr_player = getGameView().getCurrPlayer();
                             activateTouch();
 
-                            if (curr_player == 2) {
+                            if (curr_player == 2) { // guest moved, see if the guest won the game
+                                getGameView().loadUpdatedBoard(1, result.getTiles());;
+
                                 getGameView().setCurrPlayer(1); // set current player to host (player 1)
                                 SetNameText(1);
-                                getGameView().loadUpdatedBoard(1, result.getTiles());
+
                             }
-                            else {
+                            else { // host moved, see if the host won the game
+                                getGameView().loadUpdatedBoard(2, result.getTiles());
+
                                 getGameView().setCurrPlayer(2); // set current player to guest
                                 SetNameText(2);
-                                getGameView().loadUpdatedBoard(2, result.getTiles());
                             }
 
                             checkForEnd();
-
                         }
                     });
                 }
-
                 return;
             }
         }
@@ -303,10 +304,10 @@ public class GameActivity extends AppCompatActivity {
                 intent.putExtra("LoserName", player2_name);
             }
             startActivity(intent);
-            delete(String.valueOf(hostId));
+            //delete(String.valueOf(hostId));
         }
 
-        else if (curr_player == 1) { // host done - set player to 2 and bring up waiting dlg
+        else if (curr_player == 1) { // host done
 
             getGameView().setCurrPlayer(2);
             SetNameText(2);
@@ -316,7 +317,7 @@ public class GameActivity extends AppCompatActivity {
 
         }
 
-        else { // guest done - send to game activity
+        else { // guest done
 
             getGameView().setCurrPlayer(1);
             SetNameText(1);
