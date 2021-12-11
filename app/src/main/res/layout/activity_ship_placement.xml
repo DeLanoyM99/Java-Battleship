@@ -63,9 +63,8 @@
         android:id="@+id/waitingOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.5"
-        android:background="#121111"
-        android:visibility="visible">
+        android:background="#88121111"
+        android:visibility="invisible">
 
         <TextView
             android:id="@+id/waitingText"

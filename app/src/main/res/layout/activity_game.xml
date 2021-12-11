@@ -90,12 +90,12 @@
             </FrameLayout>
         </RelativeLayout>
     </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/waitingOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.5"
-        android:background="#F0121111"
+        android:background="#88121111"
         android:visibility="invisible">
 
         <TextView

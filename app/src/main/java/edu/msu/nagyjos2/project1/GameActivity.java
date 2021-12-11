@@ -68,14 +68,14 @@ public class GameActivity extends AppCompatActivity {
     private GameActivity getActivity() { return this; }
 
     private void activateTouch() {
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
         overlay.setVisibility(View.INVISIBLE);
     }
 
     private void disableTouch() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+        //        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
         overlay.setVisibility(View.VISIBLE);
     }
@@ -141,7 +141,7 @@ public class GameActivity extends AppCompatActivity {
                                 getGameView().setCurrPlayer(2); // set current player to guest
                                 SetNameText(2);
                             }
-
+                            getGameView().setTurnCompleted(false);
                             checkForEnd();
                         }
                     });
@@ -283,7 +283,7 @@ public class GameActivity extends AppCompatActivity {
         // disable button until next player selects tile to hit
         Button done = getDoneButton();
         done.setEnabled(false);
-        getGameView().setTurnCompleted(false);
+
 
         int nextPlayer = 1 + getGameView().getCurrPlayer() % 2;
 
