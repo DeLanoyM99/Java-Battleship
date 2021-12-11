@@ -162,8 +162,7 @@ public class ShipPlacement extends AppCompatActivity {
             @Override
             public void run() {
                 // get the opponents board and load into board class
-
-                while(true) {
+                while (true) {
                     TurnResult result = cloud.waitForTurn(hostId_final, curr_player);
 
                     // could not contact server, failed
@@ -207,11 +206,11 @@ public class ShipPlacement extends AppCompatActivity {
                                 } else {
                                     startGame();
                                 }
-
+                               // Thread.currentThread().interrupt();
                             }
                         });
                     }
-
+                    //Thread.currentThread().interrupt();
                     return;
                 }
             }
@@ -285,7 +284,6 @@ public class ShipPlacement extends AppCompatActivity {
             player2_boats.append(boat_positions.get(i).toString() + " ");
         }
         player2_boats.append(boat_positions.get(7).toString()); // no ending space
-
 
         intent.putExtra("player1_boat_positions", player1_boats.toString());
         intent.putExtra("player2_boat_positions", player2_boats.toString());

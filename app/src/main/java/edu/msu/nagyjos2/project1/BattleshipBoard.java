@@ -475,11 +475,20 @@ public class BattleshipBoard {
 
     public void loadUpdatedBoard(List<Tile> tilesNew) {
 
+        int boats_left = 4;
+        boolean has_boat;
+        boolean is_hit;
         for (int i=0; i<tilesNew.size(); i++) {
             int pos = tilesNew.get(i).getPosToInt();
-            tiles.get(pos).setHasBoat(tilesNew.get(i).getBoatAsBool());
-            tiles.get(pos).setHit(tilesNew.get(i).getHitAsBool());
+            has_boat = tilesNew.get(i).getBoatAsBool();
+            is_hit = tilesNew.get(i).getHitAsBool();
+            if (has_boat && is_hit) {
+                boats_left = boats_left - 1;
+            }
+            tiles.get(pos).setHasBoat(has_boat);
+            tiles.get(pos).setHit(is_hit);
         }
+        setNumBoats(boats_left);
     }
 
 }

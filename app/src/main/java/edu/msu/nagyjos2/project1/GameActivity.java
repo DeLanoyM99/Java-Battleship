@@ -85,7 +85,7 @@ public class GameActivity extends AppCompatActivity {
     private void waitForTurn() {
     final String hostId_final = Integer.toString(hostId);
     final String curr_player = Integer.toString(getGameView().getCurrPlayer());
-        new Thread(new Runnable() {
+    new Thread(new Runnable() {
 
         final Cloud cloud = new Cloud();
 
@@ -132,12 +132,12 @@ public class GameActivity extends AppCompatActivity {
 
                             if (curr_player == 2) {
                                 getGameView().setCurrPlayer(1); // set current player to host (player 1)
-                                SetNameText(1); // set the name for the host
+                                SetNameText(1);
                                 getGameView().loadUpdatedBoard(1, result.getTiles());
                             }
                             else {
-                                getGameView().setCurrPlayer(2); // set current player to host (player 1)
-                                SetNameText(2); // set the name for the host
+                                getGameView().setCurrPlayer(2); // set current player to guest
+                                SetNameText(2);
                                 getGameView().loadUpdatedBoard(2, result.getTiles());
                             }
 
