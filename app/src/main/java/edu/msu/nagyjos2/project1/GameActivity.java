@@ -41,11 +41,7 @@ public class GameActivity extends AppCompatActivity {
         isHost = getIntent().getExtras().getBoolean("host");
         hostId = getIntent().getExtras().getInt("idhost");
 
-
-
         getGameView().loadBoatPositions(player1_boat_pos, player2_boat_pos);
-
-
 
         // start the game and setup the starting player
         getGameView().setGameStarted(true);
@@ -62,7 +58,7 @@ public class GameActivity extends AppCompatActivity {
             getGameView().loadInstanceState(savedInstanceState);
             SetNameText(getGameView().getCurrPlayer());
         }
-        if (!isHost) {
+        if (!isHost && getGameView().getCurrPlayer() == 1) {
             disableTouch();
             waitForTurn();
         }
