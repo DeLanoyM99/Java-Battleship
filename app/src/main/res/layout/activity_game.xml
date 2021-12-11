@@ -1,88 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp"
     tools:context=".GameActivity">
 
-    <TextView
-        android:id="@+id/PlayersTurn"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:ellipsize="middle"
-        android:gravity="center_horizontal|center_vertical"
-        android:singleLine="true"
-        android:textSize="34sp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <view
-        android:id="@+id/GameView"
-        class="edu.msu.nagyjos2.project1.GameView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7" />
 
+        <TextView
+            android:id="@+id/PlayersTurn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="middle"
+            android:gravity="center_horizontal|center_vertical"
+            android:singleLine="true"
+            android:textSize="34sp" />
+
+        <view
+            android:id="@+id/GameView"
+            class="edu.msu.nagyjos2.project1.GameView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+
+            <FrameLayout
+                android:id="@+id/SurrenderFrame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp"
+                android:layout_toEndOf="@id/buffer">
+
+                <Button
+                    android:id="@+id/surrenderButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="onSurrenderButton"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/SurrenderButton"
+                    android:textSize="14sp" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/buffer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="false">
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/DoneFrame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp"
+                android:layout_toStartOf="@id/buffer">
+
+                <Button
+                    android:id="@+id/doneButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="onDoneTurn"
+                    android:paddingLeft="40dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="40dp"
+                    android:paddingBottom="20dp"
+                    android:text="@string/DoneButton" />
+            </FrameLayout>
+        </RelativeLayout>
+    </LinearLayout>
     <RelativeLayout
+        android:id="@+id/waitingOverlay"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3">
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:background="#F0121111"
+        android:visibility="invisible">
 
-        <FrameLayout
-            android:id="@+id/SurrenderFrame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
-            android:layout_toEndOf="@id/buffer">
-
-            <Button
-                android:id="@+id/surrenderButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:onClick="onSurrenderButton"
-                android:paddingLeft="16dp"
-                android:paddingTop="10dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="10dp"
-                android:text="@string/SurrenderButton"
-                android:textSize="14sp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/buffer"
+        <TextView
+            android:id="@+id/waitingText"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="false">
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/DoneFrame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
-            android:layout_toStartOf="@id/buffer">
-
-            <Button
-                android:id="@+id/doneButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:onClick="onDoneTurn"
-                android:paddingLeft="40dp"
-                android:paddingTop="20dp"
-                android:paddingRight="40dp"
-                android:paddingBottom="20dp"
-                android:text="@string/DoneButton" />
-        </FrameLayout>
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:text="@string/waitingText"
+            android:textColor="#000000"
+            android:textColorHint="#000000"
+            android:textSize="41sp" />
     </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

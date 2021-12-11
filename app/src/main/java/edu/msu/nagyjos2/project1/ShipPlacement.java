@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -144,11 +145,15 @@ public class ShipPlacement extends AppCompatActivity {
 
     private void activateTouch() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
+        overlay.setVisibility(View.INVISIBLE);
     }
 
     private void disableTouch() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
+        overlay.setVisibility(View.VISIBLE);
     }
 
     private void waitForTurn() {

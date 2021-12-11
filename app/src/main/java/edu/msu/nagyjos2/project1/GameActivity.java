@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,20 +63,21 @@ public class GameActivity extends AppCompatActivity {
             disableTouch();
             waitForTurn();
         }
-
-
-
     }
 
     private GameActivity getActivity() { return this; }
 
     private void activateTouch() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
+        overlay.setVisibility(View.INVISIBLE);
     }
 
     private void disableTouch() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
+        overlay.setVisibility(View.VISIBLE);
     }
 
     private void waitForTurn() {
@@ -99,7 +101,7 @@ public class GameActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(getActivity(),
-                                    "Something went wrong",
+                                    "Server Error Occurred",
                                     Toast.LENGTH_SHORT).show();
 
                             // go back to main activity (top of activity stack)

@@ -1,98 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
     tools:context=".GameActivity">
 
-    <view
-        android:id="@+id/GameView"
-        class="edu.msu.nagyjos2.project1.GameView"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="4" />
+        android:baselineAligned="true"
+        android:orientation="horizontal">
+
+        <view
+            android:id="@+id/GameView"
+            class="edu.msu.nagyjos2.project1.GameView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
+
+            <TextView
+                android:id="@+id/PlayersTurn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:textSize="30sp"
+                android:ellipsize="middle"
+                android:singleLine="true"/>
+
+            <TextView
+                android:id="@+id/attack_Instructions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/buffer"
+                android:layout_below="@id/PlayersTurn"
+                android:gravity="center"
+                android:text="@string/attack_instructions"
+                android:textSize="16sp" />
+
+            <FrameLayout
+                android:id="@+id/buffer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/DoneFrame"
+                android:layout_centerVertical="false">
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/DoneFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/SurrenderFrame"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentBottom="false">
+
+                <Button
+                    android:id="@+id/doneButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="onDoneTurn"
+                    android:paddingLeft="40dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="40dp"
+                    android:paddingBottom="20dp"
+                    android:text="@string/DoneButton"
+                    android:textSize="20sp" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/SurrenderFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp">
+
+                <Button
+                    android:id="@+id/surrenderButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="onSurrenderButton"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/SurrenderButton"
+                    android:textSize="14sp"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </FrameLayout>
+        </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="0dp"
+        android:id="@+id/waitingOverlay"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="3">
+        android:alpha="0.5"
+        android:background="#F0121111"
+        android:visibility="invisible">
 
         <TextView
-            android:id="@+id/PlayersTurn"
-            android:layout_width="match_parent"
+            android:id="@+id/waitingText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:textSize="30sp"
-            android:ellipsize="middle"
-            android:singleLine="true"/>
-
-        <TextView
-            android:id="@+id/attack_Instructions"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/buffer"
-            android:layout_below="@id/PlayersTurn"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif-black"
             android:gravity="center"
-            android:text="@string/attack_instructions"
-            android:textSize="16sp" />
+            android:text="@string/waitingText"
+            android:textColor="#000000"
+            android:textColorHint="#000000"
+            android:textSize="41sp" />
 
-        <FrameLayout
-            android:id="@+id/buffer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/DoneFrame"
-            android:layout_centerVertical="false">
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/DoneFrame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/SurrenderFrame"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentBottom="false">
-
-            <Button
-                android:id="@+id/doneButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:onClick="onDoneTurn"
-                android:paddingLeft="40dp"
-                android:paddingTop="20dp"
-                android:paddingRight="40dp"
-                android:paddingBottom="20dp"
-                android:text="@string/DoneButton"
-                android:textSize="20sp" />
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/SurrenderFrame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp">
-
-            <Button
-                android:id="@+id/surrenderButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:onClick="onSurrenderButton"
-                android:paddingLeft="16dp"
-                android:paddingTop="10dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="10dp"
-                android:text="@string/SurrenderButton"
-                android:textSize="14sp"
-                tools:ignore="TouchTargetSizeCheck" />
-        </FrameLayout>
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>
