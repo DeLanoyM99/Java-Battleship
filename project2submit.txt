@@ -28,8 +28,8 @@ Responsiblity: Creating UI elements, adding lobby refresh function, created lobb
 
 Member 3: Joseph Nagy
 
-Responsiblity:
-
+Responsiblity: creating users, logging in users in the app, server side files for creating/logging in users. Sending game state to the database,
+and pulling game state in the application.
 
 
 Member 4 Kyle Ernster:
@@ -46,9 +46,9 @@ Responsiblity:
 
 Provide instructions on how to reach the first editing activity if the login button is not yet functional.
 
-User account the server-side communications is running under: https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/
+User account the server-side communications is running under: nagyjos2
 
-Paths to all server-side scripts: (Such as https://www.cse.msu.edu/~carter/project2/login.php).
+Paths to all server-side scripts: https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/.
 
 Calls in the code to the server (provide a class name and function, or URL used for debugging):
 https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/battleshipTesting.php

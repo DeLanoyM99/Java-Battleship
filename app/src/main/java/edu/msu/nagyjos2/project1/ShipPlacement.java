@@ -247,7 +247,7 @@ public class ShipPlacement extends AppCompatActivity {
 
             @Override
             public void run() {
-                boolean result = cloud.updateBoard(hostId_final, board);
+                boolean result = cloud.updateBoard(hostId_final, board, false);
 
                 // could not contact server, failed
                 if (!result) {
