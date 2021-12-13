@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,6 +34,8 @@ public class GameActivity extends AppCompatActivity {
     private boolean isHost;
     private Animation animFadeIn;
     private Animation animFadeOut;
+    private CountDownTimer timer;
+    private boolean timerDone = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,16 @@ public class GameActivity extends AppCompatActivity {
         player2_name = getIntent().getExtras().getString("Player2Name");
         isHost = getIntent().getExtras().getBoolean("host");
         hostId = getIntent().getExtras().getInt("idhost");
+        timer = new CountDownTimer(60000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                timerDone = true;
+                checkForEnd();
+            }
+        }.start();
 
         animFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         animFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
@@ -181,7 +194,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void checkForEnd() {
 
-        if(getGameView().getNumShips(getGameView().getCurrPlayer()) == 0) {
+        if(getGameView().getNumShips(getGameView().getCurrPlayer()) == 0 || timerDone) {
             Intent intent = new Intent(this, EndActivity.class);
             intent.putExtra("HostID", "");
             if (getGameView().getCurrPlayer() == 1) {
@@ -314,6 +327,18 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void onDoneTurn (View view) {
+        timer.cancel();
+        timer = new CountDownTimer(60000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+            }
+
+            public void onFinish() {
+                timerDone = true;
+                checkForEnd();
+            }
+        }.start();
+
         // disable button until next player selects tile to hit
         Button done = getDoneButton();
         done.setEnabled(false);
