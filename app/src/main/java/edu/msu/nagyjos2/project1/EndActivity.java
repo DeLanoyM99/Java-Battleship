@@ -50,7 +50,7 @@ public class EndActivity extends AppCompatActivity {
         if (!hostid.equals("")) {
             delete(hostid);
         }
-        //Thread.currentThread().interrupt();
+        Thread.currentThread().interrupt();
 
     }
 

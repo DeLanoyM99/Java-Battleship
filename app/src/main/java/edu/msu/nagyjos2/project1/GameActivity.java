@@ -12,15 +12,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Random;
 
 import edu.msu.nagyjos2.project1.Cloud.Cloud;
 import edu.msu.nagyjos2.project1.Cloud.Models.TurnResult;
@@ -88,7 +85,11 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private GameActivity getActivity() { return this; }
+    public CountDownTimer getTimer() {
+        return this.timer;
+    }
+
+    private GameActivity getGameActivity() { return this; }
 
     private void activateTouch() {
         Button bttn_surrender = findViewById(R.id.surrenderButton);
@@ -130,16 +131,16 @@ public class GameActivity extends AppCompatActivity {
 
                 // could not contact server, failed
                 if (result.getStatus().equals("fail")) {
-                    getActivity().runOnUiThread(new Runnable() {
+                    getGameActivity().runOnUiThread(new Runnable() {
 
                         @Override
                         public void run() {
-                            Toast.makeText(getActivity(),
+                            Toast.makeText(getGameActivity(),
                                     "Server Error Occurred",
                                     Toast.LENGTH_SHORT).show();
 
                             // go back to main activity (top of activity stack)
-                            Intent main_act = new Intent(getActivity(), MainActivity.class);
+                            Intent main_act = new Intent(getGameActivity(), MainActivity.class);
                             main_act.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(main_act);
                         }
@@ -155,7 +156,7 @@ public class GameActivity extends AppCompatActivity {
                     continue;
                 } else {
                     // opponents turn is over
-                    getActivity().runOnUiThread(new Runnable() {
+                    getGameActivity().runOnUiThread(new Runnable() {
 
                         @Override
                         public void run() {
@@ -163,7 +164,7 @@ public class GameActivity extends AppCompatActivity {
                             activateTouch();
 
                             if (result.getSurrender().equals("yes")) {
-                                Intent intent = new Intent(getActivity(), EndActivity.class);
+                                Intent intent = new Intent(getGameActivity(), EndActivity.class);
                                 intent.putExtra("HostID", String.valueOf(hostId));
                                 if (getGameView().getCurrPlayer() == 1) {
                                     intent.putExtra("WinnerName", player2_name);
@@ -172,6 +173,7 @@ public class GameActivity extends AppCompatActivity {
                                     intent.putExtra("WinnerName", player1_name);
                                     intent.putExtra("LoserName", player2_name);
                                 }
+                                timer.cancel();
                                 startActivity(intent);
                                 return;
                             }
@@ -212,8 +214,12 @@ public class GameActivity extends AppCompatActivity {
                 intent.putExtra("WinnerName", player1_name);
                 intent.putExtra("LoserName", player2_name);
             }
+            timer.cancel();
             startActivity(intent);
         }
+
+        ResetTimer();
+
 
 
     }
@@ -239,23 +245,23 @@ public class GameActivity extends AppCompatActivity {
 
                 // could not contact server, failed
                 if (!result) {
-                    getActivity().runOnUiThread(new Runnable() {
+                    getGameActivity().runOnUiThread(new Runnable() {
 
                         @Override
                         public void run() {
-                            Toast.makeText(getActivity(),
+                            Toast.makeText(getGameActivity(),
                                     "Something went wrong",
                                     Toast.LENGTH_SHORT).show();
 
                             // go back to main activity (top of activity stack)
-                            Intent main_act = new Intent(getActivity(), MainActivity.class);
+                            Intent main_act = new Intent(getGameActivity(), MainActivity.class);
                             main_act.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(main_act);
                         }
                     });
                 } else {
                     // update complete, begin waiting
-                    getActivity().runOnUiThread(new Runnable() {
+                    getGameActivity().runOnUiThread(new Runnable() {
 
                         @Override
                         public void run() {
@@ -336,7 +342,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public void onDoneTurn (View view) {
+    public void ResetTimer() {
         timer.cancel();
         timer = new CountDownTimer(60000, 1000) {
 
@@ -350,6 +356,10 @@ public class GameActivity extends AppCompatActivity {
                 checkForEnd();
             }
         }.start();
+    }
+
+    public void onDoneTurn (View view) {
+        ResetTimer();
 
         // disable button until next player selects tile to hit
         Button done = getDoneButton();
@@ -373,6 +383,7 @@ public class GameActivity extends AppCompatActivity {
                 intent.putExtra("WinnerName", player1_name);
                 intent.putExtra("LoserName", player2_name);
             }
+            timer.cancel();
             startActivity(intent);
         }
 

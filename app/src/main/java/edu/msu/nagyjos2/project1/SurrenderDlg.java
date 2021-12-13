@@ -43,6 +43,7 @@ public class SurrenderDlg extends DialogFragment {
                     intent.putExtra("WinnerName", act.getPlayer1Name());
                     intent.putExtra("LoserName", act.getPlayer2Name());
                 }
+                ((GameActivity) getActivity()).getTimer().cancel();
                 startActivity(intent);
             }
         });
