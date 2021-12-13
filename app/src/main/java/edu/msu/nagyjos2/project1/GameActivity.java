@@ -51,6 +51,8 @@ public class GameActivity extends AppCompatActivity {
         timer = new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
+                TextView time_remaining = findViewById(R.id.secondsRemaining);
+                time_remaining.setText(String.valueOf(millisUntilFinished / 1000));
             }
 
             public void onFinish() {
@@ -339,6 +341,8 @@ public class GameActivity extends AppCompatActivity {
         timer = new CountDownTimer(60000, 1000) {
 
             public void onTick(long millisUntilFinished) {
+                TextView time_remaining = findViewById(R.id.secondsRemaining);
+                time_remaining.setText(String.valueOf(millisUntilFinished / 1000));
             }
 
             public void onFinish() {
