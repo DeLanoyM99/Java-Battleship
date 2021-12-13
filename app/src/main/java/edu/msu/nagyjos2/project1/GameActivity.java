@@ -76,6 +76,9 @@ public class GameActivity extends AppCompatActivity {
     private GameActivity getActivity() { return this; }
 
     private void activateTouch() {
+        Button bttn_surrender = findViewById(R.id.surrenderButton);
+        bttn_surrender.setEnabled(true);
+
         RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
 
         animFadeOut.reset();
@@ -85,6 +88,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void disableTouch() {
+        Button bttn_surrender = findViewById(R.id.surrenderButton);
+        bttn_surrender.setEnabled(false);
+
         RelativeLayout overlay = (RelativeLayout)findViewById(R.id.waitingOverlay);
 
         overlay.setVisibility(View.VISIBLE);
@@ -143,11 +149,11 @@ public class GameActivity extends AppCompatActivity {
 
                             if (result.getSurrender().equals("yes")) {
                                 Intent intent = new Intent(getActivity(), EndActivity.class);
-                                intent.putExtra("HostID", hostId);
-                                if (getGameView().getCurrPlayer() == 2) {
+                                intent.putExtra("HostID", String.valueOf(hostId));
+                                if (getGameView().getCurrPlayer() == 1) {
                                     intent.putExtra("WinnerName", player2_name);
                                     intent.putExtra("LoserName", player1_name);
-                                } else if (getGameView().getCurrPlayer() == 1) {
+                                } else if (getGameView().getCurrPlayer() == 2) {
                                     intent.putExtra("WinnerName", player1_name);
                                     intent.putExtra("LoserName", player2_name);
                                 }
@@ -183,7 +189,7 @@ public class GameActivity extends AppCompatActivity {
 
         if(getGameView().getNumShips(getGameView().getCurrPlayer()) == 0) {
             Intent intent = new Intent(this, EndActivity.class);
-            intent.putExtra("HostID", "");
+            intent.putExtra("HostID", String.valueOf(hostId));
             if (getGameView().getCurrPlayer() == 1) {
                 intent.putExtra("WinnerName", player2_name);
                 intent.putExtra("LoserName", player1_name);
@@ -197,7 +203,7 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    public void updateBoard(final int current_player, boolean surrender) {
+    public void updateBoard(final int current_player, final boolean surrender) {
 
         final String hostId_final = Integer.toString(hostId);
         BattleshipBoard board = getGameView().getPlayerBoard(current_player);
@@ -238,7 +244,9 @@ public class GameActivity extends AppCompatActivity {
 
                         @Override
                         public void run() {
-                            waitForTurn();
+                            if (!surrender && getGameView().getNumShips(1 + getGameView().getCurrPlayer() % 2) != 0) {
+                                waitForTurn();
+                            }
                         }
                     });
                 }
@@ -326,7 +334,7 @@ public class GameActivity extends AppCompatActivity {
         // check game won
         if(getGameView().getNumShips(nextPlayer) == 0) {
             Intent intent = new Intent(this, EndActivity.class);
-            intent.putExtra("HostID", String.valueOf(hostId));
+            intent.putExtra("HostID", "");
             if (getGameView().getCurrPlayer() == 2) {
                 updateBoard(1, false);
                 intent.putExtra("WinnerName", player2_name);
@@ -337,7 +345,6 @@ public class GameActivity extends AppCompatActivity {
                 intent.putExtra("LoserName", player2_name);
             }
             startActivity(intent);
-            //delete(String.valueOf(hostId));
         }
 
         else if (curr_player == 1) { // host done
@@ -365,6 +372,24 @@ public class GameActivity extends AppCompatActivity {
         super.onSaveInstanceState(bundle);
 
         getGameView().saveInstanceState(bundle);
+    }
+
+    /**
+     * Delete the lobby & game
+     * @param hostId id it will remove from table
+     */
+    private void delete(final String hostId) {
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                Cloud cloud = new Cloud();
+                boolean ok = cloud.lobbyDelete(hostId);
+                boolean okGame = cloud.gameDelete(hostId);
+            }
+
+        }).start();
     }
 }
 
