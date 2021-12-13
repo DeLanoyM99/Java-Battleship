@@ -34,7 +34,7 @@ Responsiblity:
 
 Member 4 Kyle Ernster:
 
-Responsiblity:
+Responsiblity: Created php and UI for deleting and creating lobbies, created php for updating and loading boards after player turns, worked with Joseph on the java for ship placement and the game activity, general debugging.
 
 
 
