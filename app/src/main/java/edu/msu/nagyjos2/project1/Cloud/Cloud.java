@@ -321,7 +321,7 @@ public class Cloud {
             // check if request failed
             if (!response.isSuccessful()) {
                 Log.e("waitForTurn", "Failed get response, response code is = " + response.code());
-                return new TurnResult("fail", "", new ArrayList<Tile>());
+                return new TurnResult("fail", "no", new ArrayList<Tile>());
             }
 
             TurnResult result = response.body();
@@ -334,11 +334,11 @@ public class Cloud {
 
         } catch (IOException | RuntimeException e) {
             Log.e("waitForTur", "Exception occurred while waiting!", e);
-            return new TurnResult("fail", "", new ArrayList<Tile>());
+            return new TurnResult("fail", "no", new ArrayList<Tile>());
         }
     }
 
-    public boolean updateBoard(final String hostid, BattleshipBoard board) {
+    public boolean updateBoard(final String hostid, BattleshipBoard board, boolean surrender) {
         XmlSerializer xml = Xml.newSerializer();
         StringWriter writer = new StringWriter();
 
@@ -348,6 +348,13 @@ public class Cloud {
 
             xml.startTag(null, "board");
             xml.attribute(null, "status", "yes");
+
+            if (surrender) {
+                xml.attribute(null, "surrender", "yes");
+            }
+            else {
+                xml.attribute(null, "surrender", "no");
+            }
             for (int i = 0; i<board.tiles.size(); i++) {
                 String position = Integer.toString(i);
                 String hasBoat = Boolean.toString(board.tiles.get(i).hasBoat());

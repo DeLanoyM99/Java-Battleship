@@ -33,10 +33,13 @@ public class SurrenderDlg extends DialogFragment {
                 // surrender
                 GameActivity act = (GameActivity)getActivity();
                 Intent intent = new Intent(act, EndActivity.class);
+                intent.putExtra("HostID", "");
                 if (act.getGameView().getCurrPlayer() == 1) {
+                    ((GameActivity) getActivity()).updateBoard(2, true);
                     intent.putExtra("WinnerName", act.getPlayer2Name());
                     intent.putExtra("LoserName", act.getPlayer1Name());
                 } else if (act.getGameView().getCurrPlayer() == 2) {
+                    ((GameActivity) getActivity()).updateBoard(1, true);
                     intent.putExtra("WinnerName", act.getPlayer1Name());
                     intent.putExtra("LoserName", act.getPlayer2Name());
                 }

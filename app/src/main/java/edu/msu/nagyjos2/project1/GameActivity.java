@@ -105,7 +105,7 @@ public class GameActivity extends AppCompatActivity {
             // get the opponents board and load into board class
 
             while(true) {
-                TurnResult result = cloud.waitForTurn(hostId_final, curr_player);
+                final TurnResult result = cloud.waitForTurn(hostId_final, curr_player);
 
                 // could not contact server, failed
                 if (result.getStatus().equals("fail")) {
@@ -141,6 +141,20 @@ public class GameActivity extends AppCompatActivity {
                             int curr_player = getGameView().getCurrPlayer();
                             activateTouch();
 
+                            if (result.getSurrender().equals("yes")) {
+                                Intent intent = new Intent(getActivity(), EndActivity.class);
+                                intent.putExtra("HostID", hostId);
+                                if (getGameView().getCurrPlayer() == 2) {
+                                    intent.putExtra("WinnerName", player2_name);
+                                    intent.putExtra("LoserName", player1_name);
+                                } else if (getGameView().getCurrPlayer() == 1) {
+                                    intent.putExtra("WinnerName", player1_name);
+                                    intent.putExtra("LoserName", player2_name);
+                                }
+                                startActivity(intent);
+                                return;
+                            }
+
                             if (curr_player == 2) { // guest moved, see if the guest won the game
                                 getGameView().loadUpdatedBoard(1, result.getTiles());;
 
@@ -169,6 +183,7 @@ public class GameActivity extends AppCompatActivity {
 
         if(getGameView().getNumShips(getGameView().getCurrPlayer()) == 0) {
             Intent intent = new Intent(this, EndActivity.class);
+            intent.putExtra("HostID", "");
             if (getGameView().getCurrPlayer() == 1) {
                 intent.putExtra("WinnerName", player2_name);
                 intent.putExtra("LoserName", player1_name);
@@ -182,7 +197,7 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    public void updateBoard(final int current_player) {
+    public void updateBoard(final int current_player, boolean surrender) {
 
         final String hostId_final = Integer.toString(hostId);
         BattleshipBoard board = getGameView().getPlayerBoard(current_player);
@@ -193,7 +208,13 @@ public class GameActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                boolean result = cloud.updateBoard(hostId_final, board);
+                boolean result;
+                if (surrender) {
+                    result = cloud.updateBoard(hostId_final, board, true);
+                }
+                else {
+                    result = cloud.updateBoard(hostId_final, board, false);
+                }
 
                 // could not contact server, failed
                 if (!result) {
@@ -307,11 +328,11 @@ public class GameActivity extends AppCompatActivity {
             Intent intent = new Intent(this, EndActivity.class);
             intent.putExtra("HostID", String.valueOf(hostId));
             if (getGameView().getCurrPlayer() == 2) {
-                updateBoard(1);
+                updateBoard(1, false);
                 intent.putExtra("WinnerName", player2_name);
                 intent.putExtra("LoserName", player1_name);
             } else if (getGameView().getCurrPlayer() == 1) {
-                updateBoard(2);
+                updateBoard(2, false);
                 intent.putExtra("WinnerName", player1_name);
                 intent.putExtra("LoserName", player2_name);
             }
@@ -325,7 +346,7 @@ public class GameActivity extends AppCompatActivity {
             SetNameText(2);
 
             disableTouch();
-            updateBoard(2);
+            updateBoard(2, false);
 
         }
 
@@ -335,7 +356,7 @@ public class GameActivity extends AppCompatActivity {
             SetNameText(1);
 
             disableTouch();
-            updateBoard(1);
+            updateBoard(1, false);
         }
     }
 
@@ -344,24 +365,6 @@ public class GameActivity extends AppCompatActivity {
         super.onSaveInstanceState(bundle);
 
         getGameView().saveInstanceState(bundle);
-    }
-
-    /**
-     * Delete the lobby & game
-     * @param hostId id it will remove from table
-     */
-    private void delete(final String hostId) {
-
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                Cloud cloud = new Cloud();
-                boolean ok = cloud.lobbyDelete(hostId);
-                boolean okGame = cloud.gameDelete(hostId);
-            }
-
-        }).start();
     }
 }
 

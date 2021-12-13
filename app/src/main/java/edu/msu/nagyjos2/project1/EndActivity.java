@@ -47,7 +47,10 @@ public class EndActivity extends AppCompatActivity {
         loser = (TextView) findViewById(R.id.loserText);
         String loser_text = getString(R.string.end_loser);
         loser.setText(loser_text + " " + loser_name);
-        delete(hostid);
+        if (!hostid.equals("")) {
+            delete(hostid);
+        }
+
     }
 
     /**

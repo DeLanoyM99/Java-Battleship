@@ -12,21 +12,21 @@ public class TurnResult {
     @Attribute
     private String status;
 
-    @Attribute(name = "msg", required = false)
-    private String msg;
+    @Attribute
+    private String surrender;
 
     @ElementList(name = "tile", inline = true, required = false, type = Tile.class)
     private List<Tile> tiles;
 
     public String getStatus() { return status; }
 
-    public String getMsg() { return msg; }
+    public String getSurrender() { return surrender; }
 
 public List<Tile> getTiles() { return tiles; }
 
-    public TurnResult(String status, String msg, ArrayList<Tile> tiles) {
+    public TurnResult(String status, String surrender, ArrayList<Tile> tiles) {
         this.status = status;
-        this.msg = msg;
+        this.surrender = surrender;
         this.tiles = tiles;
     }
 
