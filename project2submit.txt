@@ -1,4 +1,3 @@
-
 Project 2 Submission
 
 Group Name:   Team 12
@@ -23,7 +22,7 @@ Responsiblity: creating the database, php for joining a lobby, deleting a lobby 
 
 Member 2: Matthew DeLanoy
 
-Responsiblity:
+Responsiblity: Creating UI elements, adding lobby refresh function, created lobby-load php, fix general bugs
 
 
 
