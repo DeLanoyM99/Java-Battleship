@@ -48,7 +48,8 @@ Provide instructions on how to reach the first editing activity if the login but
 
 User account the server-side communications is running under: nagyjos2
 
-Paths to all server-side scripts: https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/.
+Paths to all server-side scripts:
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/
 https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/battleship-inc.php
 https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/battleship-load.php
 https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/battleship-login.php
