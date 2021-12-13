@@ -305,6 +305,7 @@ public class GameActivity extends AppCompatActivity {
         // check game won
         if(getGameView().getNumShips(nextPlayer) == 0) {
             Intent intent = new Intent(this, EndActivity.class);
+            intent.putExtra("HostID", String.valueOf(hostId));
             if (getGameView().getCurrPlayer() == 2) {
                 updateBoard(1);
                 intent.putExtra("WinnerName", player2_name);
