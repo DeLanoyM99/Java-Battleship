@@ -49,6 +49,21 @@ Provide instructions on how to reach the first editing activity if the login but
 User account the server-side communications is running under: nagyjos2
 
 Paths to all server-side scripts: https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/.
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/battleship-inc.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/battleship-load.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/battleship-login.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/battleship-signup.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/battleshipTesting.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/db.inc.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/game-delete.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/game-update.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/game-waiting.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/hg.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/lobby-create-waiting.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/lobby-create.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/lobby-delete.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/lobby-join.php
+https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/lobby-load.php
 
 Calls in the code to the server (provide a class name and function, or URL used for debugging):
 https://webdev.cse.msu.edu/~nagyjos2/cse476/battleship/battleshipTesting.php
