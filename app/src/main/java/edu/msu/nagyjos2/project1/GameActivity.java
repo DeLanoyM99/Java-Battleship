@@ -34,6 +34,7 @@ public class GameActivity extends AppCompatActivity {
     private CountDownTimer timer;
     private boolean timerDone = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
